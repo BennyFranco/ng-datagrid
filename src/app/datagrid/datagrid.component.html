@@ -1,3 +1,16 @@
-<p>
-  datagrid works!
-</p>
+<table>
+  <thead>
+    <tr>
+      <td>&nbsp;</td>
+      <td *ngFor="let header of headers">{{header}}</td>
+    </tr>
+  </thead>
+</table>
+<table>
+  <tbody>
+    <tr *ngFor="let row of gridData; let idx = index">
+      <td>{{idx}}</td>
+      <td *ngFor="let cell of row">{{cell}}</td>
+    </tr>
+  </tbody>
+</table>

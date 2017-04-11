@@ -6,6 +6,7 @@ import { DatagridComponent } from './datagrid.component';
   imports: [
     CommonModule
   ],
-  declarations: [DatagridComponent]
+  declarations: [DatagridComponent],
+  exports: [DatagridComponent],
 })
 export class DatagridModule { }
