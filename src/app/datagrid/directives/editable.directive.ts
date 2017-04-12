@@ -29,18 +29,6 @@ export class EditableDirective implements AfterViewInit {
     }
   }
 
-  @HostListener('document:keydown', ['$event'])
-  keyboardInput(event: KeyboardEvent) {
-    switch (event.key) {
-      case 'Escape':
-        this.cancelCellEdition(false);
-        break;
-      case 'Enter':
-        this.cancelCellEdition(true);
-        break;
-    }
-  }
-
   private addInput() {
     if (this._elementRef.nativeElement.children[1]) {
       return;
@@ -55,14 +43,15 @@ export class EditableDirective implements AfterViewInit {
     input.focus();
   }
 
-  private cancelCellEdition(saveElement: boolean) {
-
+  private cancelCellEdition(saveElement: boolean, addElements?: boolean) {
     if (this._elementRef.nativeElement.children.length > 1) {
       if (saveElement) {
         this._elementRef.nativeElement.children[0].textContent = this._elementRef.nativeElement.children[1].value;
       }
       this._elementRef.nativeElement.removeChild(this._elementRef.nativeElement.children[1]);
       this._elementRef.nativeElement.children[0].style.display = 'inherit';
+    } else if (addElements) {
+      this.addInput();
     }
   }
 

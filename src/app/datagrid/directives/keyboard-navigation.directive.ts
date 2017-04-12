@@ -23,41 +23,48 @@ export class KeyboardNavigationDirective implements AfterViewInit {
     let row = Number.parseInt(elementId.split('-')[0]);
     let col = Number.parseInt(elementId.split('-')[1]);
 
-    switch (event.key) {
-      case 'ArrowLeft':
-        col -= 1;
+    console.log(event);
 
-        if (col > -1) {
-          this.removeSelection(elementId);
-          elementId = elementId.split('-')[0] + '-' + col;
-          this.selectElement(elementId);
-        }
-        break;
-      case 'ArrowRight':
-        col += 1;
+    if (event.keyCode === KeyCodes.ArrowLeft) {
+      col -= 1;
 
-        if (col < this.colLimit) {
-          this.removeSelection(elementId);
-          elementId = elementId.split('-')[0] + '-' + col;
-          this.selectElement(elementId);
-        }
-        break;
-      case 'ArrowUp':
-        row -= 1;
-        if (row > -1) {
-          this.removeSelection(elementId);
-          elementId = row + '-' + elementId.split('-')[1];
-          this.selectElement(elementId);
-        }
-        break;
-      case 'ArrowDown':
-        row += 1;
-        if (row < this.rowLimit) {
-          this.removeSelection(elementId);
-          elementId = row + '-' + elementId.split('-')[1];
-          this.selectElement(elementId);
-        }
-        break;
+      if (col > -1) {
+        this.removeSelection(elementId);
+        elementId = elementId.split('-')[0] + '-' + col;
+        this.selectElement(elementId);
+      }
+    } else if (event.keyCode === KeyCodes.ArrowRight) {
+      col += 1;
+
+      if (col < this.colLimit) {
+        this.removeSelection(elementId);
+        elementId = elementId.split('-')[0] + '-' + col;
+        this.selectElement(elementId);
+      }
+    } else if (event.keyCode === KeyCodes.ArrowUp) {
+      row -= 1;
+      if (row > -1) {
+        this.removeSelection(elementId);
+        elementId = row + '-' + elementId.split('-')[1];
+        this.selectElement(elementId);
+      }
+    } else if (event.keyCode === KeyCodes.ArrowDown) {
+      row += 1;
+      if (row < this.rowLimit) {
+        this.removeSelection(elementId);
+        elementId = row + '-' + elementId.split('-')[1];
+        this.selectElement(elementId);
+      }
+    } else if (event.keyCode === KeyCodes.Escape) {
+      this.cancelCellEdition(element.item(0), false);
+    } else if (event.keyCode === KeyCodes.Enter) {
+      this.cancelCellEdition(element.item(0), true, true);
+    } else if (event.keyCode >= 48 && event.keyCode <= 111) {
+      this.editOnHitKey(element.item(0), true);
+    } else if (event.keyCode >= 186 && event.keyCode <= 222) {
+      this.editOnHitKey(element.item(0), true);
+    } else if (event.keyCode === KeyCodes.Backspace || event.keyCode === KeyCodes.Delete) {
+      this.editOnHitKey(element.item(0), true);
     }
   }
 
@@ -84,7 +91,7 @@ export class KeyboardNavigationDirective implements AfterViewInit {
     }
   }
 
-  private cancelCellEdition(element, saveElement: boolean) {
+  private cancelCellEdition(element, saveElement: boolean, editable?: boolean) {
 
     if (element.children.length > 1) {
       if (saveElement) {
@@ -92,6 +99,39 @@ export class KeyboardNavigationDirective implements AfterViewInit {
       }
       element.removeChild(element.children[1]);
       element.children[0].style.display = 'inherit';
+    } else if (editable) {
+      this.addInput(element);
     }
   }
+
+  private addInput(element, replaceContent?: boolean) {
+    if (element.children[1]) {
+      return;
+    }
+    const input = document.createElement('input');
+    input.type = 'text';
+    if (!replaceContent) {
+      input.value = element.children[0] ? element.children[0].textContent : '';
+    }
+    element.appendChild(input);
+    element.children[0].style.display = 'none';
+    input.style.border = 'none';
+    input.style.width = '60px';
+    input.focus();
+  }
+
+  private editOnHitKey(element, replaceContent: boolean) {
+    this.addInput(element, replaceContent);
+  }
+}
+
+export enum KeyCodes {
+  Backspace = 8,
+  Enter = 13,
+  Escape = 27,
+  ArrowLeft = 37,
+  ArrowUp = 38,
+  ArrowRight = 39,
+  ArrowDown = 40,
+  Delete = 46,
 }
