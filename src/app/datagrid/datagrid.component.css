@@ -1,0 +1,25 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+table {
+    border-collapse: collapse;
+}
+table, th, td {
+   border: 0;
+   border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 2px;
+    width: 60px;
+    height: 10px;
+}
+
+._th {
+    background-color: #E0DEDA
+}
+
+._tr {
+    width: 15px;
+}

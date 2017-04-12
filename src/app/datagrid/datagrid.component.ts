@@ -11,14 +11,23 @@ export class DatagridComponent implements OnInit {
   headers: Array<any>;
 
   constructor() {
-    this.gridData = this.generateMockData();
+    this.gridData = this.generateEmptySheet();
     this.headers = this.generateHeaders();
   }
 
   ngOnInit() {
   }
 
-  generateMockData(): Array<any> {
+  generateEmptySheet(): Array<any> {
+    return [
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null]
+    ];
+  }
+
+  generateZeroSheet(): Array<any> {
     return [
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
