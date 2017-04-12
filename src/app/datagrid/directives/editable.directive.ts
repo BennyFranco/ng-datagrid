@@ -7,7 +7,7 @@ export class EditableDirective {
 
   constructor(private el: ElementRef) { }
 
-  @HostListener('click') onDobleClick() {
+  @HostListener('dblclick') onDobleClick() {
     this.highlight('yellow');
   }
 
