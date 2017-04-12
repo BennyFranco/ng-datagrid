@@ -4,9 +4,10 @@
 
 table {
     border-collapse: collapse;
+    table-layout: fixed;
 }
+
 table, th, td {
-   border: 0;
    border: 1px solid #ddd;
 }
 
@@ -14,6 +15,7 @@ th, td {
     padding: 2px;
     width: 60px;
     height: 10px;
+    overflow: hidden;
 }
 
 ._th {
@@ -22,4 +24,11 @@ th, td {
 
 ._tr {
     width: 15px;
+}
+
+_input {
+    width: 60px;
+    height: 10px;
+    border: none !important;
+    background-color: yellow;
 }

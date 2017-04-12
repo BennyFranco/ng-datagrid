@@ -2,15 +2,17 @@
   <thead>
     <tr class="_th">
       <th class="_th _tr"></th>
-      <th  *ngFor="let header of headers">{{header}}</th>
+      <th *ngFor="let header of headers">{{header}}</th>
     </tr>
   </thead>
 </table>
 <table>
   <tbody>
-    <tr *ngFor="let row of gridData; let idx = index">
-      <th class="_th _tr">{{idx}}</th>
-      <td *ngFor="let cell of row" ngEditable>{{cell}}</td>
+    <tr *ngFor="let row of gridData; let rowId = index">
+      <th class="_th _tr">{{rowId}}</th>
+      <td *ngFor="let cell of row; let cellId = index" ngEditable id="{{rowId}}-{{cellId}}">
+        <span>{{cell}}</span>
+      </td>
     </tr>
   </tbody>
 </table>
