@@ -6,7 +6,6 @@ import { DatagridModule } from './datagrid/datagrid.module';
 
 import { AppComponent } from './app.component';
 
-
 @NgModule({
     imports: [
         BrowserModule,

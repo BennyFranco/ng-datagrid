@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DatagridComponent } from './datagrid.component';
 
 import { EditableDirective } from './directives/editable.directive';
+import { KeyboardNavigationDirective } from './directives/keyboard-navigation.directive';
 
 @NgModule({
   imports: [
@@ -10,7 +11,8 @@ import { EditableDirective } from './directives/editable.directive';
   ],
   declarations: [
     DatagridComponent,
-    EditableDirective
+    EditableDirective,
+    KeyboardNavigationDirective
   ],
   exports: [
     DatagridComponent,
