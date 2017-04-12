@@ -120,6 +120,9 @@ export class KeyboardNavigationDirective implements AfterViewInit {
     element.children[0].style.display = 'none';
     input.style.border = 'none';
     input.style.width = '60px';
+    input.style.height = '12px';
+    input.style.font = '12px sans-serif';
+    input.style.outline = 'none';
     input.focus();
   }
 

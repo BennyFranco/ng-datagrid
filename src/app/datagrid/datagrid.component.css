@@ -52,16 +52,18 @@ th {
 th,
 td {
     padding: 0.5em;
-    height: 10px;
+    height: 12px;
     width: 60px;
-    line-height: 10px;
-}
-
-td span {
-    width: 60px;
+    line-height: 12px;
+    min-height: 12px;
 }
 
 .selected {
     box-shadow: inset 0 0 0 2px blue;
     /* border: 2px solid blue;*/
+}
+
+input {
+    font: 12px sans-serif;
+    color: #333;
 }

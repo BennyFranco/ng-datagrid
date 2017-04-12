@@ -40,6 +40,9 @@ export class EditableDirective implements AfterViewInit {
     this._elementRef.nativeElement.children[0].style.display = 'none';
     input.style.border = 'none';
     input.style.width = '60px';
+    input.style.height = '12px';
+    input.style.font = '12px sans-serif';
+    input.style.outline = 'none';
     input.focus();
   }
 
