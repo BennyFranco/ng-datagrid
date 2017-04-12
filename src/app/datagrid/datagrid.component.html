@@ -6,7 +6,7 @@
     </tr>
   </thead>
 </table>
-<table ngKeyboardNavigation>
+<table ngKeyboardNavigation [limits]="gridData">
   <tbody>
     <tr *ngFor="let row of gridData; let rowId = index">
       <th class="_th _tr">{{rowId}}</th>

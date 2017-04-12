@@ -13,6 +13,10 @@ export class EditableDirective implements AfterViewInit {
     }
   }
 
+  @HostListener('click') onClick() {
+    this.selectElement();
+  }
+
   @HostListener('dblclick') onDoubleClick() {
     this.addInput();
   }
@@ -23,10 +27,6 @@ export class EditableDirective implements AfterViewInit {
       this.cancelCellEdition(true);
       this.removeSelection();
     }
-  }
-
-  @HostListener('click') onClick() {
-    this.selectElement();
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -67,12 +67,11 @@ export class EditableDirective implements AfterViewInit {
   }
 
   private selectElement() {
-    this._elementRef.nativeElement.style.border = '2px solid blue';
-    this._elementRef.nativeElement.className = 'selected';
+    const element = <HTMLElement>this._elementRef.nativeElement;
+    element.className = 'selected';
   }
 
   private removeSelection() {
-    this._elementRef.nativeElement.style.border = '1px solid #ddd';
     this._elementRef.nativeElement.className = '';
   }
 }
