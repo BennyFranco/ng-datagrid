@@ -72,6 +72,8 @@ export class KeyboardNavigationDirective implements AfterViewInit {
     if (id) {
       const element = document.getElementById(id);
       element.className = '';
+      this.cancelCellEdition(element, true);
+
     }
   }
 
@@ -79,6 +81,17 @@ export class KeyboardNavigationDirective implements AfterViewInit {
     this.rowLimit = this.limits.length;
     if (this.limits.length > 0) {
       this.colLimit = this.limits[0].length;
+    }
+  }
+
+  private cancelCellEdition(element, saveElement: boolean) {
+
+    if (element.children.length > 1) {
+      if (saveElement) {
+        element.children[0].textContent = element.children[1].value;
+      }
+      element.removeChild(element.children[1]);
+      element.children[0].style.display = 'inherit';
     }
   }
 }
