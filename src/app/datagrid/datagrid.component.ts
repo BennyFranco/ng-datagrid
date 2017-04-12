@@ -11,7 +11,7 @@ export class DatagridComponent implements OnInit {
   headers: Array<any>;
 
   constructor() {
-    this.gridData = this.generateZeroSheet();
+    this.gridData = this.generateZeroSheetWithNumberOfRows(10);
     this.headers = this.generateHeaders();
   }
 
@@ -34,6 +34,14 @@ export class DatagridComponent implements OnInit {
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0]
     ];
+  }
+
+  generateZeroSheetWithNumberOfRows(rows: number): Array<any> {
+    const matrix = [];
+    for (let i = 0; i < rows; i++) {
+      matrix.push([0, 0, 0, 0, 0, 0, 0, 0]);
+    }
+    return matrix;
   }
 
   generateHeaders(): Array<any> {

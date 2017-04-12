@@ -1,15 +1,13 @@
-<table>
+<table ngKeyboardNavigation [limits]="gridData">
   <thead>
     <tr class="_th">
       <th class="_th _tr"></th>
       <th *ngFor="let header of headers">{{header}}</th>
     </tr>
   </thead>
-</table>
-<table ngKeyboardNavigation [limits]="gridData">
   <tbody>
     <tr *ngFor="let row of gridData; let rowId = index">
-      <th class="_th _tr">{{rowId}}</th>
+      <th class="_th _tr">{{rowId+1}}</th>
       <td *ngFor="let cell of row; let cellId = index" ngEditable id="{{rowId}}-{{cellId}}">
         <span>{{cell}}</span>
       </td>

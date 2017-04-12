@@ -24,7 +24,6 @@ export class KeyboardNavigationDirective implements AfterViewInit {
     let col = Number.parseInt(elementId.split('-')[1]);
 
     console.log(event);
-
     if (event.keyCode === KeyCodes.ArrowLeft) {
       col -= 1;
 
@@ -33,6 +32,7 @@ export class KeyboardNavigationDirective implements AfterViewInit {
         elementId = elementId.split('-')[0] + '-' + col;
         this.selectElement(elementId);
       }
+      event.preventDefault();
     } else if (event.keyCode === KeyCodes.ArrowRight) {
       col += 1;
 
@@ -41,6 +41,7 @@ export class KeyboardNavigationDirective implements AfterViewInit {
         elementId = elementId.split('-')[0] + '-' + col;
         this.selectElement(elementId);
       }
+      event.preventDefault();
     } else if (event.keyCode === KeyCodes.ArrowUp) {
       row -= 1;
       if (row > -1) {
@@ -48,6 +49,7 @@ export class KeyboardNavigationDirective implements AfterViewInit {
         elementId = row + '-' + elementId.split('-')[1];
         this.selectElement(elementId);
       }
+      event.preventDefault();
     } else if (event.keyCode === KeyCodes.ArrowDown) {
       row += 1;
       if (row < this.rowLimit) {
@@ -55,6 +57,7 @@ export class KeyboardNavigationDirective implements AfterViewInit {
         elementId = row + '-' + elementId.split('-')[1];
         this.selectElement(elementId);
       }
+      event.preventDefault();
     } else if (event.keyCode === KeyCodes.Escape) {
       this.cancelCellEdition(element.item(0), false);
     } else if (event.keyCode === KeyCodes.Enter) {
