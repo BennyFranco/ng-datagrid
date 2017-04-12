@@ -11,15 +11,21 @@ export class EditableDirective {
     this.addInput();
   }
 
-  @HostListener('document:click', ['$event']) clickOut(event) {
+  @HostListener('document:click', ['$event']) onClickOut(event) {
     const clickedInside = this._elementRef.nativeElement.contains(event.target);
     if (!clickedInside) {
+      this._elementRef.nativeElement.style.border = '1px solid #ddd';
+
       if (this._elementRef.nativeElement.children.length > 1) {
         this._elementRef.nativeElement.children[0].textContent = this._elementRef.nativeElement.children[1].value;
         this._elementRef.nativeElement.removeChild(this._elementRef.nativeElement.children[1]);
         this._elementRef.nativeElement.children[0].style.display = 'inherit';
       }
     }
+  }
+
+  @HostListener('click') onclick() {
+    this._elementRef.nativeElement.style.border = '2px solid blue';
   }
 
   private addInput() {

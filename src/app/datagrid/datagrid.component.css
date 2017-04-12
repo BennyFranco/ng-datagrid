@@ -25,10 +25,3 @@ th, td {
 ._tr {
     width: 15px;
 }
-
-_input {
-    width: 60px;
-    height: 10px;
-    border: none !important;
-    background-color: yellow;
-}
