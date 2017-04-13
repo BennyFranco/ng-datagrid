@@ -1,11 +1,12 @@
+import { DatagridService } from '../datagrid.service';
 import { Directive, ElementRef, HostListener, Input, AfterViewInit } from '@angular/core';
 
 @Directive({
-  selector: '[ngEditable]'
+  selector: '[ngEditable]',
 })
 export class EditableDirective implements AfterViewInit {
 
-  constructor(private _elementRef: ElementRef) { }
+  constructor(private _elementRef: ElementRef, private datagridService: DatagridService) { }
 
   ngAfterViewInit() {
     if (this._elementRef.nativeElement.id === '0-0') {
@@ -14,20 +15,24 @@ export class EditableDirective implements AfterViewInit {
   }
 
   @HostListener('click') onClick() {
+    this.datagridService.selectedElement.className = '';
     this.selectElement();
+
   }
 
   @HostListener('dblclick') onDoubleClick() {
     this.addInput();
   }
 
-  /* @HostListener('document:click', ['$event']) onClickOut(event) {
+  /*@HostListener('document:click', ['$event']) onClickOut(event) {
     const clickedInside = this._elementRef.nativeElement.contains(event.target);
     console.log(clickedInside);
     if (!clickedInside) {
       this.cancelCellEdition(true);
       this.removeSelection();
     }
+    this.cancelCellEdition(true);
+    this.removeSelection();
   }*/
 
   private addInput() {
@@ -62,6 +67,7 @@ export class EditableDirective implements AfterViewInit {
   private selectElement() {
     const element = <HTMLElement>this._elementRef.nativeElement;
     element.className = 'selected';
+    this.datagridService.selectedElement = element;
   }
 
   private removeSelection() {

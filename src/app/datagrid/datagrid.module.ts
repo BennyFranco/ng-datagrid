@@ -1,3 +1,4 @@
+import { DatagridService } from './datagrid.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DatagridComponent } from './datagrid.component';
@@ -13,6 +14,9 @@ import { KeyboardNavigationDirective } from './directives/keyboard-navigation.di
     DatagridComponent,
     EditableDirective,
     KeyboardNavigationDirective
+  ],
+  providers: [
+    DatagridService
   ],
   exports: [
     DatagridComponent

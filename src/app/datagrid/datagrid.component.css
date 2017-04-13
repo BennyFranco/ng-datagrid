@@ -22,6 +22,8 @@ thead {
 tbody {
     overflow: auto;
     height: 250px;
+    -webkit-overflow-scrolling: scroll;
+
 }
 
 table,
