@@ -21,13 +21,14 @@ export class EditableDirective implements AfterViewInit {
     this.addInput();
   }
 
-  @HostListener('document:click', ['$event']) onClickOut(event) {
+  /* @HostListener('document:click', ['$event']) onClickOut(event) {
     const clickedInside = this._elementRef.nativeElement.contains(event.target);
+    console.log(clickedInside);
     if (!clickedInside) {
       this.cancelCellEdition(true);
       this.removeSelection();
     }
-  }
+  }*/
 
   private addInput() {
     if (this._elementRef.nativeElement.children[1]) {

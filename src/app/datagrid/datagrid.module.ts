@@ -15,8 +15,7 @@ import { KeyboardNavigationDirective } from './directives/keyboard-navigation.di
     KeyboardNavigationDirective
   ],
   exports: [
-    DatagridComponent,
-    EditableDirective
+    DatagridComponent
   ]
 })
 export class DatagridModule { }

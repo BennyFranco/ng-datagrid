@@ -11,7 +11,7 @@ export class DatagridComponent implements OnInit {
   headers: Array<any>;
 
   constructor() {
-    this.gridData = this.generateEmptySheetWithNumberOfRows(15);
+    this.gridData = this.generateEmptySheetWithNumberOfRows(1000);
     this.headers = this.generateHeaders();
   }
 
