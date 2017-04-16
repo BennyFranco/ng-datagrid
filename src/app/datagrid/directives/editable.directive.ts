@@ -15,9 +15,8 @@ export class EditableDirective implements AfterViewInit {
   }
 
   @HostListener('click') onClick() {
-    this.datagridService.selectedElement.className = '';
+    this.cancelCellEdition(this.datagridService.selectedElement, true);
     this.selectElement();
-
   }
 
   @HostListener('dblclick') onDoubleClick() {
@@ -52,16 +51,18 @@ export class EditableDirective implements AfterViewInit {
     input.focus();
   }
 
-  private cancelCellEdition(saveElement: boolean, addElements?: boolean) {
-    if (this._elementRef.nativeElement.children.length > 1) {
+  private cancelCellEdition(element, saveElement: boolean, addElements?: boolean) {
+    if (element.children.length > 1) {
       if (saveElement) {
-        this._elementRef.nativeElement.children[0].textContent = this._elementRef.nativeElement.children[1].value;
+        element.children[0].textContent = element.children[1].value;
       }
-      this._elementRef.nativeElement.removeChild(this._elementRef.nativeElement.children[1]);
-      this._elementRef.nativeElement.children[0].style.display = 'inherit';
+      element.removeChild(this._elementRef.nativeElement.children[1]);
+      element.children[0].style.display = 'inherit';
+
     } else if (addElements) {
       this.addInput();
     }
+    element.className = '';
   }
 
   private selectElement() {
