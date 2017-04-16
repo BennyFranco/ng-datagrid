@@ -15,7 +15,7 @@ export class EditableDirective implements AfterViewInit {
   }
 
   @HostListener('click') onClick() {
-    this.cancelCellEdition(this.datagridService.selectedElement, true);
+    this.removeSelection(this.datagridService.selectedElementId);
     this.selectElement();
   }
 
@@ -52,11 +52,12 @@ export class EditableDirective implements AfterViewInit {
   }
 
   private cancelCellEdition(element, saveElement: boolean, addElements?: boolean) {
+    console.log(element)
     if (element.children.length > 1) {
       if (saveElement) {
         element.children[0].textContent = element.children[1].value;
       }
-      element.removeChild(this._elementRef.nativeElement.children[1]);
+      element.removeChild(element.children[1]);
       element.children[0].style.display = 'inherit';
 
     } else if (addElements) {
@@ -69,9 +70,14 @@ export class EditableDirective implements AfterViewInit {
     const element = <HTMLElement>this._elementRef.nativeElement;
     element.className = 'selected';
     this.datagridService.selectedElement = element;
+    this.datagridService.selectedElementId = element.id;
   }
 
-  private removeSelection() {
-    this._elementRef.nativeElement.className = '';
+  private removeSelection(id?: string) {
+    if (id) {
+      const element = document.getElementById(id);
+      element.className = '';
+      this.cancelCellEdition(element, true);
+    }
   }
 }

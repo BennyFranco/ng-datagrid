@@ -4,6 +4,8 @@ import { Injectable } from '@angular/core';
 export class DatagridService {
 
   selectedElement: any;
+  selectedElementId: string;
+
   constructor() { }
 
 }
