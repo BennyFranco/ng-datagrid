@@ -23,6 +23,10 @@ export class EditableDirective implements AfterViewInit {
     this.addInput();
   }
 
+  @HostListener('paste', ['$event']) onPaste(event: ClipboardEvent) {
+    this.datagridService.selectedElement.textContent = event.clipboardData.getData('text');
+  }
+
   /*@HostListener('document:click', ['$event']) onClickOut(event) {
     const clickedInside = this._elementRef.nativeElement.contains(event.target);
     console.log(clickedInside);

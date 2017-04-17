@@ -1,5 +1,6 @@
 import { Directive, ElementRef, HostListener, Input, AfterViewInit } from '@angular/core';
 import { DatagridService } from '../datagrid.service';
+import { isFirefox } from '../shared/navigator-utils';
 
 @Directive({
   selector: '[ngKeyboardEvents]'
@@ -81,8 +82,8 @@ export class KeyboardEventsDirective implements AfterViewInit {
     // tslint:disable-next-line:prefer-const
     let col = Number.parseInt(elementId.split('-')[1]);
 
-    if (event.which >= 39 && event.which <= 191) {
-      this.editOnHitKey(element, true);
+    if (event.which >= 39 && event.which <= 191 && !event.ctrlKey) {
+      this.editOnHitKey(element, true, event.key);
     }
   }
 
@@ -122,7 +123,7 @@ export class KeyboardEventsDirective implements AfterViewInit {
     }
   }
 
-  private addInput(element, replaceContent?: boolean) {
+  private addInput(element, replaceContent?: boolean, keyChar?: string) {
     if (element.children[1]) {
       return;
     }
@@ -139,10 +140,14 @@ export class KeyboardEventsDirective implements AfterViewInit {
     input.style.font = '12px sans-serif';
     input.style.outline = 'none';
     input.focus();
+
+    if (keyChar && isFirefox()) {
+      input.value = keyChar;
+    }
   }
 
-  private editOnHitKey(element, replaceContent: boolean) {
-    this.addInput(element, replaceContent);
+  private editOnHitKey(element, replaceContent: boolean, keyChar?: string, event?) {
+    this.addInput(element, replaceContent, keyChar);
   }
 
   private moveToUp(row: number, elementId: string) {
