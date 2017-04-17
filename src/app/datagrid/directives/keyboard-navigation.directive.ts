@@ -20,6 +20,7 @@ export class KeyboardNavigationDirective implements AfterViewInit {
   keyboardInput(event: KeyboardEvent) {
 
     const element = <HTMLElement>this.datagridService.selectedElement;
+    // tslint:disable-next-line:prefer-const
     let elementId: string = this.datagridService.selectedElementId;
     // tslint:disable-next-line:prefer-const
     let row = Number.parseInt(elementId.split('-')[0]);
