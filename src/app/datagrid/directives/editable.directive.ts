@@ -52,7 +52,6 @@ export class EditableDirective implements AfterViewInit {
   }
 
   private cancelCellEdition(element, saveElement: boolean, addElements?: boolean) {
-    console.log(element)
     if (element.children.length > 1) {
       if (saveElement) {
         element.children[0].textContent = element.children[1].value;
