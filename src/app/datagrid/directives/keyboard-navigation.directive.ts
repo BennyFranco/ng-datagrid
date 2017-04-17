@@ -19,62 +19,31 @@ export class KeyboardNavigationDirective implements AfterViewInit {
   @HostListener('document:keydown', ['$event'])
   keyboardInput(event: KeyboardEvent) {
 
-    // const element = document.getElementsByClassName('selected');
     const element = <HTMLElement>this.datagridService.selectedElement;
-    // let elementId: string = element.item(0).id;
     let elementId: string = this.datagridService.selectedElementId;
+    // tslint:disable-next-line:prefer-const
     let row = Number.parseInt(elementId.split('-')[0]);
+    // tslint:disable-next-line:prefer-const
     let col = Number.parseInt(elementId.split('-')[1]);
 
-    console.log(event);
     if (event.keyCode === KeyCodes.ArrowLeft) {
-      col -= 1;
-
-      if (col > -1) {
-        this.removeSelection(elementId);
-        elementId = elementId.split('-')[0] + '-' + col;
-        this.selectElement(elementId);
-      }
-      event.preventDefault();
+      this.moveToLeft(col, elementId);
     } else if (event.keyCode === KeyCodes.ArrowRight) {
-      col += 1;
-
-      if (col < this.colLimit) {
-        this.removeSelection(elementId);
-        elementId = elementId.split('-')[0] + '-' + col;
-        this.selectElement(elementId);
-      }
-      event.preventDefault();
+      this.moveToRight(col, elementId);
     } else if (event.keyCode === KeyCodes.ArrowUp) {
-      row -= 1;
-      if (row > -1) {
-        this.removeSelection(elementId);
-        elementId = row + '-' + elementId.split('-')[1];
-        this.selectElement(elementId);
-      }
-      event.preventDefault();
+      this.moveToUp(row, elementId);
     } else if (event.keyCode === KeyCodes.ArrowDown) {
-      row += 1;
-      if (row < this.rowLimit) {
-        this.removeSelection(elementId);
-        elementId = row + '-' + elementId.split('-')[1];
-        this.selectElement(elementId);
-      }
-      event.preventDefault();
+      this.moveToDown(row, elementId);
     } else if (event.keyCode === KeyCodes.Escape) {
-      // this.cancelCellEdition(element.item(0), false);
       this.cancelCellEdition(element, false);
     } else if (event.keyCode === KeyCodes.Enter) {
-      // this.cancelCellEdition(element.item(0), true, true);
-      this.cancelCellEdition(element, true, true);
+      this.cancelCellEdition(element, true, false);
+      this.moveToDown(row, elementId);
     } else if (event.keyCode >= 48 && event.keyCode <= 111) {
-      // this.editOnHitKey(element.item(0), true);
       this.editOnHitKey(element, true);
     } else if (event.keyCode >= 186 && event.keyCode <= 222) {
-      // this.editOnHitKey(element.item(0), true);
       this.editOnHitKey(element, true);
     } else if (event.keyCode === KeyCodes.Backspace || event.keyCode === KeyCodes.Delete) {
-      // this.editOnHitKey(element.item(0), true);
       this.editOnHitKey(element, true);
     }
   }
@@ -136,6 +105,48 @@ export class KeyboardNavigationDirective implements AfterViewInit {
 
   private editOnHitKey(element, replaceContent: boolean) {
     this.addInput(element, replaceContent);
+  }
+
+  private moveToUp(row: number, elementId: string) {
+    row -= 1;
+    if (row > -1) {
+      this.removeSelection(elementId);
+      elementId = row + '-' + elementId.split('-')[1];
+      this.selectElement(elementId);
+    }
+    event.preventDefault();
+  }
+
+  private moveToDown(row: number, elementId: string) {
+    row += 1;
+    if (row < this.rowLimit) {
+      this.removeSelection(elementId);
+      elementId = row + '-' + elementId.split('-')[1];
+      this.selectElement(elementId);
+    }
+    event.preventDefault();
+  }
+
+  private moveToLeft(col: number, elementId: string) {
+    col -= 1;
+
+    if (col > -1) {
+      this.removeSelection(elementId);
+      elementId = elementId.split('-')[0] + '-' + col;
+      this.selectElement(elementId);
+    }
+    event.preventDefault();
+  }
+
+  private moveToRight(col: number, elementId: string) {
+    col += 1;
+
+    if (col < this.colLimit) {
+      this.removeSelection(elementId);
+      elementId = elementId.split('-')[0] + '-' + col;
+      this.selectElement(elementId);
+    }
+    event.preventDefault();
   }
 }
 
