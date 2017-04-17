@@ -1,4 +1,5 @@
 import { Directive, ElementRef, HostListener, Input, AfterViewInit } from '@angular/core';
+import { DatagridService } from '../datagrid.service';
 
 @Directive({
   selector: '[ngKeyboardNavigation]'
@@ -9,7 +10,7 @@ export class KeyboardNavigationDirective implements AfterViewInit {
   rowLimit: number;
   colLimit: number;
 
-  constructor() { }
+  constructor(private datagridService: DatagridService) { }
 
   ngAfterViewInit() {
     this.createRowAndColLimits();
@@ -18,8 +19,10 @@ export class KeyboardNavigationDirective implements AfterViewInit {
   @HostListener('document:keydown', ['$event'])
   keyboardInput(event: KeyboardEvent) {
 
-    const element = document.getElementsByClassName('selected');
-    let elementId: string = element.item(0).id;
+    // const element = document.getElementsByClassName('selected');
+    const element = <HTMLElement>this.datagridService.selectedElement;
+    // let elementId: string = element.item(0).id;
+    let elementId: string = this.datagridService.selectedElementId;
     let row = Number.parseInt(elementId.split('-')[0]);
     let col = Number.parseInt(elementId.split('-')[1]);
 
@@ -59,15 +62,20 @@ export class KeyboardNavigationDirective implements AfterViewInit {
       }
       event.preventDefault();
     } else if (event.keyCode === KeyCodes.Escape) {
-      this.cancelCellEdition(element.item(0), false);
+      // this.cancelCellEdition(element.item(0), false);
+      this.cancelCellEdition(element, false);
     } else if (event.keyCode === KeyCodes.Enter) {
-      this.cancelCellEdition(element.item(0), true, true);
+      // this.cancelCellEdition(element.item(0), true, true);
+      this.cancelCellEdition(element, true, true);
     } else if (event.keyCode >= 48 && event.keyCode <= 111) {
-      this.editOnHitKey(element.item(0), true);
+      // this.editOnHitKey(element.item(0), true);
+      this.editOnHitKey(element, true);
     } else if (event.keyCode >= 186 && event.keyCode <= 222) {
-      this.editOnHitKey(element.item(0), true);
+      // this.editOnHitKey(element.item(0), true);
+      this.editOnHitKey(element, true);
     } else if (event.keyCode === KeyCodes.Backspace || event.keyCode === KeyCodes.Delete) {
-      this.editOnHitKey(element.item(0), true);
+      // this.editOnHitKey(element.item(0), true);
+      this.editOnHitKey(element, true);
     }
   }
 
@@ -75,6 +83,8 @@ export class KeyboardNavigationDirective implements AfterViewInit {
     if (id) {
       const element = document.getElementById(id);
       element.className = 'selected';
+      this.datagridService.selectedElement = element;
+      this.datagridService.selectedElementId = element.id;
     }
   }
 
@@ -83,7 +93,6 @@ export class KeyboardNavigationDirective implements AfterViewInit {
       const element = document.getElementById(id);
       element.className = '';
       this.cancelCellEdition(element, true);
-
     }
   }
 
@@ -95,7 +104,6 @@ export class KeyboardNavigationDirective implements AfterViewInit {
   }
 
   private cancelCellEdition(element, saveElement: boolean, editable?: boolean) {
-
     if (element.children.length > 1) {
       if (saveElement) {
         element.children[0].textContent = element.children[1].value;
