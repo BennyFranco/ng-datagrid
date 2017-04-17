@@ -54,6 +54,10 @@ export class KeyboardEventsDirective implements AfterViewInit {
     if (event.ctrlKey && event.which == 90) {
       alert('Keyboard shortcut working!');
       return false;
+    } else if (event.ctrlKey && event.which == 67) {
+      const cellContent = element.textContent.trim();
+      this.copyToClipboard(cellContent);
+      return false;
     } else if (event.which === KeyCodes.Escape) {
       this.cancelCellEdition(element, false);
     } else if (event.which === KeyCodes.Enter) {
@@ -181,6 +185,28 @@ export class KeyboardEventsDirective implements AfterViewInit {
       this.selectElement(elementId);
     }
     event.preventDefault();
+  }
+
+  private copyToClipboard(value: string) {
+    const textarea = document.createElement('textarea');
+    textarea.style.height = '0px';
+    textarea.style.left = '-100px';
+    textarea.style.opacity = '0';
+    textarea.style.position = 'fixed';
+    textarea.style.top = '-100px';
+    textarea.style.width = '0px';
+    document.body.appendChild(textarea);
+
+    textarea.value = value;
+    textarea.select();
+
+    document.execCommand('copy');
+
+    if (textarea && textarea.parentNode) {
+
+      textarea.parentNode.removeChild(textarea);
+
+    }
   }
 }
 
