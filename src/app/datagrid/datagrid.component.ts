@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'ng-datagrid',
@@ -7,15 +7,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DatagridComponent implements OnInit {
 
-  gridData: Array<any>;
-  headers: Array<any>;
+  @Input() gridData: Array<any>;
+  @Input() headers: Array<any>;
 
-  constructor() {
-    this.gridData = this.generateEmptySheetWithNumberOfRows(15);
-    this.headers = this.generateHeaders();
-  }
+  constructor() {}
 
   ngOnInit() {
+    if (!this.gridData) {
+      this.gridData = this.generateEmptySheetWithNumberOfRows(15);
+    }
+
+    if (!this.headers) {
+      this.headers = this.generateHeaders();
+    }
   }
 
   generateEmptySheet(): Array<any> {

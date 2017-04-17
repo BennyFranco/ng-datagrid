@@ -2,9 +2,9 @@ import { Directive, ElementRef, HostListener, Input, AfterViewInit } from '@angu
 import { DatagridService } from '../datagrid.service';
 
 @Directive({
-  selector: '[ngKeyboardNavigation]'
+  selector: '[ngKeyboardEvents]'
 })
-export class KeyboardNavigationDirective implements AfterViewInit {
+export class KeyboardEventsDirective implements AfterViewInit {
   @Input() limits: Array<any>;
 
   rowLimit: number;
@@ -17,7 +17,8 @@ export class KeyboardNavigationDirective implements AfterViewInit {
   }
 
   @HostListener('document:keydown', ['$event'])
-  keyboardInput(event: KeyboardEvent) {
+  keyDown(event: KeyboardEvent) {
+    // console.log(event);
 
     const element = <HTMLElement>this.datagridService.selectedElement;
     // tslint:disable-next-line:prefer-const
@@ -35,16 +36,48 @@ export class KeyboardNavigationDirective implements AfterViewInit {
       this.moveToUp(row, elementId);
     } else if (event.keyCode === KeyCodes.ArrowDown) {
       this.moveToDown(row, elementId);
-    } else if (event.keyCode === KeyCodes.Escape) {
+    }
+  }
+
+  @HostListener('document:keyup', ['$event'])
+  keyUp(event: KeyboardEvent) {
+    // console.log(event);
+
+    const element = <HTMLElement>this.datagridService.selectedElement;
+    // tslint:disable-next-line:prefer-const
+    let elementId: string = this.datagridService.selectedElementId;
+    // tslint:disable-next-line:prefer-const
+    let row = Number.parseInt(elementId.split('-')[0]);
+    // tslint:disable-next-line:prefer-const
+    let col = Number.parseInt(elementId.split('-')[1]);
+
+    if (event.ctrlKey && event.which == 90) {
+      alert('Keyboard shortcut working!');
+      return false;
+    } else if (event.which === KeyCodes.Escape) {
       this.cancelCellEdition(element, false);
-    } else if (event.keyCode === KeyCodes.Enter) {
+    } else if (event.which === KeyCodes.Enter) {
       this.cancelCellEdition(element, true, false);
       this.moveToDown(row, elementId);
-    } else if (event.keyCode >= 48 && event.keyCode <= 111) {
+    } else if (event.which === KeyCodes.Backspace || event.which === KeyCodes.Delete) {
       this.editOnHitKey(element, true);
-    } else if (event.keyCode >= 186 && event.keyCode <= 222) {
-      this.editOnHitKey(element, true);
-    } else if (event.keyCode === KeyCodes.Backspace || event.keyCode === KeyCodes.Delete) {
+    }
+
+  }
+
+  @HostListener('document:keypress', ['$event'])
+  keyPress(event: KeyboardEvent) {
+    console.log(event);
+
+    const element = <HTMLElement>this.datagridService.selectedElement;
+    // tslint:disable-next-line:prefer-const
+    let elementId: string = this.datagridService.selectedElementId;
+    // tslint:disable-next-line:prefer-const
+    let row = Number.parseInt(elementId.split('-')[0]);
+    // tslint:disable-next-line:prefer-const
+    let col = Number.parseInt(elementId.split('-')[1]);
+
+    if (event.which >= 39 && event.which <= 191) {
       this.editOnHitKey(element, true);
     }
   }

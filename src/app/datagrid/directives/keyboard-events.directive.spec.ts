@@ -1,4 +1,4 @@
-import { KeyboardNavigationDirective } from './keyboard-navigation.directive';
+import { KeyboardEventsDirective } from './keyboard-events.directive';
 
 /*describe('KeyboardNavigationDirective', () => {
   it('should create an instance', () => {
