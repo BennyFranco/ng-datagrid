@@ -6,6 +6,7 @@ import { DatagridComponent } from './datagrid.component';
 
 import { EditableDirective } from './directives/editable.directive';
 import { KeyboardEventsDirective } from './directives/keyboard-events.directive';
+import { SortableDirective } from './directives/sortable.directive';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { KeyboardEventsDirective } from './directives/keyboard-events.directive'
   declarations: [
     DatagridComponent,
     EditableDirective,
-    KeyboardEventsDirective
+    KeyboardEventsDirective,
+    SortableDirective
   ],
   providers: [
     DatagridService,

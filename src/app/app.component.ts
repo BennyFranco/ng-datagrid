@@ -6,18 +6,27 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  content = this.generateEmptySheetWithNumberOfRows(10);
+  content = this.generateSheetData();
   constructor() { }
 
   ngOnInit() {
 
   }
 
-  generateEmptySheetWithNumberOfRows(rows: number): Array<any> {
+  generateSheetWithRows(rows: number): Array<any> {
     const matrix = [];
     for (let i = 0; i < rows; i++) {
       matrix.push(['Lorem', 'ipsum', 'dolor', 'sit', 'amet']);
     }
     return matrix;
+  }
+
+  generateSheetData(): Array<any> {
+    return [
+      [14, 'AAAA'],
+      [12, 'BBBB'],
+      [11, 'CCCC'],
+      [13, 'DDDD']
+    ];
   }
 }
