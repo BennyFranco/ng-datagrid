@@ -1,12 +1,16 @@
-import { DatagridService } from '../datagrid.service';
 import { Directive, ElementRef, HostListener, Input, AfterViewInit } from '@angular/core';
+import { UndoManagerService } from '../services/undo-manager.service';
+import { DatagridService } from '../datagrid.service';
 
 @Directive({
   selector: '[ngEditable]',
 })
 export class EditableDirective implements AfterViewInit {
 
-  constructor(private _elementRef: ElementRef, private datagridService: DatagridService) { }
+  constructor(
+    private _elementRef: ElementRef,
+    private datagridService: DatagridService,
+    private undoManegerService: UndoManagerService) { }
 
   ngAfterViewInit() {
     if (this._elementRef.nativeElement.id === '0-0') {
@@ -26,17 +30,6 @@ export class EditableDirective implements AfterViewInit {
   @HostListener('paste', ['$event']) onPaste(event: ClipboardEvent) {
     this.datagridService.selectedElement.textContent = event.clipboardData.getData('text');
   }
-
-  /*@HostListener('document:click', ['$event']) onClickOut(event) {
-    const clickedInside = this._elementRef.nativeElement.contains(event.target);
-    console.log(clickedInside);
-    if (!clickedInside) {
-      this.cancelCellEdition(true);
-      this.removeSelection();
-    }
-    this.cancelCellEdition(true);
-    this.removeSelection();
-  }*/
 
   private addInput() {
     if (this._elementRef.nativeElement.children[1]) {
@@ -58,6 +51,12 @@ export class EditableDirective implements AfterViewInit {
   private cancelCellEdition(element, saveElement: boolean, addElements?: boolean) {
     if (element.children.length > 1) {
       if (saveElement) {
+        this.undoManegerService.addToBuffer(
+          {
+            id: element.id,
+            oldValue: element.children[0].textContent,
+            newValue: element.children[1].value
+          });
         element.children[0].textContent = element.children[1].value;
       }
       element.removeChild(element.children[1]);

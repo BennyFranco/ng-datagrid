@@ -1,3 +1,4 @@
+import { UndoManagerService } from './services/undo-manager.service';
 import { DatagridService } from './datagrid.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -16,7 +17,8 @@ import { KeyboardEventsDirective } from './directives/keyboard-events.directive'
     KeyboardEventsDirective
   ],
   providers: [
-    DatagridService
+    DatagridService,
+    UndoManagerService
   ],
   exports: [
     DatagridComponent

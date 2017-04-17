@@ -1,5 +1,6 @@
 import { Directive, ElementRef, HostListener, Input, AfterViewInit } from '@angular/core';
 import { DatagridService } from '../datagrid.service';
+import { UndoManagerService } from '../services/undo-manager.service';
 import { isFirefox } from '../shared/navigator-utils';
 
 @Directive({
@@ -11,7 +12,9 @@ export class KeyboardEventsDirective implements AfterViewInit {
   rowLimit: number;
   colLimit: number;
 
-  constructor(private datagridService: DatagridService) { }
+  constructor(
+    private datagridService: DatagridService,
+    private undoManegerService: UndoManagerService) { }
 
   ngAfterViewInit() {
     this.createRowAndColLimits();
@@ -19,8 +22,6 @@ export class KeyboardEventsDirective implements AfterViewInit {
 
   @HostListener('document:keydown', ['$event'])
   keyDown(event: KeyboardEvent) {
-    // console.log(event);
-
     const element = <HTMLElement>this.datagridService.selectedElement;
     // tslint:disable-next-line:prefer-const
     let elementId: string = this.datagridService.selectedElementId;
@@ -42,8 +43,6 @@ export class KeyboardEventsDirective implements AfterViewInit {
 
   @HostListener('document:keyup', ['$event'])
   keyUp(event: KeyboardEvent) {
-    // console.log(event);
-
     const element = <HTMLElement>this.datagridService.selectedElement;
     // tslint:disable-next-line:prefer-const
     let elementId: string = this.datagridService.selectedElementId;
@@ -53,8 +52,9 @@ export class KeyboardEventsDirective implements AfterViewInit {
     let col = Number.parseInt(elementId.split('-')[1]);
 
     if (event.ctrlKey && event.which == 90) {
-      alert('Keyboard shortcut working!');
-      return false;
+      this.undoManegerService.undo();
+    } else if (event.ctrlKey && event.which == 89) {
+      this.undoManegerService.redo();
     } else if (event.ctrlKey && event.which == 67) {
       const cellContent = element.textContent.trim();
       this.copyToClipboard(cellContent);
@@ -72,8 +72,6 @@ export class KeyboardEventsDirective implements AfterViewInit {
 
   @HostListener('document:keypress', ['$event'])
   keyPress(event: KeyboardEvent) {
-    console.log(event);
-
     const element = <HTMLElement>this.datagridService.selectedElement;
     // tslint:disable-next-line:prefer-const
     let elementId: string = this.datagridService.selectedElementId;
@@ -114,6 +112,12 @@ export class KeyboardEventsDirective implements AfterViewInit {
   private cancelCellEdition(element, saveElement: boolean, editable?: boolean) {
     if (element.children.length > 1) {
       if (saveElement) {
+        this.undoManegerService.addToBuffer(
+          {
+            id: element.id,
+            oldValue: element.children[0].textContent,
+            newValue: element.children[1].value
+          });
         element.children[0].textContent = element.children[1].value;
       }
       element.removeChild(element.children[1]);
