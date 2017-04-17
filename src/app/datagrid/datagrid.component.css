@@ -23,7 +23,6 @@ tbody {
     overflow: auto;
     height: 250px;
     -webkit-overflow-scrolling: scroll;
-
 }
 
 table,
@@ -68,4 +67,12 @@ td {
 input {
     font: 12px sans-serif;
     color: #333;
+}
+
+.sortable-header {
+    cursor: pointer;
+}
+
+.sortable-header:hover {
+    text-decoration: underline;
 }

@@ -9,7 +9,9 @@ export class SortableDirective {
   private column: number;
   private isAsc = false;
 
-  constructor(private _elementRef: ElementRef) { }
+  constructor(private _elementRef: ElementRef) {
+    this._elementRef.nativeElement.className = 'sortable-header ';
+  }
 
   @HostListener('click') onClick() {
     this.column = this._elementRef.nativeElement.id;
