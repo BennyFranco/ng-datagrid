@@ -13,12 +13,16 @@ export class DatagridService {
   constructor(private undoManegerService: UndoManagerService) { }
 
 
-  selectElement(id?: string) {
+  selectElement(nativeElement: any, id?: string) {
     if (id) {
       const element = document.getElementById(id);
       element.className = 'selected';
       this.selectedElement = element;
       this.selectedElementId = element.id;
+    } else if (nativeElement) {
+      nativeElement.className = 'selected';
+      this.selectedElement = nativeElement;
+      this.selectedElementId = nativeElement.id;
     }
   }
 

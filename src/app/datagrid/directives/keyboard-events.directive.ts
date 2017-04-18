@@ -85,7 +85,7 @@ export class KeyboardEventsDirective {
     if (row > -1) {
       this.datagridService.removeSelection(elementId);
       elementId = row + '-' + elementId.split('-')[1];
-      this.datagridService.selectElement(elementId);
+      this.datagridService.selectElement(null, elementId);
     }
     event.preventDefault();
   }
@@ -95,7 +95,7 @@ export class KeyboardEventsDirective {
     if (row < this.rowLimit) {
       this.datagridService.removeSelection(elementId);
       elementId = row + '-' + elementId.split('-')[1];
-      this.datagridService.selectElement(elementId);
+      this.datagridService.selectElement(null, elementId);
     }
     event.preventDefault();
   }
@@ -106,7 +106,7 @@ export class KeyboardEventsDirective {
     if (col > -1) {
       this.datagridService.removeSelection(elementId);
       elementId = elementId.split('-')[0] + '-' + col;
-      this.datagridService.selectElement(elementId);
+      this.datagridService.selectElement(null, elementId);
     }
     event.preventDefault();
   }
@@ -117,7 +117,7 @@ export class KeyboardEventsDirective {
     if (col < this.colLimit) {
       this.datagridService.removeSelection(elementId);
       elementId = elementId.split('-')[0] + '-' + col;
-      this.datagridService.selectElement(elementId);
+      this.datagridService.selectElement(null, elementId);
     }
     event.preventDefault();
   }
