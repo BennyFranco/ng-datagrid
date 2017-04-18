@@ -10,12 +10,14 @@ export class DatagridComponent implements OnInit {
 
   @Input() gridData: Array<any>;
   @Input() headers: Array<any>;
+  @Output() gridDataChange = new EventEmitter();
   @Output() onCellChange;
 
   rowLimit: number;
   colLimit: number;
 
   constructor(private datagridService: DatagridService) {
+    this.gridDataChange = this.datagridService.gridDataChange;
     this.onCellChange = this.datagridService.onCellChange;
   }
 
@@ -29,6 +31,7 @@ export class DatagridComponent implements OnInit {
     }
 
     this.createRowAndColLimits();
+    this.datagridService.gridData = this.gridData;
   }
 
   private createRowAndColLimits() {

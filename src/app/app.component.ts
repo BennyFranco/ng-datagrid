@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  content = this.generateSheetWithRows(15);
+  content = this.generateSheetData();
   constructor() { }
 
   ngOnInit() {
@@ -23,14 +23,21 @@ export class AppComponent implements OnInit {
 
   generateSheetData(): Array<any> {
     return [
-      [14, 'AAAA'],
-      [12, 'BBBB'],
-      [11, 'CCCC'],
-      [13, 'DDDD']
+      ['A', 4],
+      ['B', 2],
+      ['TOTAL', 6]
     ];
   }
 
   cellChange(event) {
+    console.log(event);
+    setTimeout(() => {
+      this.content[2][1] = (Number.parseFloat(this.content[0][1])) + (Number.parseFloat(this.content[1][1]));
+      console.log(this.content[0][1]);
+    }, 100);
+  }
+
+  gridData(event) {
     console.log(event);
   }
 }

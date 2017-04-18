@@ -9,8 +9,10 @@ export class DatagridService {
 
   selectedElement: any;
   selectedElementId: string;
+  gridData: any;
 
   @Output() onCellChange = new EventEmitter();
+  @Output() gridDataChange = new EventEmitter();
 
   constructor(private undoManegerService: UndoManagerService) { }
 
@@ -40,7 +42,10 @@ export class DatagridService {
     if (element.children.length > 1) {
       if (saveElement) {
         this.undoManegerService.addToBuffer(new BufferedObject(element.id, element.children[0].textContent, element.children[1].value));
-        this.onCellChange.emit(new ChangedCell(element.id, element.children[0].textContent, element.children[1].value));
+        const cell = new ChangedCell(element.id, element.children[0].textContent, element.children[1].value);
+        this.onCellChange.emit(cell);
+        this.gridData[cell.row][cell.column] = cell.newValue;
+        this.gridDataChange.emit(this.gridData);
         element.children[0].textContent = element.children[1].value;
       }
       element.removeChild(element.children[1]);
