@@ -31,10 +31,10 @@ export class AppComponent implements OnInit {
 
   cellChange(event) {
     console.log(event);
-    setTimeout(() => {
+    /*setTimeout(() => {
       this.content[2][1] = (Number.parseFloat(this.content[0][1])) + (Number.parseFloat(this.content[1][1]));
       console.log(this.content[0][1]);
-    }, 100);
+    }, 100);*/
   }
 
   gridData(event) {

@@ -21,7 +21,7 @@ export class DatagridService {
       const element = document.getElementById(id);
       element.className = 'selected';
       this.selectedElement = element;
-      this.selectedElementId = element.id;
+      this.selectedElementId = id;
     } else if (nativeElement) {
       nativeElement.className = 'selected';
       this.selectedElement = nativeElement;
