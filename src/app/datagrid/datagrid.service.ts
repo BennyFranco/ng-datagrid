@@ -123,13 +123,16 @@ export class DatagridService {
     if (!replaceContent) {
       input.value = element.children[0] ? element.children[0].textContent : '';
     }
-    element.appendChild(input);
     element.children[0].style.display = 'none';
     input.style.border = 'none';
-    input.style.width = '60px';
-    input.style.height = '12px';
-    input.style.font = '12px sans-serif';
     input.style.outline = 'none';
+    input.style.backgroundColor = element.style.backgroundColor;
+    input.style.color = element.style.color;
+    input.style.width = 'calc(60px - 0.25em)';
+    input.style.height = 'calc(12px - 0.25em)';
+    input.style.font = '12px sans-serif';
+    input.style.margin = '0';
+    element.appendChild(input);
     input.focus();
 
     if (keyChar && isFirefox()) {

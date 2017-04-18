@@ -58,12 +58,6 @@ td {
 
 .selected {
     box-shadow: inset 0 0 0 2px blue;
-    /* border: 2px solid blue;*/
-}
-
-input {
-    font: 12px sans-serif;
-    color: #333;
 }
 
 .sortable-header {
