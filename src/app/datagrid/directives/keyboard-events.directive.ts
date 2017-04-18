@@ -27,12 +27,16 @@ export class KeyboardEventsDirective {
 
     if (event.keyCode === KeyCodes.ArrowLeft) {
       this.moveToLeft(col, elementId);
+      event.preventDefault();
     } else if (event.keyCode === KeyCodes.ArrowRight) {
       this.moveToRight(col, elementId);
+      event.preventDefault();
     } else if (event.keyCode === KeyCodes.ArrowUp) {
       this.moveToUp(row, elementId);
+      event.preventDefault();
     } else if (event.keyCode === KeyCodes.ArrowDown) {
       this.moveToDown(row, elementId);
+      event.preventDefault();
     }
   }
 
@@ -59,6 +63,7 @@ export class KeyboardEventsDirective {
     } else if (event.which === KeyCodes.Enter) {
       this.datagridService.cancelCellEdition(element, true, false);
       this.moveToDown(row, elementId);
+      event.preventDefault();
     } else if (event.which === KeyCodes.Backspace || event.which === KeyCodes.Delete) {
       this.datagridService.editOnHitKey(element, true);
     }
@@ -87,7 +92,6 @@ export class KeyboardEventsDirective {
       elementId = row + '-' + elementId.split('-')[1];
       this.datagridService.selectElement(null, elementId);
     }
-    return false;
   }
 
   private moveToDown(row: number, elementId: string) {
@@ -97,7 +101,6 @@ export class KeyboardEventsDirective {
       elementId = row + '-' + elementId.split('-')[1];
       this.datagridService.selectElement(null, elementId);
     }
-    return false;
   }
 
   private moveToLeft(col: number, elementId: string) {
@@ -108,7 +111,6 @@ export class KeyboardEventsDirective {
       elementId = elementId.split('-')[0] + '-' + col;
       this.datagridService.selectElement(null, elementId);
     }
-    return false;
   }
 
   private moveToRight(col: number, elementId: string) {
@@ -119,7 +121,6 @@ export class KeyboardEventsDirective {
       elementId = elementId.split('-')[0] + '-' + col;
       this.datagridService.selectElement(null, elementId);
     }
-    return false;
   }
 
   private copyToClipboard(value: string) {
@@ -138,9 +139,7 @@ export class KeyboardEventsDirective {
     document.execCommand('copy');
 
     if (textarea && textarea.parentNode) {
-
       textarea.parentNode.removeChild(textarea);
-
     }
   }
 }
