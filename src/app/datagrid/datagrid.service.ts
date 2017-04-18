@@ -19,11 +19,11 @@ export class DatagridService {
   selectElement(nativeElement: any, id?: string) {
     if (id) {
       const element = document.getElementById(id);
-      element.className = 'selected';
+      element.classList.add('selected');
       this.selectedElement = element;
       this.selectedElementId = id;
     } else if (nativeElement) {
-      nativeElement.className = 'selected';
+      nativeElement.classList.add('selected');
       this.selectedElement = nativeElement;
       this.selectedElementId = nativeElement.id;
     }
@@ -32,11 +32,52 @@ export class DatagridService {
   removeSelection(id?: string) {
     if (id) {
       const element = document.getElementById(id);
-      element.className = '';
+      element.classList.remove('selected');
       this.cancelCellEdition(element, true);
     }
   }
 
+  changeCellValue(row: number, col: number, value: any) {
+    const id = row + '-' + col;
+    const element = document.getElementById(id);
+    element.firstElementChild.textContent = value;
+
+    const waitingForDomUpdate = new Promise(resolve => {
+      resolve((n) => {
+        this.gridData[row][col] = value;
+        return true;
+      }
+      );
+    });
+
+    waitingForDomUpdate.then(() => document.getElementById(id).className = element.className);
+  }
+
+  disableCellById(id: string) {
+    if (id) {
+      const element = document.getElementById(id);
+      element.classList.add('disable');
+    }
+  }
+
+  disableCellByRowAndCol(row: number, col: number) {
+    const id = row + '-' + col;
+    this.disableCellById(id);
+  }
+
+  disableRow(row: number) {
+    for (let i = 0; i < this.gridData[row].length; i++) {
+      const id = row + '-' + i;
+      this.disableCellById(id);
+    }
+  }
+
+  disableColumn(column: number) {
+      for (let row = 0; row < this.gridData.length; row++) {
+        const id = row + '-' + column;
+        this.disableCellById(id);
+    }
+  }
 
   cancelCellEdition(element, saveElement: boolean, editable?: boolean) {
     if (element.children.length > 1) {
@@ -53,7 +94,10 @@ export class DatagridService {
     }
   }
 
-  addInput(element, replaceContent?: boolean, keyChar?: string) {
+  addInput(element: any, replaceContent?: boolean, keyChar?: string) {
+    if (element.classList.contains('disable')) {
+      return;
+    }
     if (element.children[1]) {
       return;
     }

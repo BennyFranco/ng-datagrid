@@ -1,16 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { DatagridService } from './datagrid/datagrid.service';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'ng-app',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   content = this.generateSheetData();
-  constructor() { }
+
+  constructor(private datagridService: DatagridService) { }
 
   ngOnInit() {
+  }
 
+  ngAfterViewInit(): void {
+    this.datagridService.disableColumn(0);
   }
 
   generateSheetWithRows(rows: number): Array<any> {
@@ -31,10 +36,12 @@ export class AppComponent implements OnInit {
 
   cellChange(event) {
     console.log(event);
-    /*setTimeout(() => {
-      this.content[2][1] = (Number.parseFloat(this.content[0][1])) + (Number.parseFloat(this.content[1][1]));
+    setTimeout(() => {
+      // this.content[2][1] = (Number.parseFloat(this.content[0][1])) + (Number.parseFloat(this.content[1][1]));
+      const total = (Number.parseFloat(this.content[0][1])) + (Number.parseFloat(this.content[1][1]));
+      this.datagridService.changeCellValue(2, 1, total);
       console.log(this.content[0][1]);
-    }, 100);*/
+    }, 100);
   }
 
   gridData(event) {

@@ -1,13 +1,10 @@
-* {
-    font: 12px sans-serif;
-    color: #333;
-}
-
 table {
     border-collapse: collapse;
     table-layout: fixed !important;
     word-break: break-all;
     border-spacing: 0;
+    font: 12px sans-serif;
+    color: #333;
 }
 
 table tbody,
@@ -75,4 +72,8 @@ input {
 
 .sortable-header:hover {
     text-decoration: underline;
+}
+
+.disable {
+    color: rgba(160, 160, 160, 1) !important;
 }

@@ -36,7 +36,7 @@ export class SortableDirective {
   private removeSelection(id?: string) {
     if (id) {
       const element = document.getElementById(id);
-      element.className = '';
+      element.classList.remove('selected');
       this.cancelCellEdition(element, false);
     }
   }
