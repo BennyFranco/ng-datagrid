@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
 import { DatagridService } from './datagrid.service';
 
 @Component({
@@ -6,17 +6,20 @@ import { DatagridService } from './datagrid.service';
   templateUrl: './datagrid.component.html',
   styleUrls: ['./datagrid.component.css']
 })
-export class DatagridComponent implements OnInit {
+export class DatagridComponent implements OnInit, AfterViewInit {
 
   @Input() gridData: Array<any>;
   @Input() headers: Array<any>;
-
-  @Output() cellChange = new EventEmitter();
+  @Output() gridDataChange = new EventEmitter();
+  @Output() onCellChange;
 
   rowLimit: number;
   colLimit: number;
 
-  constructor(private datagridService: DatagridService) { }
+  constructor(private datagridService: DatagridService) {
+    this.gridDataChange = this.datagridService.gridDataChange;
+    this.onCellChange = this.datagridService.onCellChange;
+  }
 
   ngOnInit() {
     if (!this.gridData) {
@@ -28,6 +31,11 @@ export class DatagridComponent implements OnInit {
     }
 
     this.createRowAndColLimits();
+    this.datagridService.gridData = this.gridData;
+  }
+
+  ngAfterViewInit() {
+    this.datagridService.selectElement(null, '0-0');
   }
 
   private createRowAndColLimits() {
@@ -35,10 +43,6 @@ export class DatagridComponent implements OnInit {
     if (this.gridData.length > 0) {
       this.colLimit = this.gridData[0].length;
     }
-  }
-
-  onCellChange() {
-
   }
 
   private generateHeaders(): Array<any> {

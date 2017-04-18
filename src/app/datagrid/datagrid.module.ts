@@ -7,7 +7,7 @@ import { KeyboardEventsDirective } from './directives/keyboard-events.directive'
 import { SortableDirective } from './directives/sortable.directive';
 
 import { UndoManagerService } from './services/undo-manager/undo-manager.service';
-import { DatagridService } from './datagrid.service'
+import { DatagridService } from './datagrid.service';
 
 @NgModule({
   imports: [

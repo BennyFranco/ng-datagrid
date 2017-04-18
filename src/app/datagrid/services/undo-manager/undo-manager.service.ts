@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
+import { BufferedObject } from './buffered-object';
 
 @Injectable()
 export class UndoManagerService {
 
-  stack = [];
+  stack: BufferedObject[] = [];
   stackPos = -1;
   bufferLimit = 15;
 
   constructor() { }
 
-  addToBuffer(element: any) {
+  addToBuffer(element: BufferedObject) {
     if (this.stack.length !== this.bufferLimit) {
       if (this.stack.length > 0 && this.stack.length - 1 !== this.stackPos) {
         this.stack[this.stackPos + 1] = element;
