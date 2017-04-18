@@ -1,13 +1,16 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Output, EventEmitter } from '@angular/core';
 import { isFirefox } from './shared/navigator-utils';
 import { UndoManagerService } from './services/undo-manager/undo-manager.service';
 import { BufferedObject } from './services/undo-manager/buffered-object';
+import { ChangedCell } from './dao/changed-cell';
 
 @Injectable()
 export class DatagridService {
 
   selectedElement: any;
   selectedElementId: string;
+
+  @Output() onCellChange = new EventEmitter();
 
   constructor(private undoManegerService: UndoManagerService) { }
 
@@ -37,6 +40,7 @@ export class DatagridService {
     if (element.children.length > 1) {
       if (saveElement) {
         this.undoManegerService.addToBuffer(new BufferedObject(element.id, element.children[0].textContent, element.children[1].value));
+        this.onCellChange.emit(new ChangedCell(element.id, element.children[0].textContent, element.children[1].value));
         element.children[0].textContent = element.children[1].value;
       }
       element.removeChild(element.children[1]);

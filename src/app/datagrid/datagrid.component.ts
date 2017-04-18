@@ -10,13 +10,14 @@ export class DatagridComponent implements OnInit {
 
   @Input() gridData: Array<any>;
   @Input() headers: Array<any>;
-
-  @Output() cellChange = new EventEmitter();
+  @Output() onCellChange;
 
   rowLimit: number;
   colLimit: number;
 
-  constructor(private datagridService: DatagridService) { }
+  constructor(private datagridService: DatagridService) {
+    this.onCellChange = this.datagridService.onCellChange;
+  }
 
   ngOnInit() {
     if (!this.gridData) {
@@ -35,10 +36,6 @@ export class DatagridComponent implements OnInit {
     if (this.gridData.length > 0) {
       this.colLimit = this.gridData[0].length;
     }
-  }
-
-  onCellChange() {
-
   }
 
   private generateHeaders(): Array<any> {

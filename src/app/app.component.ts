@@ -29,4 +29,8 @@ export class AppComponent implements OnInit {
       [13, 'DDDD']
     ];
   }
+
+  cellChange(event) {
+    console.log(event);
+  }
 }
