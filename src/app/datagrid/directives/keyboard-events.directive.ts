@@ -1,6 +1,6 @@
 import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 import { DatagridService } from '../datagrid.service';
-import { UndoManagerService } from '../services/undo-manager.service';
+import { UndoManagerService } from '../services/undo-manager/undo-manager.service';
 import { isFirefox } from '../shared/navigator-utils';
 
 @Directive({

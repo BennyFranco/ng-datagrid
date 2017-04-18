@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { isFirefox } from './shared/navigator-utils';
-import { UndoManagerService } from './services/undo-manager.service';
+import { UndoManagerService } from './services/undo-manager/undo-manager.service';
 
 @Injectable()
 export class DatagridService {
@@ -8,10 +8,7 @@ export class DatagridService {
   selectedElement: any;
   selectedElementId: string;
 
-
-
   constructor(private undoManegerService: UndoManagerService) { }
-
 
   selectElement(nativeElement: any, id?: string) {
     if (id) {
@@ -78,5 +75,39 @@ export class DatagridService {
 
   editOnHitKey(element, replaceContent: boolean, keyChar?: string, event?) {
     this.addInput(element, replaceContent, keyChar);
+  }
+
+  generateEmptySheet(): Array<any> {
+    return [
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null]
+    ];
+  }
+
+  generateEmptySheetWithNumberOfRows(rows: number): Array<any> {
+    const matrix = [];
+    for (let i = 0; i < rows; i++) {
+      matrix.push([null, null, null, null, null, null, null, null]);
+    }
+    return matrix;
+  }
+
+  generateZeroSheet(): Array<any> {
+    return [
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0]
+    ];
+  }
+
+  generateZeroSheetWithNumberOfRows(rows: number): Array<any> {
+    const matrix = [];
+    for (let i = 0; i < rows; i++) {
+      matrix.push([0, 0, 0, 0, 0, 0, 0, 0]);
+    }
+    return matrix;
   }
 }
