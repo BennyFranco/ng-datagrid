@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { isFirefox } from './shared/navigator-utils';
 import { UndoManagerService } from './services/undo-manager/undo-manager.service';
+import { BufferedObject } from './services/undo-manager/buffered-object';
 
 @Injectable()
 export class DatagridService {
@@ -35,12 +36,7 @@ export class DatagridService {
   cancelCellEdition(element, saveElement: boolean, editable?: boolean) {
     if (element.children.length > 1) {
       if (saveElement) {
-        this.undoManegerService.addToBuffer(
-          {
-            id: element.id,
-            oldValue: element.children[0].textContent,
-            newValue: element.children[1].value
-          });
+        this.undoManegerService.addToBuffer(new BufferedObject(element.id, element.children[0].textContent, element.children[1].value));
         element.children[0].textContent = element.children[1].value;
       }
       element.removeChild(element.children[1]);
