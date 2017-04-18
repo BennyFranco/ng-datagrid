@@ -15,7 +15,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.datagridService.disableColumn(0);
+    this.datagridService.disableRow(2);
   }
 
   generateSheetWithRows(rows: number): Array<any> {
@@ -37,10 +37,12 @@ export class AppComponent implements OnInit, AfterViewInit {
   cellChange(event) {
     console.log(event);
     setTimeout(() => {
-      // this.content[2][1] = (Number.parseFloat(this.content[0][1])) + (Number.parseFloat(this.content[1][1]));
       const total = (Number.parseFloat(this.content[0][1])) + (Number.parseFloat(this.content[1][1]));
       this.datagridService.changeCellValue(2, 1, total);
       console.log(this.content[0][1]);
+      // this.datagridService.addCellCustomClass(event.row, event.column, 'cell-changed');
+      this.datagridService.addCellCustomStyle(event.row, event.column, {'background-color': 'blueviolet', 'color': 'white'});
+
     }, 100);
   }
 

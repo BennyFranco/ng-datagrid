@@ -73,9 +73,26 @@ export class DatagridService {
   }
 
   disableColumn(column: number) {
-      for (let row = 0; row < this.gridData.length; row++) {
-        const id = row + '-' + column;
-        this.disableCellById(id);
+    for (let row = 0; row < this.gridData.length; row++) {
+      const id = row + '-' + column;
+      this.disableCellById(id);
+    }
+  }
+
+  addCellCustomClass(row: number, column: number, className: string) {
+    const id = row + '-' + column;
+    const element = document.getElementById(id);
+    element.classList.add(className);
+  }
+
+  addCellCustomStyle(row: number, column: number, style: any) {
+    const id = row + '-' + column;
+    const domElement = document.getElementById(id);
+    for (const key in style) {
+      if (style.hasOwnProperty(key)) {
+        const value = style[key];
+        domElement.style.setProperty(key, value);
+      }
     }
   }
 
