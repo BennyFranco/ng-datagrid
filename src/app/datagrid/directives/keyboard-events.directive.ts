@@ -87,7 +87,7 @@ export class KeyboardEventsDirective {
       elementId = row + '-' + elementId.split('-')[1];
       this.datagridService.selectElement(null, elementId);
     }
-    event.preventDefault();
+    return false;
   }
 
   private moveToDown(row: number, elementId: string) {
@@ -97,7 +97,7 @@ export class KeyboardEventsDirective {
       elementId = row + '-' + elementId.split('-')[1];
       this.datagridService.selectElement(null, elementId);
     }
-    event.preventDefault();
+    return false;
   }
 
   private moveToLeft(col: number, elementId: string) {
@@ -108,7 +108,7 @@ export class KeyboardEventsDirective {
       elementId = elementId.split('-')[0] + '-' + col;
       this.datagridService.selectElement(null, elementId);
     }
-    event.preventDefault();
+    return false;
   }
 
   private moveToRight(col: number, elementId: string) {
@@ -119,7 +119,7 @@ export class KeyboardEventsDirective {
       elementId = elementId.split('-')[0] + '-' + col;
       this.datagridService.selectElement(null, elementId);
     }
-    event.preventDefault();
+    return false;
   }
 
   private copyToClipboard(value: string) {

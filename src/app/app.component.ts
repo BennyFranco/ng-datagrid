@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  content = this.generateSheetData();
+  content = this.generateSheetWithRows(15);
   constructor() { }
 
   ngOnInit() {
