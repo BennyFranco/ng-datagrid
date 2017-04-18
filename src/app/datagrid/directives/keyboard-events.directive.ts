@@ -2,6 +2,7 @@ import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 import { DatagridService } from '../datagrid.service';
 import { UndoManagerService } from '../services/undo-manager/undo-manager.service';
 import { isFirefox } from '../shared/navigator-utils';
+import { ChangedCell } from '../dao/changed-cell';
 
 @Directive({
   selector: '[ngKeyboardEvents]'
@@ -52,8 +53,18 @@ export class KeyboardEventsDirective {
 
     if (event.ctrlKey && event.which == 90) {
       this.undoManegerService.undo();
+      const position = this.undoManegerService.stackPos;
+      this.datagridService.onCellChange.emit(
+        new ChangedCell(this.undoManegerService.stack[position + 1].id,
+          this.undoManegerService.stack[position + 1].newValue,
+          this.undoManegerService.stack[position + 1].oldValue));
     } else if (event.ctrlKey && event.which == 89) {
       this.undoManegerService.redo();
+      const position = this.undoManegerService.stackPos;
+      this.datagridService.onCellChange.emit(
+        new ChangedCell(this.undoManegerService.stack[position].id,
+          this.undoManegerService.stack[position].oldValue,
+          this.undoManegerService.stack[position].newValue));
     } else if (event.ctrlKey && event.which == 67) {
       const cellContent = element.textContent.trim();
       this.copyToClipboard(cellContent);

@@ -4,7 +4,7 @@ import { BufferedObject } from './buffered-object';
 @Injectable()
 export class UndoManagerService {
 
-  stack = [];
+  stack: BufferedObject[] = [];
   stackPos = -1;
   bufferLimit = 15;
 
