@@ -43,9 +43,7 @@ export class DatagridService {
       if (saveElement) {
         this.undoManegerService.addToBuffer(new BufferedObject(element.id, element.children[0].textContent, element.children[1].value));
         const cell = new ChangedCell(element.id, element.children[0].textContent, element.children[1].value);
-        this.onCellChange.emit(cell);
-        this.gridData[cell.row][cell.column] = cell.newValue;
-        this.gridDataChange.emit(this.gridData);
+        this.emitChanges(cell);
         element.children[0].textContent = element.children[1].value;
       }
       element.removeChild(element.children[1]);
@@ -80,6 +78,12 @@ export class DatagridService {
 
   editOnHitKey(element, replaceContent: boolean, keyChar?: string, event?) {
     this.addInput(element, replaceContent, keyChar);
+  }
+
+  emitChanges(cell: ChangedCell) {
+    this.onCellChange.emit(cell);
+    this.gridData[cell.row][cell.column] = cell.newValue;
+    this.gridDataChange.emit(this.gridData);
   }
 
   generateEmptySheet(): Array<any> {
