@@ -33,15 +33,6 @@ export class SortableDirective {
     }
   }
 
-  private selectElement(id?: string) {
-    if (id) {
-      const element = document.getElementById(id);
-      element.className = 'selected';
-      this.datagridService.selectedElement = element;
-      this.datagridService.selectedElementId = element.id;
-    }
-  }
-
   private removeSelection(id?: string) {
     if (id) {
       const element = document.getElementById(id);

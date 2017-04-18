@@ -10,7 +10,10 @@ export class DatagridComponent implements OnInit {
   @Input() gridData: Array<any>;
   @Input() headers: Array<any>;
 
-  constructor() {}
+  rowLimit: number;
+  colLimit: number;
+
+  constructor() { }
 
   ngOnInit() {
     if (!this.gridData) {
@@ -19,6 +22,15 @@ export class DatagridComponent implements OnInit {
 
     if (!this.headers) {
       this.headers = this.generateHeaders();
+    }
+
+    this.createRowAndColLimits();
+  }
+
+  private createRowAndColLimits() {
+    this.rowLimit = this.gridData.length;
+    if (this.gridData.length > 0) {
+      this.colLimit = this.gridData[0].length;
     }
   }
 
