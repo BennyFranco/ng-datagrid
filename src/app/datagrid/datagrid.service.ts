@@ -188,23 +188,34 @@ export class DatagridService {
   }
 
   /*************FORMATTERS*****************/
-  formatCellById(id: string, formatter: FormatterType) {
+  formatCellById(id: string, formatter: FormatterType, errorClass?: string, format?: string) {
     switch (formatter) {
       case FormatterType.Number:
-        this.formatter.decimalFormat(id);
+        this.formatter.decimalFormat(id, format, errorClass);
         break;
     }
   }
 
-  formatColumn(column: number, formatter: FormatterType) {
+  formatColumn(column: number, formatter: FormatterType, errorClass?: string, format?: string) {
 
     switch (formatter) {
       case FormatterType.Number:
         for (let row = 0; row < this.gridData.length; row++) {
           const id = row + '-' + column;
-          this.formatter.decimalFormat(id);
+          this.formatter.decimalFormat(id, format, errorClass);
         }
         break;
+    }
+  }
+
+  formatRangeOfCells(from: string, to: string, formatter: FormatterType, errorClass?: string, format?: string) {
+    const fromArray = from.split('-');
+    const toArray = to.split('-');
+
+    for (let i = Number.parseInt(fromArray[0]); i <= Number.parseInt(toArray[0]); i++) {
+      for (let j = Number.parseInt(fromArray[1]); j <= Number.parseInt(toArray[1]); j++) {
+        this.formatCellById((i + '-' + j), formatter, errorClass, format);
+      }
     }
   }
 }

@@ -11,15 +11,17 @@ export class FormatterService {
   constructor(
     private decimalPipe: DecimalPipe) { }
 
-  decimalFormat(id: string, digits?: string) {
+  decimalFormat(id: string, digits?: string, errorClass?: string) {
     digits = digits ? digits : '1.2';
     const domElement = document.getElementById(id);
 
     try {
-      domElement.firstElementChild.textContent = this.decimalPipe.transform(domElement.firstElementChild.textContent, digits);
+      domElement.firstElementChild.textContent = this.decimalPipe
+        .transform(domElement.firstElementChild.textContent.replace(',', ''), digits);
       domElement.classList.remove('format-error');
     } catch (error) {
-      domElement.classList.add('format-error');
+      errorClass = errorClass ? errorClass : 'format-error';
+      domElement.classList.add(errorClass);
     }
   }
 }

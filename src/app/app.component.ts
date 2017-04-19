@@ -16,7 +16,8 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.datagridService.disableRow(2);
-    this.datagridService.formatColumn(1, FormatterType.Number);
+    // this.datagridService.formatColumn(1, FormatterType.Number);
+    this.datagridService.formatRangeOfCells('0-1', '1-1', FormatterType.Number);
   }
 
   generateSheetWithRows(rows: number): Array<any> {
