@@ -5,6 +5,7 @@ import { DatagridComponent } from './datagrid.component';
 import { EditableDirective } from './directives/editable.directive';
 import { KeyboardEventsDirective } from './directives/keyboard-events.directive';
 import { SortableDirective } from './directives/sortable.directive';
+import { MultiselectDirective } from './directives/multiselect.directive';
 
 import { UndoManagerService } from './services/undo-manager/undo-manager.service';
 import { DatagridService } from './datagrid.service';
@@ -17,7 +18,8 @@ import { DatagridService } from './datagrid.service';
     DatagridComponent,
     EditableDirective,
     KeyboardEventsDirective,
-    SortableDirective
+    SortableDirective,
+    MultiselectDirective
   ],
   providers: [
     DatagridService,

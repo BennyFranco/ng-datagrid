@@ -1,8 +1,8 @@
 import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 @Directive({
-  selector: '[myHighlight]'
+  selector: '[myMultiselect]'
 })
-export class HighlightDirective {
+export class MultiselectDirective {
 
   constructor(private el: ElementRef) { }
 
