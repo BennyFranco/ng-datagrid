@@ -1,10 +1,9 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import { isFirefox } from './shared/navigator-utils';
 import { UndoManagerService } from './services/undo-manager/undo-manager.service';
+import { FormatterService } from './services/formatter/formatter.service';
 import { BufferedObject } from './services/undo-manager/buffered-object';
 import { ChangedCell } from './dao/changed-cell';
-
-import { DecimalPipe } from '@angular/common';
 
 @Injectable()
 export class DatagridService {
@@ -18,7 +17,7 @@ export class DatagridService {
 
   constructor(
     private undoManegerService: UndoManagerService,
-    private decimalPipe: DecimalPipe) { }
+    private formatter: FormatterService) { }
 
   selectElement(nativeElement: any, id?: string) {
     if (id) {
@@ -42,8 +41,6 @@ export class DatagridService {
   }
 
   changeCellValue(row: number, col: number, value: any) {
-    value = this.decimalPipe.transform(value, '1.2');
-
     const id = row + '-' + col;
     const element = document.getElementById(id);
 
@@ -185,6 +182,26 @@ export class DatagridService {
       matrix.push([0, 0, 0, 0, 0, 0, 0, 0]);
     }
     return matrix;
+  }
+
+  /*************FORMATTERS*****************/
+  formatCellById(id: string, formatter: FormatterType) {
+    switch (formatter) {
+      case FormatterType.Number:
+        this.formatter.decimalFormat(id);
+        break;
+    }
+  }
+
+  formatColumn(column: number, formatter: FormatterType) {
+    switch (formatter) {
+      case FormatterType.Number:
+        for (let row = 0; row < this.gridData.length; row++) {
+          const id = row + '-' + column;
+          this.formatter.decimalFormat(id);
+        }
+        break;
+    }
   }
 }
 

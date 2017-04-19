@@ -7,6 +7,7 @@ import { KeyboardEventsDirective } from './directives/keyboard-events.directive'
 import { SortableDirective } from './directives/sortable.directive';
 
 import { UndoManagerService } from './services/undo-manager/undo-manager.service';
+import { FormatterService } from './services/formatter/formatter.service';
 import { DatagridService } from './datagrid.service';
 
 import { DecimalPipe } from '@angular/common';
@@ -19,11 +20,12 @@ import { DecimalPipe } from '@angular/common';
     DatagridComponent,
     EditableDirective,
     KeyboardEventsDirective,
-    SortableDirective
+    SortableDirective,
   ],
   providers: [
     DatagridService,
     UndoManagerService,
+    FormatterService,
     DecimalPipe
   ],
   exports: [

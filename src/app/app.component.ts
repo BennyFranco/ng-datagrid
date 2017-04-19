@@ -1,5 +1,5 @@
-import { DatagridService, FormatterType } from './datagrid/datagrid.service';
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { DatagridService, FormatterType } from './datagrid/datagrid.service';
 
 @Component({
   selector: 'ng-app',
@@ -16,6 +16,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.datagridService.disableRow(2);
+    this.datagridService.formatColumn(1, FormatterType.Number);
   }
 
   generateSheetWithRows(rows: number): Array<any> {
@@ -38,11 +39,14 @@ export class AppComponent implements OnInit, AfterViewInit {
     console.log(event);
 
     setTimeout(() => {
-      const total = (Number.parseFloat(this.content[0][1])) + (Number.parseFloat(this.content[1][1]));
-      this.datagridService.changeCellValue(2, 1, total);
-      console.log(this.content[0][1]);
-      // this.datagridService.addCellCustomClass(event.row, event.column, 'cell-changed');
-      this.datagridService.addCellCustomStyle(event.row, event.column, { 'background-color': 'blueviolet', 'color': 'white' });
+      if (event.column !== 0) {
+        this.datagridService.formatCellById(event.id, FormatterType.Number);
+
+        const total = (Number.parseFloat(this.content[0][1])) + (Number.parseFloat(this.content[1][1]));
+        this.datagridService.changeCellValue(2, 1, total);
+        this.datagridService.addCellCustomStyle(event.row, event.column, { 'background-color': 'blueviolet', 'color': 'white' });
+        this.datagridService.formatCellById('2-1', FormatterType.Number);
+      }
     }, 100);
   }
 
