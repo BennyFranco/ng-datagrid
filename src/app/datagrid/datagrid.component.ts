@@ -11,7 +11,7 @@ export class DatagridComponent implements OnInit, AfterViewInit {
   @Input() gridData: Array<any>;
   @Input() headers: Array<any>;
   @Output() gridDataChange = new EventEmitter();
-  @Output() onCellChange;
+  @Output() onCellChange: EventEmitter<any>;
 
   rowLimit: number;
   colLimit: number;

@@ -9,6 +9,8 @@ import { SortableDirective } from './directives/sortable.directive';
 import { UndoManagerService } from './services/undo-manager/undo-manager.service';
 import { DatagridService } from './datagrid.service';
 
+import { DecimalPipe } from '@angular/common';
+
 @NgModule({
   imports: [
     CommonModule
@@ -21,7 +23,8 @@ import { DatagridService } from './datagrid.service';
   ],
   providers: [
     DatagridService,
-    UndoManagerService
+    UndoManagerService,
+    DecimalPipe
   ],
   exports: [
     DatagridComponent

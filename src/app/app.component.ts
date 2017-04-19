@@ -1,4 +1,4 @@
-import { DatagridService } from './datagrid/datagrid.service';
+import { DatagridService, FormatterType } from './datagrid/datagrid.service';
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 
 @Component({
@@ -28,21 +28,21 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   generateSheetData(): Array<any> {
     return [
-      ['A', 4],
+      ['A', 1200],
       ['B', 2],
-      ['TOTAL', 6]
+      ['TOTAL', 1202]
     ];
   }
 
   cellChange(event) {
     console.log(event);
+
     setTimeout(() => {
       const total = (Number.parseFloat(this.content[0][1])) + (Number.parseFloat(this.content[1][1]));
       this.datagridService.changeCellValue(2, 1, total);
       console.log(this.content[0][1]);
       // this.datagridService.addCellCustomClass(event.row, event.column, 'cell-changed');
-      this.datagridService.addCellCustomStyle(event.row, event.column, {'background-color': 'blueviolet', 'color': 'white'});
-
+      this.datagridService.addCellCustomStyle(event.row, event.column, { 'background-color': 'blueviolet', 'color': 'white' });
     }, 100);
   }
 

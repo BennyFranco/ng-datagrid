@@ -4,6 +4,8 @@ import { UndoManagerService } from './services/undo-manager/undo-manager.service
 import { BufferedObject } from './services/undo-manager/buffered-object';
 import { ChangedCell } from './dao/changed-cell';
 
+import { DecimalPipe } from '@angular/common';
+
 @Injectable()
 export class DatagridService {
 
@@ -14,7 +16,9 @@ export class DatagridService {
   @Output() onCellChange = new EventEmitter();
   @Output() gridDataChange = new EventEmitter();
 
-  constructor(private undoManegerService: UndoManagerService) { }
+  constructor(
+    private undoManegerService: UndoManagerService,
+    private decimalPipe: DecimalPipe) { }
 
   selectElement(nativeElement: any, id?: string) {
     if (id) {
@@ -38,17 +42,16 @@ export class DatagridService {
   }
 
   changeCellValue(row: number, col: number, value: any) {
+    value = this.decimalPipe.transform(value, '1.2');
+
     const id = row + '-' + col;
     const element = document.getElementById(id);
-    element.firstElementChild.textContent = value;
 
     const waitingForDomUpdate = new Promise(resolve => {
-      resolve((n) => {
-        this.gridData[row][col] = value;
-        return true;
-      }
-      );
+      resolve(() => this.gridData[row][col] = value);
     });
+
+    element.firstElementChild.textContent = value;
 
     waitingForDomUpdate.then(() => document.getElementById(id).className = element.className);
   }
@@ -183,4 +186,9 @@ export class DatagridService {
     }
     return matrix;
   }
+}
+
+export enum FormatterType {
+  Number,
+  Text
 }
