@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { DatagridModule } from './datagrid/datagrid.module';
 
 import { AppComponent } from './app.component';
+import { HighlightDirective } from './';
 
 @NgModule({
     imports: [

@@ -14,6 +14,7 @@ export class DatagridComponent implements OnInit, AfterViewInit {
   @Output() onCellChange;
 
   rowLimit: number;
+  color: string;
   colLimit: number;
 
   constructor(private datagridService: DatagridService) {
