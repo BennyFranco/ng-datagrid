@@ -1,13 +1,24 @@
+import { throws } from 'assert';
 import { Injectable } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
+import { UndoManagerService } from '../undo-manager/undo-manager.service';
 
 @Injectable()
 export class FormatterService {
 
-  constructor(private decimalPipe: DecimalPipe) { }
+  undoManager: UndoManagerService;
 
-  decimalFormat(id: string) {
+  constructor(
+    private decimalPipe: DecimalPipe) { }
+
+  decimalFormat(id: string, digits?: string) {
+    digits = digits ? digits : '1.2';
     const domElement = document.getElementById(id);
-    domElement.firstElementChild.textContent = this.decimalPipe.transform(domElement.firstElementChild.textContent, '1.2');
+
+    try {
+      domElement.firstElementChild.textContent = this.decimalPipe.transform(domElement.firstElementChild.textContent, digits);
+    } catch (error) {
+      this.undoManager.undo();
+    }
   }
 }

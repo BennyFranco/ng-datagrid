@@ -1,3 +1,4 @@
+import { error } from 'util';
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import { isFirefox } from './shared/navigator-utils';
 import { UndoManagerService } from './services/undo-manager/undo-manager.service';
@@ -17,7 +18,9 @@ export class DatagridService {
 
   constructor(
     private undoManegerService: UndoManagerService,
-    private formatter: FormatterService) { }
+    private formatter: FormatterService) {
+    this.formatter.undoManager = this.undoManegerService;
+  }
 
   selectElement(nativeElement: any, id?: string) {
     if (id) {
@@ -194,6 +197,7 @@ export class DatagridService {
   }
 
   formatColumn(column: number, formatter: FormatterType) {
+
     switch (formatter) {
       case FormatterType.Number:
         for (let row = 0; row < this.gridData.length; row++) {
