@@ -188,33 +188,67 @@ export class DatagridService {
   }
 
   /*************FORMATTERS*****************/
-  formatCellById(id: string, formatter: FormatterType, errorClass?: string, format?: string) {
+
+  readProperties(properties: any) {
+    if (properties) {
+      for (const key in properties) {
+        if (properties.hasOwnProperty(key)) {
+          const value = properties[key];
+
+          switch (key) {
+            case 'digits':
+              this.formatter.digits = value;
+              break;
+            case 'currencyCode':
+              this.formatter.currencyCode = value;
+              break;
+            case 'symbolDisplay':
+              this.formatter.symbolDisplay = value;
+              break;
+            case 'digitInfo':
+              this.formatter.digitInfo = value;
+              break;
+          }
+        }
+      }
+    }
+  }
+
+  formatCellById(id: string, formatter: FormatterType, errorClass?: string, properties?: any) {
+
+    this.readProperties(properties);
+
     switch (formatter) {
       case FormatterType.Number:
-        this.formatter.decimalFormat(id, format, errorClass);
+        this.formatter.decimalFormat(id, errorClass);
+        break;
+      case FormatterType.Currency:
+        this.formatter.currencyFormat(id, errorClass);
         break;
     }
   }
 
-  formatColumn(column: number, formatter: FormatterType, errorClass?: string, format?: string) {
+  formatColumn(column: number, formatter: FormatterType, errorClass?: string, properties?: any) {
+
+    this.readProperties(properties);
 
     switch (formatter) {
       case FormatterType.Number:
         for (let row = 0; row < this.gridData.length; row++) {
           const id = row + '-' + column;
-          this.formatter.decimalFormat(id, format, errorClass);
+          this.formatter.decimalFormat(id, errorClass);
         }
         break;
     }
   }
 
-  formatRangeOfCells(from: string, to: string, formatter: FormatterType, errorClass?: string, format?: string) {
+  formatRangeOfCells(from: string, to: string, formatter: FormatterType, errorClass?: string, properties?: any) {
     const fromArray = from.split('-');
     const toArray = to.split('-');
 
     for (let i = Number.parseInt(fromArray[0]); i <= Number.parseInt(toArray[0]); i++) {
       for (let j = Number.parseInt(fromArray[1]); j <= Number.parseInt(toArray[1]); j++) {
-        this.formatCellById((i + '-' + j), formatter, errorClass, format);
+        this.formatCellById((i + '-' + j), formatter, errorClass, properties);
       }
     }
   }
@@ -222,5 +256,6 @@ export class DatagridService {
 
 export enum FormatterType {
   Number,
+  Currency,
   Text
 }

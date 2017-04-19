@@ -18,6 +18,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.datagridService.disableRow(2);
     // this.datagridService.formatColumn(1, FormatterType.Number);
     this.datagridService.formatRangeOfCells('0-1', '1-1', FormatterType.Number);
+    this.datagridService.formatCellById('2-1', FormatterType.Currency, null, { 'symbolDisplay': true });
   }
 
   generateSheetWithRows(rows: number): Array<any> {
@@ -43,7 +44,9 @@ export class AppComponent implements OnInit, AfterViewInit {
         const total = (Number.parseFloat(this.content[0][1])) + (Number.parseFloat(this.content[1][1]));
         this.datagridService.changeCellValue(2, 1, total);
         this.datagridService.addCellCustomStyle(event.row, event.column, { 'background-color': 'blueviolet', 'color': 'white' });
-        this.datagridService.formatColumn(1, FormatterType.Number);
+        // this.datagridService.formatColumn(1, FormatterType.Number);
+        this.datagridService.formatRangeOfCells('0-1', '1-1', FormatterType.Number);
+        this.datagridService.formatCellById('2-1', FormatterType.Currency, null, { 'symbolDisplay': true });
       }
     }, 100);
   }

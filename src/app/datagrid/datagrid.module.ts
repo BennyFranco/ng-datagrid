@@ -10,7 +10,7 @@ import { UndoManagerService } from './services/undo-manager/undo-manager.service
 import { FormatterService } from './services/formatter/formatter.service';
 import { DatagridService } from './datagrid.service';
 
-import { DecimalPipe } from '@angular/common';
+import { DecimalPipe, CurrencyPipe } from '@angular/common';
 
 @NgModule({
   imports: [
@@ -26,7 +26,8 @@ import { DecimalPipe } from '@angular/common';
     DatagridService,
     UndoManagerService,
     FormatterService,
-    DecimalPipe
+    DecimalPipe,
+    CurrencyPipe
   ],
   exports: [
     DatagridComponent
