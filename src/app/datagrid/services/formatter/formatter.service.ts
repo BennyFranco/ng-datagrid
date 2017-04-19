@@ -17,8 +17,9 @@ export class FormatterService {
 
     try {
       domElement.firstElementChild.textContent = this.decimalPipe.transform(domElement.firstElementChild.textContent, digits);
+      domElement.classList.remove('format-error');
     } catch (error) {
-      this.undoManager.undo();
+      domElement.classList.add('format-error');
     }
   }
 }

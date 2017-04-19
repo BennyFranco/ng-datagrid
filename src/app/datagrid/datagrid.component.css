@@ -83,3 +83,8 @@ td span {
 .disable {
     color: rgba(160, 160, 160, 1) !important;
 }
+
+.format-error {
+    background-color: red !important;
+    color: white !important;
+}

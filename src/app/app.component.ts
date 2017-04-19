@@ -37,15 +37,12 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   cellChange(event) {
     console.log(event);
-
     setTimeout(() => {
       if (event.column !== 0) {
-        this.datagridService.formatCellById(event.id, FormatterType.Number);
-
         const total = (Number.parseFloat(this.content[0][1])) + (Number.parseFloat(this.content[1][1]));
         this.datagridService.changeCellValue(2, 1, total);
         this.datagridService.addCellCustomStyle(event.row, event.column, { 'background-color': 'blueviolet', 'color': 'white' });
-        this.datagridService.formatCellById('2-1', FormatterType.Number);
+        this.datagridService.formatColumn(1, FormatterType.Number);
       }
     }, 100);
   }
