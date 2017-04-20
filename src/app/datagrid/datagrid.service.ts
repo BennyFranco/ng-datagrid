@@ -170,6 +170,20 @@ export class DatagridService {
     return matrix;
   }
 
+  generateEmptySheetWithNumberOfRowsAndColumns(rows: number, columns: number): Array<any> {
+    const matrix = [];
+    let array = [];
+
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < columns; j++) {
+        array.push(null);
+      }
+      matrix.push(array);
+      array = [];
+    }
+    return matrix;
+  }
+
   generateZeroSheet(): Array<any> {
     return [
       [0, 0, 0, 0, 0, 0, 0, 0],

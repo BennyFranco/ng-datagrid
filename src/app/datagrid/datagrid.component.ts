@@ -48,8 +48,21 @@ export class DatagridComponent implements OnInit, AfterViewInit {
   private generateHeaders(): Array<any> {
     const letters = 'a b c d e f g h i j k l m n o p q r s t u v w x y z'.toUpperCase().split(' ');
     const headers = [];
+    let secondIdx = 0;
+    let count = 0;
     if (this.gridData.length > 0) {
-      ([...this.gridData].pop()).forEach((element, idx) => headers.push(letters[idx]));
+      ([...this.gridData].pop()).forEach((element, idx) => {
+        if (idx < letters.length) {
+          headers.push(letters[idx]);
+        } else {
+          if (count === letters.length) {
+            secondIdx++;
+            count = 0;
+          }
+          headers.push(letters[secondIdx] + letters[count]);
+          count++;
+        }
+      });
     }
     return headers;
   }
