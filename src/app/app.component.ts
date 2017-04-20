@@ -28,9 +28,14 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   generateSheetData(): Array<any> {
     return [
-      ['A', 4],
-      ['B', 2],
-      ['TOTAL', 6]
+     ['A', 4, 5],
+     ['A', 4, 5],
+     ['A', 4, 5],
+     ['A', 4, 5],
+     ['A', 4, 5],
+     ['A', 4, 5],
+     ['A', 4, 5],
+     ['TOTAL', 6, 9]
     ];
   }
 

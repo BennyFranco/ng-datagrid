@@ -14,8 +14,10 @@ export class DatagridComponent implements OnInit, AfterViewInit {
   @Output() onCellChange;
 
   rowLimit: number;
-  color: string;
   colLimit: number;
+  color: string;
+  private data: Array<any> = [];
+  pressed: boolean = false;
 
   constructor(private datagridService: DatagridService) {
     this.gridDataChange = this.datagridService.gridDataChange;
@@ -54,4 +56,31 @@ export class DatagridComponent implements OnInit, AfterViewInit {
     }
     return headers;
   }
+
+onSelectionStart(cellId, rowId) { // 'row-column'  ex. '0-0' '0-1'
+    if(!this.pressed){
+      this.pressed= true;
+      console.log('En el método onSelectionStart');
+      var id = rowId+'-'+cellId;
+      console.log(id);
+      document.getElementById(id).className = 'newClass';
+    }else{
+      this.pressed=false;
+    }
+    
+  }
+  onSelection(cellId, rowId){
+    if(this.pressed){
+      console.log('En el método onSelection');
+      var id = rowId+'-'+cellId;
+      console.log(id);
+      document.getElementById(id).className = 'newClass';
+    }
+    
+  }
+  onSelectionEnd() {
+    this.pressed= false;
+    console.log('En el método onSelectionEnd');
+  }
+
 }

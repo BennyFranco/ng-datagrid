@@ -71,3 +71,6 @@ td {
 .disable {
     color: rgba(160, 160, 160, 1) !important;
 }
+.newClass{
+    background-color: yellow;
+}
