@@ -2,6 +2,7 @@
   <thead>
     <tr class="_th">
       <th class="_th _tr"></th>
+      <!-- <th *ngFor="let header of headers; let headerColIndex = index" ngSortable [data]="gridData" id="{{headerColIndex}}">{{header}}</th> -->
       <th *ngFor="let header of headers; let headerColIndex = index" ngSortable [data]="gridData" id="{{headerColIndex}}">{{header}}</th>
     </tr>
   </thead>

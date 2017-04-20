@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, Input } from '@angular/core';
+import { AfterViewInit, Directive, HostListener, Input, NgZone } from '@angular/core';
 import { DatagridService } from '../datagrid.service';
 import { UndoManagerService } from '../services/undo-manager/undo-manager.service';
 import { isFirefox } from '../shared/navigator-utils';
@@ -7,93 +7,118 @@ import { ChangedCell } from '../dao/changed-cell';
 @Directive({
   selector: '[ngKeyboardEvents]'
 })
-export class KeyboardEventsDirective {
+export class KeyboardEventsDirective implements AfterViewInit {
 
   @Input() rowLimit: number;
   @Input() colLimit: number;
 
+  element: HTMLElement;
+  elementId: string;
+  row: number;
+  col: number;
+
   constructor(
     private datagridService: DatagridService,
-    private undoManegerService: UndoManagerService) { }
-
-  @HostListener('document:keydown', ['$event'])
-  keyDown(event: KeyboardEvent) {
-    const element = <HTMLElement>this.datagridService.selectedElement;
-    // tslint:disable-next-line:prefer-const
-    let elementId: string = this.datagridService.selectedElementId;
-    // tslint:disable-next-line:prefer-const
-    let row = Number.parseInt(elementId.split('-')[0]);
-    // tslint:disable-next-line:prefer-const
-    let col = Number.parseInt(elementId.split('-')[1]);
-
-    if (event.keyCode === KeyCodes.ArrowLeft) {
-      this.moveToLeft(col, elementId);
-      event.preventDefault();
-    } else if (event.keyCode === KeyCodes.ArrowRight) {
-      this.moveToRight(col, elementId);
-      event.preventDefault();
-    } else if (event.keyCode === KeyCodes.ArrowUp) {
-      this.moveToUp(row, elementId);
-      event.preventDefault();
-    } else if (event.keyCode === KeyCodes.ArrowDown) {
-      this.moveToDown(row, elementId);
-      event.preventDefault();
-    }
+    private undoManegerService: UndoManagerService,
+    private zone: NgZone) {
   }
 
-  @HostListener('document:keyup', ['$event'])
-  keyUp(event: KeyboardEvent) {
-    const element = <HTMLElement>this.datagridService.selectedElement;
-    // tslint:disable-next-line:prefer-const
-    let elementId: string = this.datagridService.selectedElementId;
-    // tslint:disable-next-line:prefer-const
-    let row = Number.parseInt(elementId.split('-')[0]);
-    // tslint:disable-next-line:prefer-const
-    let col = Number.parseInt(elementId.split('-')[1]);
-
-    if (event.ctrlKey && event.which == 90) {
-      this.undoManegerService.undo();
-      const position = this.undoManegerService.stackPos;
-      const cell = new ChangedCell(this.undoManegerService.stack[position + 1].id,
-        this.undoManegerService.stack[position + 1].newValue,
-        this.undoManegerService.stack[position + 1].oldValue);
-      this.datagridService.emitChanges(cell);
-    } else if (event.ctrlKey && event.which == 89) {
-      this.undoManegerService.redo();
-      const position = this.undoManegerService.stackPos;
-      const cell = new ChangedCell(this.undoManegerService.stack[position].id,
-        this.undoManegerService.stack[position].oldValue,
-        this.undoManegerService.stack[position].newValue);
-      this.datagridService.emitChanges(cell);
-    } else if (event.ctrlKey && event.which == 67) {
-      const cellContent = element.textContent.trim();
-      this.copyToClipboard(cellContent);
-      return false;
-    } else if (event.which === KeyCodes.Escape) {
-      this.datagridService.cancelCellEdition(element, false);
-    } else if (event.which === KeyCodes.Enter) {
-      this.datagridService.cancelCellEdition(element, true, false);
-      this.moveToDown(row, elementId);
-      event.preventDefault();
-    } else if (event.which === KeyCodes.Backspace || event.which === KeyCodes.Delete) {
-      this.datagridService.editOnHitKey(element, true);
-    }
-
+  ngAfterViewInit() {
+    this.zone.runOutsideAngular(() => {
+      this.subscribeKeyboardEvents();
+    });
   }
 
-  @HostListener('document:keypress', ['$event'])
-  keyPress(event: KeyboardEvent) {
-    const element = <HTMLElement>this.datagridService.selectedElement;
-    // tslint:disable-next-line:prefer-const
-    let elementId: string = this.datagridService.selectedElementId;
-    // tslint:disable-next-line:prefer-const
-    let row = Number.parseInt(elementId.split('-')[0]);
-    // tslint:disable-next-line:prefer-const
-    let col = Number.parseInt(elementId.split('-')[1]);
+  subscribeKeyPressEvent() {
+    document.addEventListener('keypress', (event: KeyboardEvent) => {
+      if (event.which >= 39 && event.which <= 191 && !event.ctrlKey) {
+        this.getDomElement();
+        this.datagridService.editOnHitKey(this.element, true, event.key);
+      }
+    });
+  }
 
-    if (event.which >= 39 && event.which <= 191 && !event.ctrlKey) {
-      this.datagridService.editOnHitKey(element, true, event.key);
-    }
+  subscribeKeyUpEvent() {
+    document.addEventListener('keyup', (event: KeyboardEvent) => {
+      if (event.ctrlKey && event.which === 90) {
+        this.undoManegerService.undo();
+        const position = this.undoManegerService.stackPos;
+        const cell = new ChangedCell(this.undoManegerService.stack[position + 1].id,
+          this.undoManegerService.stack[position + 1].newValue,
+          this.undoManegerService.stack[position + 1].oldValue);
+        this.datagridService.emitChanges(cell);
+      } else if (event.ctrlKey && event.which === 89) {
+        this.undoManegerService.redo();
+        const position = this.undoManegerService.stackPos;
+        const cell = new ChangedCell(this.undoManegerService.stack[position].id,
+          this.undoManegerService.stack[position].oldValue,
+          this.undoManegerService.stack[position].newValue);
+        this.datagridService.emitChanges(cell);
+      } else if (event.ctrlKey && event.which === 67) {
+        this.getDomElement();
+        const cellContent = this.element.textContent.trim();
+        this.copyToClipboard(cellContent);
+        return false;
+      } else if (event.which === KeyCodes.Escape) {
+        this.getDomElement();
+        this.datagridService.cancelCellEdition(this.element, false);
+      } else if (event.which === KeyCodes.Enter) {
+        this.zone.run(() => {
+          this.getDomElement();
+          this.datagridService.cancelCellEdition(this.element, true, false);
+          this.moveToDown(this.row, this.elementId);
+          event.preventDefault();
+        });
+      } else if (event.which === KeyCodes.Backspace || event.which === KeyCodes.Delete) {
+        this.getDomElement();
+        this.datagridService.editOnHitKey(this.element, true);
+      }
+    });
+  }
+
+  subscribeKeyDownEvent() {
+    document.addEventListener('keydown', (event: KeyboardEvent) => {
+      if (event.keyCode === KeyCodes.ArrowLeft) {
+        this.getDomElement();
+        this.moveToLeft(this.col, this.elementId);
+        event.preventDefault();
+      } else if (event.keyCode === KeyCodes.ArrowRight) {
+        this.getDomElement();
+        this.moveToRight(this.col, this.elementId);
+        event.preventDefault();
+      } else if (event.keyCode === KeyCodes.ArrowUp) {
+        this.getDomElement();
+        this.moveToUp(this.row, this.elementId);
+        event.preventDefault();
+      } else if (event.keyCode === KeyCodes.ArrowDown) {
+        this.getDomElement();
+        this.moveToDown(this.row, this.elementId);
+        event.preventDefault();
+      }
+    });
+  }
+
+  unsubscribeEvent(event: string) {
+    document.removeEventListener(event.toString());
+  }
+
+  unsubscribeAllEvents() {
+    this.unsubscribeEvent('keydown');
+    // this.unsubscribeEvent('keypress');
+    this.unsubscribeEvent('keyup');
+  }
+
+  subscribeKeyboardEvents() {
+    this.subscribeKeyDownEvent();
+    this.subscribeKeyUpEvent();
+    this.subscribeKeyPressEvent();
+  }
+
+  private getDomElement() {
+    this.element = <HTMLElement>this.datagridService.selectedElement;
+    this.elementId = this.datagridService.selectedElementId;
+    this.row = Number.parseInt(this.elementId.split('-')[0]);
+    this.col = Number.parseInt(this.elementId.split('-')[1]);
   }
 
   private moveToUp(row: number, elementId: string) {

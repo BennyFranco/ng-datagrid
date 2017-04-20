@@ -7,19 +7,21 @@ import { DatagridService, FormatterType } from './datagrid/datagrid.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, AfterViewInit {
-  content = this.generateSheetData();
-  // content = this.datagridService.generateEmptySheetWithNumberOfRowsAndColumns(10, 10);
+  // content = this.generateSheetData();
+  content = this.datagridService.generateEmptySheetWithNumberOfRowsAndColumns(638, 35);
   // content = this.generateSheetWithRows(10);
-  constructor(private datagridService: DatagridService) { }
+  constructor(private datagridService: DatagridService) {
+    this.datagridService.gridData = this.content;
+  }
 
   ngOnInit() {
   }
 
   ngAfterViewInit(): void {
-    this.datagridService.disableRow(2);
+    /*this.datagridService.disableRow(2);
     // this.datagridService.formatColumn(1, FormatterType.Number);
     this.datagridService.formatRangeOfCells('0-1', '1-1', FormatterType.Number);
-    this.datagridService.formatCellById('2-1', FormatterType.Currency, null, { 'symbolDisplay': true });
+    this.datagridService.formatCellById('2-1', FormatterType.Currency, null, { 'symbolDisplay': true });*/
   }
 
   generateSheetWithRows(rows: number): Array<any> {
@@ -40,7 +42,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   cellChange(event) {
     console.log(event);
-    setTimeout(() => {
+    /*setTimeout(() => {
       this.datagridService.addCellCustomStyle(event.row, event.column, { 'background-color': 'blueviolet', 'color': 'white' });
 
       if (event.column !== 0) {
@@ -50,7 +52,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.datagridService.formatRangeOfCells('0-1', '1-1', FormatterType.Number);
         this.datagridService.formatCellById('2-1', FormatterType.Currency, null, { 'symbolDisplay': true });
       }
-    }, 100);
+    }, 100);*/
   }
 
   gridData(event) {

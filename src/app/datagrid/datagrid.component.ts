@@ -8,7 +8,7 @@ import { DatagridService } from './datagrid.service';
 })
 export class DatagridComponent implements OnInit, AfterViewInit {
 
-  @Input() gridData: Array<any>;
+  gridData: Array<any>;
   @Input() headers: Array<any>;
   @Output() gridDataChange = new EventEmitter();
   @Output() onCellChange: EventEmitter<any>;
@@ -22,6 +22,8 @@ export class DatagridComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.gridData = this.datagridService.gridData;
+
     if (!this.gridData) {
       this.gridData = this.datagridService.generateEmptySheetWithNumberOfRows(15);
     }
@@ -31,7 +33,7 @@ export class DatagridComponent implements OnInit, AfterViewInit {
     }
 
     this.createRowAndColLimits();
-    this.datagridService.gridData = this.gridData;
+    // this.datagridService.gridData = this.gridData;
   }
 
   ngAfterViewInit() {
