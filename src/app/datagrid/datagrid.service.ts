@@ -105,7 +105,6 @@ export class DatagridService {
         this.undoManegerService.addToBuffer(new BufferedObject(element.id, element.children[0].textContent, element.children[1].value));
         const cell = new ChangedCell(element.id, element.children[0].textContent, element.children[1].value);
         this.emitChanges(cell);
-        element.children[0].textContent = element.children[1].value;
       }
       element.removeChild(element.children[1]);
       element.children[0].style.display = 'inherit';
@@ -148,8 +147,8 @@ export class DatagridService {
   }
 
   emitChanges(cell: ChangedCell) {
-    this.onCellChange.emit(cell);
     this.gridData[cell.row][cell.column] = cell.newValue;
+    this.onCellChange.emit(cell);
     this.gridDataChange.emit(this.gridData);
   }
 
