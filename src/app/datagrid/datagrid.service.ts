@@ -1,4 +1,3 @@
-import { error } from 'util';
 import { EventEmitter, Injectable, NgZone, Output } from '@angular/core';
 import { isFirefox } from './shared/navigator-utils';
 import { UndoManagerService } from './services/undo-manager/undo-manager.service';
@@ -123,6 +122,7 @@ export class DatagridService {
         this.undoManegerService.addToBuffer(new BufferedObject(element.id, element.children[0].textContent, element.children[1].value));
         const cell = new ChangedCell(element.id, element.children[0].textContent, element.children[1].value);
         this.emitChanges(cell);
+        element.firstElementChild.textContent = cell.newValue;
       }
       element.removeChild(element.children[1]);
       element.children[0].style.display = 'inherit';
@@ -165,7 +165,7 @@ export class DatagridService {
   }
 
   emitChanges(cell: ChangedCell) {
-    this.gridData[cell.row][cell.column] = cell.newValue;
+    // this.gridData[cell.row][cell.column] = cell.newValue;
     this.onCellChange.emit(cell);
     this.gridDataChange.emit(this.gridData);
   }

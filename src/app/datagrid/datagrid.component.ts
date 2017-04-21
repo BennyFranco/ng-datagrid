@@ -1,10 +1,11 @@
-import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DatagridService } from './datagrid.service';
 
 @Component({
   selector: 'ng-datagrid',
   templateUrl: './datagrid.component.html',
-  styleUrls: ['./datagrid.component.css']
+  styleUrls: ['./datagrid.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatagridComponent implements OnInit, AfterViewInit {
 
