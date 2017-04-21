@@ -1,4 +1,4 @@
-import { EventEmitter, Injectable, NgZone, Output } from '@angular/core';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 import { isFirefox } from './shared/navigator-utils';
 import { UndoManagerService } from './services/undo-manager/undo-manager.service';
 import { FormatterService } from './services/formatter/formatter.service';
@@ -26,8 +26,7 @@ export class DatagridService {
 
   constructor(
     private undoManegerService: UndoManagerService,
-    private formatter: FormatterService,
-    private zone: NgZone) {
+    private formatter: FormatterService) {
     this.formatter.undoManager = this.undoManegerService;
   }
 
