@@ -21,6 +21,9 @@ export class EditableDirective {
   onClick() {
     this.zone.runOutsideAngular(() => {
       document.addEventListener('click', (event: MouseEvent) => {
+        if ((<HTMLElement>event.target).tagName === 'TH') {
+          return;
+        }
         let element;
         this.datagridService.removeSelection(this.datagridService.selectedElementId);
         if ((<HTMLElement>event.target).tagName === 'SPAN') {
