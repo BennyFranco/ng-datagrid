@@ -151,14 +151,17 @@ export class DatagridService {
       input.value = element.children[0] ? element.children[0].textContent : '';
     }
     element.children[0].style.display = 'none';
+
     input.style.border = 'none';
     input.style.outline = 'none';
-    input.style.backgroundColor = element.style.backgroundColor;
+    input.style.background = element.style.background;
     input.style.color = element.style.color;
     input.style.width = 'calc(60px - 0.25em)';
     input.style.height = 'calc(12px - 0.25em)';
     input.style.font = '12px sans-serif';
     input.style.margin = '0';
+
+    input.classList.add('editing-input');
     element.appendChild(input);
     input.focus();
 

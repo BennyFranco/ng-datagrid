@@ -28,7 +28,7 @@ td {
 
 ._th {
     font-weight: bold;
-    background-color: #ddd;
+    background: #ddd;
 }
 
 ._tr {
@@ -42,7 +42,7 @@ td {
 
 th {
     font-weight: bold;
-    background-color: #ddd;
+    background: #ddd;
 }
 
 th,
@@ -83,6 +83,6 @@ td span {
 }
 
 .format-error {
-    background-color: red !important;
+    background: red !important;
     color: white !important;
 }

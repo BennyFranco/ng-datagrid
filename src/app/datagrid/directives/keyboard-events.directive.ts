@@ -31,7 +31,7 @@ export class KeyboardEventsDirective implements AfterViewInit {
 
   subscribeKeyPressEvent() {
     document.addEventListener('keypress', (event: KeyboardEvent) => {
-      if (event.which >= 39 && event.which <= 191 && !event.ctrlKey) {
+      if (event.which >= 39 && event.which <= 242 && !event.ctrlKey) {
         this.getDomElement();
         this.datagridService.editOnHitKey(this.element, true, event.key);
       }
@@ -63,10 +63,10 @@ export class KeyboardEventsDirective implements AfterViewInit {
         this.getDomElement();
         this.datagridService.cancelCellEdition(this.element, false);
       } else if (event.which === KeyCodes.Enter) {
-          this.getDomElement();
-          this.datagridService.cancelCellEdition(this.element, true, false);
-          this.moveToDown(this.row, this.elementId);
-          event.preventDefault();
+        this.getDomElement();
+        this.datagridService.cancelCellEdition(this.element, true, false);
+        this.moveToDown(this.row, this.elementId);
+        event.preventDefault();
       } else if (event.which === KeyCodes.Backspace || event.which === KeyCodes.Delete) {
         this.getDomElement();
         this.datagridService.editOnHitKey(this.element, true);
@@ -76,21 +76,29 @@ export class KeyboardEventsDirective implements AfterViewInit {
 
   subscribeKeyDownEvent() {
     document.addEventListener('keydown', (event: KeyboardEvent) => {
-      if (event.keyCode === KeyCodes.ArrowLeft) {
+      if (event.which === KeyCodes.ArrowLeft) {
         this.getDomElement();
         this.moveToLeft(this.col, this.elementId);
         event.preventDefault();
-      } else if (event.keyCode === KeyCodes.ArrowRight) {
+      } else if (event.which === KeyCodes.ArrowRight) {
         this.getDomElement();
         this.moveToRight(this.col, this.elementId);
         event.preventDefault();
-      } else if (event.keyCode === KeyCodes.ArrowUp) {
+      } else if (event.which === KeyCodes.ArrowUp) {
         this.getDomElement();
         this.moveToUp(this.row, this.elementId);
         event.preventDefault();
-      } else if (event.keyCode === KeyCodes.ArrowDown) {
+      } else if (event.which === KeyCodes.ArrowDown) {
         this.getDomElement();
         this.moveToDown(this.row, this.elementId);
+        event.preventDefault();
+      } else if (!event.shiftKey && event.which === 9) {
+        this.getDomElement();
+        this.moveToRight(this.col, this.elementId);
+        event.preventDefault();
+      } else if (event.shiftKey && event.which === 9) {
+        this.getDomElement();
+        this.moveToLeft(this.col, this.elementId);
         event.preventDefault();
       }
     });
