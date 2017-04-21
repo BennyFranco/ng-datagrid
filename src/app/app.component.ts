@@ -8,16 +8,19 @@ import { DatagridService, FormatterType } from './datagrid/datagrid.service';
 })
 export class AppComponent implements OnInit, AfterViewInit {
   // content = this.generateSheetData();
-  content = this.datagridService.generateEmptySheetWithNumberOfRowsAndColumns(638, 35);
+  content = this.datagridService.generateEmptySheetWithNumberOfRowsAndColumns(630, 35);
+  // content = this.datagridService.generateEmptySheetWithNumberOfRowsAndColumns(10, 10);
+
   // content = this.generateSheetWithRows(10);
   constructor(private datagridService: DatagridService) {
-    this.datagridService.gridData = this.content;
+    // this.datagridService.gridData = this.content;
   }
 
   ngOnInit() {
   }
 
   ngAfterViewInit(): void {
+
     /*this.datagridService.disableRow(2);
     // this.datagridService.formatColumn(1, FormatterType.Number);
     this.datagridService.formatRangeOfCells('0-1', '1-1', FormatterType.Number);
@@ -41,7 +44,13 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   cellChange(event) {
+    // this.datagridService.formatRangeOfCells('0-1', '1-1', FormatterType.Number);
     console.log(event);
+   // setTimeout(() => {
+      this.datagridService.formatCellById(event.id, FormatterType.Number);
+
+  //  });
+
     /*setTimeout(() => {
       this.datagridService.addCellCustomStyle(event.row, event.column, { 'background-color': 'blueviolet', 'color': 'white' });
 

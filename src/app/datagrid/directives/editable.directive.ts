@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, Input } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, NgZone } from '@angular/core';
 import { DatagridService } from '../datagrid.service';
 
 @Directive({
@@ -8,7 +8,8 @@ export class EditableDirective {
 
   constructor(
     private _elementRef: ElementRef,
-    private datagridService: DatagridService) { }
+    private datagridService: DatagridService,
+    private zone: NgZone) { }
 
   @HostListener('click') onClick() {
     this.datagridService.removeSelection(this.datagridService.selectedElementId);

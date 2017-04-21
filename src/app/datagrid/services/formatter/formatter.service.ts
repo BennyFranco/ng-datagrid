@@ -18,7 +18,6 @@ export class FormatterService {
     private currencyPipe: CurrencyPipe) { }
 
   decimalFormat(id: string, errorClass?: string) {
-    // this.digits = this.digits ? this.digits : '1.2';
     const domElement = document.getElementById(id);
 
     try {

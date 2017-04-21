@@ -1,5 +1,5 @@
 import { error } from 'util';
-import { Injectable, Output, EventEmitter } from '@angular/core';
+import { EventEmitter, Injectable, NgZone, Output } from '@angular/core';
 import { isFirefox } from './shared/navigator-utils';
 import { UndoManagerService } from './services/undo-manager/undo-manager.service';
 import { FormatterService } from './services/formatter/formatter.service';
@@ -18,7 +18,8 @@ export class DatagridService {
 
   constructor(
     private undoManegerService: UndoManagerService,
-    private formatter: FormatterService) {
+    private formatter: FormatterService,
+    private zone: NgZone) {
     this.formatter.undoManager = this.undoManegerService;
   }
 
@@ -39,7 +40,11 @@ export class DatagridService {
     if (id) {
       const element = document.getElementById(id);
       element.classList.remove('selected');
-      this.cancelCellEdition(element, true);
+      if (element.children.length > 1) {
+        this.zone.runGuarded(() => {
+          this.cancelCellEdition(element, true);
+        });
+      }
     }
   }
 
@@ -47,6 +52,19 @@ export class DatagridService {
     const id = row + '-' + col;
     const element = document.getElementById(id);
 
+    const waitingForDomUpdate = new Promise(resolve => {
+      resolve(() => this.gridData[row][col] = value);
+    });
+
+    element.firstElementChild.textContent = value;
+
+    waitingForDomUpdate.then(() => document.getElementById(id).className = element.className);
+  }
+
+  changeCellValueById(id: string, value: any) {
+    const element = document.getElementById(id);
+    const row = Number.parseInt(id.split('-')[0]);
+    const col = Number.parseInt(id.split('-')[1]);
     const waitingForDomUpdate = new Promise(resolve => {
       resolve(() => this.gridData[row][col] = value);
     });
@@ -228,31 +246,33 @@ export class DatagridService {
   }
 
   formatCellById(id: string, formatter: FormatterType, errorClass?: string, properties?: any) {
+    setTimeout(() => {
+      this.readProperties(properties);
 
-    this.readProperties(properties);
-
-    switch (formatter) {
-      case FormatterType.Number:
-        this.formatter.decimalFormat(id, errorClass);
-        break;
-      case FormatterType.Currency:
-        this.formatter.currencyFormat(id, errorClass);
-        break;
-    }
+      switch (formatter) {
+        case FormatterType.Number:
+          this.formatter.decimalFormat(id, errorClass);
+          break;
+        case FormatterType.Currency:
+          this.formatter.currencyFormat(id, errorClass);
+          break;
+      }
+    });
   }
 
   formatColumn(column: number, formatter: FormatterType, errorClass?: string, properties?: any) {
+    setTimeout(() => {
+      this.readProperties(properties);
 
-    this.readProperties(properties);
-
-    switch (formatter) {
-      case FormatterType.Number:
-        for (let row = 0; row < this.gridData.length; row++) {
-          const id = row + '-' + column;
-          this.formatter.decimalFormat(id, errorClass);
-        }
-        break;
-    }
+      switch (formatter) {
+        case FormatterType.Number:
+          for (let row = 0; row < this.gridData.length; row++) {
+            const id = row + '-' + column;
+            this.formatter.decimalFormat(id, errorClass);
+          }
+          break;
+      }
+    });
   }
 
   formatRangeOfCells(from: string, to: string, formatter: FormatterType, errorClass?: string, properties?: any) {
