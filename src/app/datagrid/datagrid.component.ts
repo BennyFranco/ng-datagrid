@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, AfterViewChecked } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DatagridService } from './datagrid.service';
 
 @Component({
@@ -7,7 +7,7 @@ import { DatagridService } from './datagrid.service';
   styleUrls: ['./datagrid.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DatagridComponent implements OnInit, AfterViewInit, AfterViewChecked {
+export class DatagridComponent implements OnInit, AfterViewInit {
 
   @Input() gridData: Array<any>;
   @Input() headers: Array<any>;
@@ -23,8 +23,6 @@ export class DatagridComponent implements OnInit, AfterViewInit, AfterViewChecke
   }
 
   ngOnInit() {
-    // this.gridData = this.datagridService.gridData;
-
     if (!this.gridData) {
       this.gridData = this.datagridService.generateEmptySheetWithNumberOfRows(15);
     }
@@ -39,13 +37,6 @@ export class DatagridComponent implements OnInit, AfterViewInit, AfterViewChecke
 
   ngAfterViewInit() {
     this.datagridService.selectElement(null, '0-0');
-  }
-
-  ngAfterViewChecked() {
-    this.onCellChange.subscribe((e) => {
-      console.log(e);
-    })
-    console.log('checked');
   }
 
   private createRowAndColLimits() {
