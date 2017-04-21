@@ -63,12 +63,10 @@ export class KeyboardEventsDirective implements AfterViewInit {
         this.getDomElement();
         this.datagridService.cancelCellEdition(this.element, false);
       } else if (event.which === KeyCodes.Enter) {
-       // this.zone.run(() => {
           this.getDomElement();
           this.datagridService.cancelCellEdition(this.element, true, false);
           this.moveToDown(this.row, this.elementId);
           event.preventDefault();
-       // });
       } else if (event.which === KeyCodes.Backspace || event.which === KeyCodes.Delete) {
         this.getDomElement();
         this.datagridService.editOnHitKey(this.element, true);
@@ -100,12 +98,6 @@ export class KeyboardEventsDirective implements AfterViewInit {
 
   unsubscribeEvent(event: string) {
     document.removeEventListener(event.toString());
-  }
-
-  unsubscribeAllEvents() {
-    this.unsubscribeEvent('keydown');
-    // this.unsubscribeEvent('keypress');
-    this.unsubscribeEvent('keyup');
   }
 
   subscribeKeyboardEvents() {

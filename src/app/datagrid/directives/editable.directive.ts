@@ -47,7 +47,12 @@ export class EditableDirective {
     });
   }
 
-  @HostListener('paste', ['$event']) onPaste(event: ClipboardEvent) {
-    this.datagridService.selectedElement.textContent = event.clipboardData.getData('text');
-  }
+  /* @HostListener('paste', ['$event']) onPaste(event: ClipboardEvent) {
+     this.datagridService.selectedElement.textContent = event.clipboardData.getData('text');
+     this.zone.run(() => {
+       this.datagridService
+         .changeCellValueById(this.datagridService.selectedElementId, event.clipboardData.getData('text'));
+     });
+ 
+   }*/
 }
