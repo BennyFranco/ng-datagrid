@@ -20,13 +20,13 @@ export class EditableDirective {
 
   onClick() {
     this.zone.runOutsideAngular(() => {
-      document.addEventListener('click', (event) => {
+      document.addEventListener('click', (event: MouseEvent) => {
         let element;
         this.datagridService.removeSelection(this.datagridService.selectedElementId);
-        if (event.toElement.tagName === 'SPAN') {
-          element = event.toElement.parentElement;
+        if ((<HTMLElement>event.target).tagName === 'SPAN') {
+          element = (<HTMLElement>event.target).parentElement;
         } else {
-          element = event.toElement;
+          element = (<HTMLElement>event.target);
         }
         this.datagridService.selectElement(null, element.id);
       });
@@ -37,22 +37,13 @@ export class EditableDirective {
     this.zone.runOutsideAngular(() => {
       document.addEventListener('dblclick', (event) => {
         let element;
-        if (event.toElement.tagName === 'SPAN') {
-          element = event.toElement.parentElement;
+        if ((<HTMLElement>event.target).tagName === 'SPAN') {
+          element = (<HTMLElement>event.target).parentElement;
         } else {
-          element = event.toElement;
+          element = (<HTMLElement>event.target);
         }
         this.datagridService.addInput(element);
       });
     });
   }
-
-  /* @HostListener('paste', ['$event']) onPaste(event: ClipboardEvent) {
-     this.datagridService.selectedElement.textContent = event.clipboardData.getData('text');
-     this.zone.run(() => {
-       this.datagridService
-         .changeCellValueById(this.datagridService.selectedElementId, event.clipboardData.getData('text'));
-     });
- 
-   }*/
 }

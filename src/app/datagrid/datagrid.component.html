@@ -2,12 +2,11 @@
   <thead>
     <tr class="_th">
       <th class="_th _tr"></th>
-      <!-- <th *ngFor="let header of headers; let headerColIndex = index" ngSortable [data]="gridData" id="{{headerColIndex}}">{{header}}</th> -->
       <th *ngFor="let header of headers; let headerColIndex = index" ngSortable [data]="gridData" id="{{headerColIndex}}">{{header}}</th>
     </tr>
   </thead>
   <tbody ngPaste>
-    <tr *ngFor="let row of gridData; let rowId = index">
+    <tr *ngFor="let row of gridData; let rowId = index;trackBy: trackByFn">
       <th class="_th _tr">{{rowId+1}}</th>
       <td *ngFor="let cell of row; let cellId = index" id="{{rowId}}-{{cellId}}">
         <span>{{cell}}</span>

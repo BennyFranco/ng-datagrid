@@ -67,4 +67,8 @@ export class DatagridComponent implements OnInit, AfterViewInit {
     }
     return headers;
   }
+
+  trackByFn(index, item) {
+    return index; // or item.id
+  }
 }
