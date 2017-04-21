@@ -46,10 +46,13 @@ export class AppComponent implements OnInit, AfterViewInit {
   cellChange(event) {
     // this.datagridService.formatRangeOfCells('0-1', '1-1', FormatterType.Number);
     console.log(event);
-   // setTimeout(() => {
-      this.datagridService.formatCellById(event.id, FormatterType.Number);
+    // setTimeout(() => {
+    this.datagridService.formatCellById(event.id, FormatterType.Number);
 
-  //  });
+    this.datagridService.changeCellValueById('1-0', event.newValue);
+    this.datagridService.formatCellById('1-0', FormatterType.Number);
+
+    //  });
 
     /*setTimeout(() => {
       this.datagridService.addCellCustomStyle(event.row, event.column, { 'background-color': 'blueviolet', 'color': 'white' });

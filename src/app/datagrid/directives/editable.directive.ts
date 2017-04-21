@@ -9,15 +9,43 @@ export class EditableDirective {
   constructor(
     private _elementRef: ElementRef,
     private datagridService: DatagridService,
-    private zone: NgZone) { }
-
-  @HostListener('click') onClick() {
-    this.datagridService.removeSelection(this.datagridService.selectedElementId);
-    this.datagridService.selectElement(this._elementRef.nativeElement);
+    private zone: NgZone) {
+    this.subscribeEvents();
   }
 
-  @HostListener('dblclick') onDoubleClick() {
-    this.datagridService.addInput(this._elementRef.nativeElement);
+  subscribeEvents() {
+    this.onClick();
+    this.onDoubleClick();
+  }
+
+  onClick() {
+    this.zone.runOutsideAngular(() => {
+      document.addEventListener('click', (event) => {
+        console.log(event);
+        let element;
+        this.datagridService.removeSelection(this.datagridService.selectedElementId);
+        if (event.toElement.tagName === 'SPAN') {
+          element = event.toElement.parentElement;
+        } else {
+          element = event.toElement;
+        }
+        this.datagridService.selectElement(null, element.id);
+      });
+    });
+  }
+
+  onDoubleClick() {
+    this.zone.runOutsideAngular(() => {
+      document.addEventListener('dblclick', (event) => {
+        let element;
+        if (event.toElement.tagName === 'SPAN') {
+          element = event.toElement.parentElement;
+        } else {
+          element = event.toElement;
+        }
+        this.datagridService.addInput(element);
+      });
+    });
   }
 
   @HostListener('paste', ['$event']) onPaste(event: ClipboardEvent) {

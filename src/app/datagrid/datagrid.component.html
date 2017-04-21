@@ -1,4 +1,4 @@
-<table ngKeyboardEvents [rowLimit]="rowLimit" [colLimit]="colLimit">
+<table ngEditable ngKeyboardEvents [rowLimit]="rowLimit" [colLimit]="colLimit">
   <thead>
     <tr class="_th">
       <th class="_th _tr"></th>
@@ -9,7 +9,7 @@
   <tbody>
     <tr *ngFor="let row of gridData; let rowId = index">
       <th class="_th _tr">{{rowId+1}}</th>
-      <td *ngFor="let cell of row; let cellId = index" ngEditable id="{{rowId}}-{{cellId}}">
+      <td *ngFor="let cell of row; let cellId = index" id="{{rowId}}-{{cellId}}">
         <span>{{cell}}</span>
       </td>
     </tr>

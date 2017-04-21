@@ -8,9 +8,18 @@ import { ChangedCell } from './dao/changed-cell';
 @Injectable()
 export class DatagridService {
 
+  _gridData: Array<any>;
+
   selectedElement: any;
   selectedElementId: string;
-  gridData: any;
+
+  set gridData(gridData: any) {
+    this._gridData = gridData;
+  }
+
+  get gridData(): any {
+    return this._gridData;
+  }
 
   @Output() onCellChange = new EventEmitter();
   @Output() gridDataChange = new EventEmitter();
@@ -40,9 +49,7 @@ export class DatagridService {
       const element = document.getElementById(id);
       element.classList.remove('selected');
       if (element.children.length > 1) {
-        this.zone.runGuarded(() => {
-          this.cancelCellEdition(element, true);
-        });
+        this.cancelCellEdition(element, true);
       }
     }
   }
@@ -52,7 +59,7 @@ export class DatagridService {
     const element = document.getElementById(id);
 
     const waitingForDomUpdate = new Promise(resolve => {
-      resolve(() => this.gridData[row][col] = value);
+      resolve(this.gridData[row][col] = value);
     });
 
     element.firstElementChild.textContent = value;
@@ -65,7 +72,7 @@ export class DatagridService {
     const row = Number.parseInt(id.split('-')[0]);
     const col = Number.parseInt(id.split('-')[1]);
     const waitingForDomUpdate = new Promise(resolve => {
-      resolve(() => this.gridData[row][col] = value);
+      resolve(this.gridData[row][col] = value);
     });
 
     element.firstElementChild.textContent = value;
@@ -121,11 +128,11 @@ export class DatagridService {
       if (saveElement) {
         this.undoManegerService.addToBuffer(new BufferedObject(element.id, element.children[0].textContent, element.children[1].value));
         const cell = new ChangedCell(element.id, element.children[0].textContent, element.children[1].value);
-        this.emitChanges(cell);
         element.firstElementChild.textContent = cell.newValue;
+        this.emitChanges(cell);
       }
       element.removeChild(element.children[1]);
-      element.children[0].style.display = 'inherit';
+      element.children[0].style.display = 'block';
     } else if (editable) {
       this.addInput(element);
     }
@@ -165,7 +172,7 @@ export class DatagridService {
   }
 
   emitChanges(cell: ChangedCell) {
-    // this.gridData[cell.row][cell.column] = cell.newValue;
+    this.gridData[cell.row][cell.column] = cell.newValue;
     this.onCellChange.emit(cell);
     this.gridDataChange.emit(this.gridData);
   }
