@@ -1,5 +1,5 @@
 table {
-    border-collapse: collapse;
+    border-collapse: separate;
     table-layout: fixed !important;
     word-break: break-all;
     border-spacing: 0;
@@ -10,16 +10,12 @@ table {
     display: block;
     overflow: auto;
     -webkit-overflow-scrolling: scroll;
+    position: relative;
+    border: 0.5px solid #ccc;
 }
 
 thead {
     background-color: #ddd;
-}
-
-table,
-th,
-td {
-    border: 1px solid #ccc;
 }
 
 ._th {
@@ -48,6 +44,8 @@ td {
     width: 60px;
     line-height: 12px;
     min-height: 12px;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
 }
 
 td {
@@ -81,4 +79,14 @@ td span {
 .format-error {
     background: red !important;
     color: white !important;
+}
+
+.top-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    width: 25px;
+    height: 12px;
 }

@@ -37,6 +37,7 @@ export class DatagridComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.datagridService.selectElement(null, '0-0');
+    this.fixedHeaders();
   }
 
   private createRowAndColLimits() {
@@ -70,5 +71,41 @@ export class DatagridComponent implements OnInit, AfterViewInit {
 
   trackByFn(index, item) {
     return index; // or item.id
+  }
+
+  fixedHeaders() {
+    const table = document.querySelector('table');
+    const leftHeaders = [].concat.apply([], document.querySelectorAll('tbody th'));
+    const topHeaders = [].concat.apply([], document.querySelectorAll('thead th'));
+
+    const topLeft = document.getElementById('blank-cell');//document.createElement('div');
+    const computed = window.getComputedStyle(topHeaders[0]);
+    topLeft.classList.add('top-left');
+    /*topLeft.style.width = '25px';
+    topLeft.style.height = '12px';*/
+    table.appendChild(topLeft);
+
+    // this.zone.runOutsideAngular(() => {
+    table.addEventListener('scroll', (e) => {
+      const x = table.scrollLeft;
+      const y = table.scrollTop;
+
+      leftHeaders.forEach(function (leftHeader) {
+        leftHeader.style.transform = translate(x, 0);
+      });
+      topHeaders.forEach(function (topHeader, i) {
+        if (i === 0) {
+          topHeader.style.transform = translate(x, y);
+        } else {
+          topHeader.style.transform = translate(0, y);
+        }
+      });
+      topLeft.style.transform = translate(x, y);
+    });
+
+    function translate(x, y) {
+      return 'translate(' + x + 'px, ' + y + 'px)';
+    }
+    // });
   }
 }
