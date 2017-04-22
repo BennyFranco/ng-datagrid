@@ -11,7 +11,7 @@
       <td *ngFor="let cell of row; let cellId = index" ngEditable id="{{rowId}}-{{cellId}}"  
         (mousedown) = "onSelectionStart(cellId, rowId)" 
         (mousemove)="onSelection(cellId, rowId)" 
-        (mouseup)="onSelectionEnd()">
+        (mouseup)="onSelectionEnd(cellId, rowId)">
         <span>{{cell}}</span>
       </td>
     </tr>

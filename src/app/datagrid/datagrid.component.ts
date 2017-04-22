@@ -76,10 +76,13 @@ onSelectionStart(cellId, rowId) { // 'row-column'  ex. '0-0' '0-1'
       console.log(id);
       document.getElementById(id).className = 'newClass';
     }
+    // si se muebe en y el limite seria en x y si es en x el limite seria x
     
   }
-  onSelectionEnd() {
+  onSelectionEnd(cellId, rowId) {
     this.pressed= false;
+    var id = rowId+'-'+cellId;
+    console.log(id);
     console.log('En el método onSelectionEnd');
   }
 
