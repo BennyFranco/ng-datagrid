@@ -16,8 +16,11 @@ export class DatagridComponent implements OnInit, AfterViewInit {
   rowLimit: number;
   colLimit: number;
   color: string;
-  private data: Array<any> = [];
+  private area: Array<any> = [];
   pressed: boolean = false;
+  private event: MouseEvent;
+  private 
+
 
   constructor(private datagridService: DatagridService) {
     this.gridDataChange = this.datagridService.gridDataChange;
@@ -69,12 +72,20 @@ onSelectionStart(cellId, rowId) { // 'row-column'  ex. '0-0' '0-1'
     }
     
   }
-  onSelection(cellId, rowId){
+  onSelection(cellId, rowId, event: MouseEvent){
+    console.log('En el método onSelection');
     if(this.pressed){
-      console.log('En el método onSelection');
-      var id = rowId+'-'+cellId;
-      console.log(id);
-      document.getElementById(id).className = 'newClass';
+        if(event.clientX && cellId || event.clientY && rowId){
+          console.log('En event X '+ cellId);
+          console.log('En event Y '+ rowId);
+          var id = rowId+'-'+cellId;
+          console.log(id);
+          document.getElementById(id).className = 'newClass';
+
+          
+        }
+        
+      
     }
     // si se muebe en y el limite seria en x y si es en x el limite seria x
     
