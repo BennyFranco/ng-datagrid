@@ -8,8 +8,8 @@ import { DatagridService, FormatterType } from './datagrid/datagrid.service';
 })
 export class AppComponent implements OnInit, AfterViewInit {
   // content = this.generateSheetData();
-  content = this.datagridService.generateEmptySheetWithNumberOfRowsAndColumns(635, 40);
-  // content = this.datagridService.generateEmptySheetWithNumberOfRowsAndColumns(10, 10);
+   content = this.datagridService.generateEmptySheetWithNumberOfRowsAndColumns(635, 40);
+  // content = this.datagridService.generateEmptySheetWithNumberOfRowsAndColumns(1000, 10);
 
   // content = this.generateSheetWithRows(10);
   constructor(private datagridService: DatagridService) {

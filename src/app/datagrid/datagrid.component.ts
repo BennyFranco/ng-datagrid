@@ -1,4 +1,13 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  NgZone,
+  OnInit,
+  Output
+} from '@angular/core';
 import { DatagridService } from './datagrid.service';
 
 @Component({
@@ -17,7 +26,9 @@ export class DatagridComponent implements OnInit, AfterViewInit {
   rowLimit: number;
   colLimit: number;
 
-  constructor(private datagridService: DatagridService) {
+  constructor(
+    private datagridService: DatagridService,
+    private zone: NgZone) {
     this.gridDataChange = this.datagridService.gridDataChange;
     this.onCellChange = this.datagridService.onCellChange;
   }
@@ -70,7 +81,7 @@ export class DatagridComponent implements OnInit, AfterViewInit {
   }
 
   trackByFn(index, item) {
-    return index; // or item.id
+    return index;
   }
 
   fixedHeaders() {
@@ -78,34 +89,34 @@ export class DatagridComponent implements OnInit, AfterViewInit {
     const leftHeaders = [].concat.apply([], document.querySelectorAll('tbody th'));
     const topHeaders = [].concat.apply([], document.querySelectorAll('thead th'));
 
-    const topLeft = document.getElementById('blank-cell');//document.createElement('div');
+    const topLeft = document.getElementById('blank-cell');
     const computed = window.getComputedStyle(topHeaders[0]);
     topLeft.classList.add('top-left');
-    /*topLeft.style.width = '25px';
-    topLeft.style.height = '12px';*/
     table.appendChild(topLeft);
 
-    // this.zone.runOutsideAngular(() => {
-    table.addEventListener('scroll', (e) => {
-      const x = table.scrollLeft;
-      const y = table.scrollTop;
+    this.zone.runOutsideAngular(() => {
+      table.addEventListener('scroll', (e) => {
+        const x = table.scrollLeft;
+        const y = table.scrollTop;
 
-      leftHeaders.forEach(function (leftHeader) {
-        leftHeader.style.transform = translate(x, 0);
+        leftHeaders.forEach((leftHeader) => {
+          leftHeader.style.transform = this.translate(x, 0);
+          // leftHeader.style.transition = 'all 0.1s ease';
+        });
+        topHeaders.forEach((topHeader, i) => {
+          if (i === 0) {
+            topHeader.style.transform = this.translate(x, y);
+          } else {
+            topHeader.style.transform = this.translate(0, y);
+          }
+          // topHeader.style.transition = 'all 0.1s ease';
+        });
+        topLeft.style.transform = this.translate(x, y);
       });
-      topHeaders.forEach(function (topHeader, i) {
-        if (i === 0) {
-          topHeader.style.transform = translate(x, y);
-        } else {
-          topHeader.style.transform = translate(0, y);
-        }
-      });
-      topLeft.style.transform = translate(x, y);
     });
+  }
 
-    function translate(x, y) {
-      return 'translate(' + x + 'px, ' + y + 'px)';
-    }
-    // });
+  translate(x, y): string {
+    return 'translate(' + x + 'px, ' + y + 'px)';
   }
 }
