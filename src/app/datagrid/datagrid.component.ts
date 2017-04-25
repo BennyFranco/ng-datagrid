@@ -12,8 +12,121 @@ import { DatagridService } from './datagrid.service';
 
 @Component({
   selector: 'ng-datagrid',
-  templateUrl: './datagrid.component.html',
-  styleUrls: ['./datagrid.component.css'],
+  template: `
+            <table ngEditable ngKeyboardEvents [rowLimit]="rowLimit" [colLimit]="colLimit">
+            <thead>
+              <tr class="_th">
+                <th id="blank-cell" class="_th _tr"></th>
+                <th class="_th _tr"></th>
+                <th *ngFor="let header of headers; let headerColIndex = index" id="{{headerColIndex}}">{{header}}</th>
+              </tr>
+            </thead>
+            <tbody ngPaste>
+              <tr *ngFor="let row of gridData; let rowId = index;trackBy: trackByFn">
+                <th class="_th _tr">{{rowId+1}}</th>
+                <td *ngFor="let cell of row; let cellId = index" id="{{rowId}}-{{cellId}}">
+                  <span>{{cell}}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+  `,
+  styles: [
+    `
+        table {
+            border-collapse: separate;
+            table-layout: fixed !important;
+            word-break: break-all;
+            border-spacing: 0;
+            font: 12px sans-serif;
+            color: #333;
+            width: 100%;
+            height: 100%;
+            display: block;
+            overflow: auto;
+            -webkit-overflow-scrolling: scroll;
+            position: relative;
+            border: 0.5px solid #ccc;
+        }
+
+        thead {
+            background-color: #ddd;
+        }
+
+        ._th {
+            font-weight: bold;
+            background: #ddd;
+        }
+
+        ._tr {
+            width: auto;
+            min-width: 25px;
+        }
+
+        ._space {
+            width: 100%
+        }
+
+        th {
+            font-weight: bold;
+            background: #ddd;
+        }
+
+        th,
+        td {
+            padding: 0.5em;
+            height: 12px;
+            width: 60px;
+            line-height: 12px;
+            min-height: 12px;
+            border-right: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+        }
+
+        td {
+            cursor: cell;
+        }
+
+        td span {
+            display: block;
+            width: 60px !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .selected {
+            box-shadow: inset 0 0 0 2px blue;
+        }
+
+        .sortable-header {
+            cursor: pointer;
+        }
+
+        .sortable-header:hover {
+            text-decoration: underline;
+        }
+
+        .disable {
+            color: rgba(160, 160, 160, 1) !important;
+        }
+
+        .format-error {
+            background: red !important;
+            color: white !important;
+        }
+
+        .top-left {
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-right: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+            width: 25px;
+            height: 12px;
+        }
+    `
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatagridComponent implements OnInit, AfterViewInit {
