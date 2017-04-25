@@ -9,9 +9,9 @@
     <tr *ngFor="let row of gridData; let rowId = index">
       <th class="_th _tr">{{rowId+1}}</th>
       <td *ngFor="let cell of row; let cellId = index" ngEditable id="{{rowId}}-{{cellId}}"  
-        (mousedown) = "onSelectionStart(cellId, rowId)" 
-        (mousemove)="onSelection(cellId, rowId)" 
-        (mouseup)="onSelectionEnd(cellId, rowId)">
+        (mousedown) = "onSelectionStart(rowId, cellId)" 
+        (mousemove)="onSelection(rowId, cellId)" 
+        (mouseup)="onSelectionEnd(rowId, cellId)">
         <span>{{cell}}</span>
       </td>
     </tr>

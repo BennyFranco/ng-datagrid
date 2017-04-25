@@ -18,9 +18,8 @@ export class DatagridComponent implements OnInit, AfterViewInit {
   color: string;
   private area: Array<String> = [];
   private pressed: boolean = false;
-  private originRow: String;
-  private originCell: String;
-  private event: MouseEvent;
+  private from: string;
+  private to: string;
 
   constructor(private datagridService: DatagridService) {
     this.gridDataChange = this.datagridService.gridDataChange;
@@ -60,54 +59,46 @@ export class DatagridComponent implements OnInit, AfterViewInit {
     return headers;
   }
 
-onSelectionStart(cellId, rowId) { // 'row-column'  ex. '0-0' '0-1'
-    if(!this.pressed){
+  onSelectionStart(rowId, cellId) { // 'row-column'  ex. '0-0' '0-1'
+    if (!this.pressed) {
+      let id = rowId + '-' + cellId;
+      this.from = id;
+      this.pressed = true;
+      this.area.push(id);
 
-      this.pressed= true;
-      var id = rowId+'-'+cellId;
-      this.originRow = rowId;
-      this.originCell = cellId;
-
-      document.getElementById(id).className = 'newClass';
-      
-    }else{
-      this.pressed=false;
+    } else {
+      this.pressed = false;
     }
-    
+
   }
-  onSelection(cellId, rowId, event: MouseEvent){
+  onSelection(rowId, cellId) {
+    const id = rowId + '-' + cellId;
 
-    if(this.pressed){
-       var idXY = rowId+'-'+cellId;
-       var limitCell= cellId;
-       var limitRow=rowId;
-       var nuevo;
-
-       if(cellId!=this.originCell){
-         for(var i=0; i<=limitCell;i++){
-          nuevo=this.originRow + '-'+cellId;
-          document.getElementById(nuevo).className = 'newClass';
-         }
-       }
-       if(cellId!=this.originRow){
-        for(var i=0; i<=limitRow;i++){
-          nuevo=rowId + '-'+this.originCell;
-          document.getElementById(nuevo).className = 'newClass';
-         }
-       }
-
-       
-       
-
+    if (this.pressed) {
+      this.to = id;
+      this.selectArea();
     }
   }
+  selectArea() {
+    const fromArray = this.from.split('-');
+    const toArray = this.to.split('-');
 
-  onSelectionEnd(cellId, rowId) {
-    this.pressed= false;
-    var id = rowId+'-'+cellId;
-    //console.log(id);
-   // console.log('En el método onSelectionEnd');
-    document.getElementById(id).className = 'newClass';
+    if (Number.parseInt(fromArray[0]) < Number.parseInt(toArray[0])) {
+      for (let row = Number.parseInt(fromArray[0]); row <= Number.parseInt(toArray[0]); row++) {
+        for (let col = Number.parseInt(fromArray[1]); col <= Number.parseInt(toArray[1]); col++) {
+          document.getElementById(row + '-' + col).className = 'newClass';
+        }
+      }
+    } else {
+      for (let row = Number.parseInt(fromArray[0]); row >= Number.parseInt(toArray[0]); row--) {
+        for (let col = Number.parseInt(fromArray[1]); col >= Number.parseInt(toArray[1]); col--) {
+          document.getElementById(row + '-' + col).className = 'newClass';
+        }
+      }
+    }
+  }
+  onSelectionEnd() {
+    this.pressed = false;
   }
 
 }
