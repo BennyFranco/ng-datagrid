@@ -16,11 +16,11 @@ export class DatagridComponent implements OnInit, AfterViewInit {
   rowLimit: number;
   colLimit: number;
   color: string;
-  private area: Array<any> = [];
-  pressed: boolean = false;
+  private area: Array<String> = [];
+  private pressed: boolean = false;
+  private originRow: String;
+  private originCell: String;
   private event: MouseEvent;
-  private 
-
 
   constructor(private datagridService: DatagridService) {
     this.gridDataChange = this.datagridService.gridDataChange;
@@ -62,39 +62,52 @@ export class DatagridComponent implements OnInit, AfterViewInit {
 
 onSelectionStart(cellId, rowId) { // 'row-column'  ex. '0-0' '0-1'
     if(!this.pressed){
+
       this.pressed= true;
-      console.log('En el método onSelectionStart');
       var id = rowId+'-'+cellId;
-      console.log(id);
+      this.originRow = rowId;
+      this.originCell = cellId;
+
       document.getElementById(id).className = 'newClass';
+      
     }else{
       this.pressed=false;
     }
     
   }
   onSelection(cellId, rowId, event: MouseEvent){
-    console.log('En el método onSelection');
-    if(this.pressed){
-        if(event.clientX && cellId || event.clientY && rowId){
-          console.log('En event X '+ cellId);
-          console.log('En event Y '+ rowId);
-          var id = rowId+'-'+cellId;
-          console.log(id);
-          document.getElementById(id).className = 'newClass';
 
-          
-        }
-        
-      
+    if(this.pressed){
+       var idXY = rowId+'-'+cellId;
+       var limitCell= cellId;
+       var limitRow=rowId;
+       var nuevo;
+
+       if(cellId!=this.originCell){
+         for(var i=0; i<=limitCell;i++){
+          nuevo=this.originRow + '-'+cellId;
+          document.getElementById(nuevo).className = 'newClass';
+         }
+       }
+       if(cellId!=this.originRow){
+        for(var i=0; i<=limitRow;i++){
+          nuevo=rowId + '-'+this.originCell;
+          document.getElementById(nuevo).className = 'newClass';
+         }
+       }
+
+       
+       
+
     }
-    // si se muebe en y el limite seria en x y si es en x el limite seria x
-    
   }
+
   onSelectionEnd(cellId, rowId) {
     this.pressed= false;
     var id = rowId+'-'+cellId;
-    console.log(id);
-    console.log('En el método onSelectionEnd');
+    //console.log(id);
+   // console.log('En el método onSelectionEnd');
+    document.getElementById(id).className = 'newClass';
   }
 
 }
