@@ -300,15 +300,20 @@ export class DatagridService {
     }
   }
 
-  fixedElements() {
+  fixElements() {
     const table = document.querySelector('table');
-    const leftHeaders = [].concat.apply([], document.getElementsByClassName(this.fixedLeft));
-    const topHeaders = [].concat.apply([], document.getElementsByClassName(this.fixedTop));
     const fixedRowHeaders = [].concat.apply([], document.getElementsByClassName(this.fixedRowHeader));
+    let leftHeaders = [].concat.apply([], document.getElementsByClassName(this.fixedLeft));
+    let topHeaders = [].concat.apply([], document.getElementsByClassName(this.fixedTop));
+
+    leftHeaders = leftHeaders.filter(header => !(header.classList.contains(this.fixedTop)));
+    topHeaders = topHeaders.filter(header => !(header.classList.contains(this.fixedLeft)));
 
     const topLeft = document.getElementById('blank-cell');
     const computed = window.getComputedStyle(topHeaders[0]);
     table.appendChild(topLeft);
+
+    table.removeEventListener('scroll');
 
     this.zone.runOutsideAngular(() => {
       table.addEventListener('scroll', (e) => {
@@ -328,10 +333,6 @@ export class DatagridService {
           // topHeader.style.transition = 'all 0.1s ease';
         });
         topLeft.style.transform = this.translate(x, y);
-
-        fixedRowHeaders.forEach((header, i) => {
-          header.style.transform = this.translate(x, y);
-        });
       });
     });
   }
@@ -340,7 +341,31 @@ export class DatagridService {
     return 'translate(' + x + 'px, ' + y + 'px)';
   }
 
-  fixRow(row: number) {
+  fixFirstRow() {
+    let id: string;
+    ([...this.gridData].pop()).forEach((element, col) => {
+      id = 0 + '-' + col;
+      const domElement = document.getElementById('row-' + 0);
+      domElement.classList.remove(this.fixedLeft);
+      domElement.classList.add(this.fixedRowHeader);
+      document.getElementById(id).classList.add(this.fixedTop);
+    });
+    this.fixElements();
+  }
+
+  fixFirstColumn() {
+    let id: string;
+    for (let row = 0; row < this._gridData.length; row++) {
+      id = row + '-' + 0;
+      const domElement = document.getElementById('col-' + 0);
+      domElement.classList.remove(this.fixedTop);
+      domElement.classList.add(this.fixedRowHeader);
+      document.getElementById(id).classList.add(this.fixedLeft);
+    }
+    this.fixElements();
+  }
+
+  private fixRow(row: number) {
     let id: string;
     ([...this.gridData].pop()).forEach((element, col) => {
       id = row + '-' + col;
@@ -349,9 +374,10 @@ export class DatagridService {
       domElement.classList.add(this.fixedRowHeader);
       document.getElementById(id).classList.add(this.fixedTop);
     });
+    this.fixElements();
   }
 
-  fixRows(from: number, to: number) {
+  private fixRows(from: number, to: number) {
     let id: string;
     for (; from <= to; from++) {
       ([...this.gridData].pop()).forEach((element, col) => {
@@ -363,6 +389,19 @@ export class DatagridService {
         document.getElementById(id).classList.add(this.fixedTop);
       });
     }
+    this.fixElements();
+  }
+
+  private fixColumn(col: number) {
+    let id: string;
+    for (let row = 0; row < this._gridData.length; row++) {
+      id = row + '-' + col;
+      const domElement = document.getElementById('col-' + col);
+      domElement.classList.remove(this.fixedTop);
+      domElement.classList.add(this.fixedRowHeader);
+      document.getElementById(id).classList.add(this.fixedLeft);
+    }
+    this.fixElements();
   }
 }
 

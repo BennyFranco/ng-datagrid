@@ -53,7 +53,7 @@ export class DatagridComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.datagridService.selectElement(null, '0-0');
-    this.datagridService.fixedElements();
+    this.datagridService.fixElements();
   }
 
   private createRowAndColLimits() {

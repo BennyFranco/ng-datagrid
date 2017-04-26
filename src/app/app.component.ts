@@ -20,8 +20,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.datagridService.fixRows(0, 1);
-    this.datagridService.fixedElements();
+    this.datagridService.fixFirstColumn();
+    this.datagridService.fixFirstRow();
     /*this.datagridService.disableRow(2);
     // this.datagridService.formatColumn(1, FormatterType.Number);
     this.datagridService.formatRangeOfCells('0-1', '1-1', FormatterType.Number);
