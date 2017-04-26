@@ -8,10 +8,10 @@ import { DatagridService, FormatterType } from './datagrid/datagrid.service';
 })
 export class AppComponent implements OnInit, AfterViewInit {
   // content = this.generateSheetData();
-   content = this.datagridService.generateEmptySheetWithNumberOfRowsAndColumns(635, 40);
+  // content = this.datagridService.generateEmptySheetWithNumberOfRowsAndColumns(635, 40);
   // content = this.datagridService.generateEmptySheetWithNumberOfRowsAndColumns(1000, 10);
 
-  // content = this.generateSheetWithRows(10);
+  content = this.generateSheetWithRows(20);
   constructor(private datagridService: DatagridService) {
     // this.datagridService.gridData = this.content;
   }
@@ -20,7 +20,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-
+    this.datagridService.fixRows(0, 1);
+    this.datagridService.fixedElements();
     /*this.datagridService.disableRow(2);
     // this.datagridService.formatColumn(1, FormatterType.Number);
     this.datagridService.formatRangeOfCells('0-1', '1-1', FormatterType.Number);
@@ -30,21 +31,22 @@ export class AppComponent implements OnInit, AfterViewInit {
   generateSheetWithRows(rows: number): Array<any> {
     const matrix = [];
     for (let i = 0; i < rows; i++) {
-      matrix.push(['Lorem', 'ipsum', 'dolor', 'sit', 'amet']);
+      matrix.push(
+        ['Lorem', 'ipsum', 'dolor', 'sit', 'amet', 'Lorem', 'ipsum', 'dolor', 'sit', 'amet', 'Lorem', 'ipsum', 'dolor', 'sit', 'amet']);
     }
     return matrix;
   }
 
   generateSheetData(): Array<any> {
     return [
-     ['0', 1, 2],
-     ['1', 0, 0],
-     ['2', 0, 0],
-     ['3', 0, 0],
-     ['4', 0, 0],
-     ['5', 0, 0],
-     ['6', 0, 0],
-     ['TOTAL', 0, 0]
+      ['0', 1, 2],
+      ['1', 0, 0],
+      ['2', 0, 0],
+      ['3', 0, 0],
+      ['4', 0, 0],
+      ['5', 0, 0],
+      ['6', 0, 0],
+      ['TOTAL', 0, 0]
     ];
   }
 

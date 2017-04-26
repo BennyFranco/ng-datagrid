@@ -1,4 +1,4 @@
-import { EventEmitter, Injectable, Output } from '@angular/core';
+import { EventEmitter, Injectable, NgZone, Output } from '@angular/core';
 import { isFirefox } from './shared/navigator-utils';
 import { UndoManagerService } from './services/undo-manager/undo-manager.service';
 import { FormatterService } from './services/formatter/formatter.service';
@@ -13,6 +13,10 @@ export class DatagridService {
   selectedElement: any;
   selectedElementId: string;
 
+  private fixedTop = 'fixed-top';
+  private fixedLeft = 'fixed-left';
+  private fixedRowHeader = 'fixed-row-header';
+
   set gridData(gridData: any) {
     this._gridData = gridData;
   }
@@ -26,7 +30,8 @@ export class DatagridService {
 
   constructor(
     private undoManegerService: UndoManagerService,
-    private formatter: FormatterService) {
+    private formatter: FormatterService,
+    private zone: NgZone) {
     this.formatter.undoManager = this.undoManegerService;
   }
 
@@ -292,6 +297,71 @@ export class DatagridService {
       for (let j = Number.parseInt(fromArray[1]); j <= Number.parseInt(toArray[1]); j++) {
         this.formatCellById((i + '-' + j), formatter, errorClass, properties);
       }
+    }
+  }
+
+  fixedElements() {
+    const table = document.querySelector('table');
+    const leftHeaders = [].concat.apply([], document.getElementsByClassName(this.fixedLeft));
+    const topHeaders = [].concat.apply([], document.getElementsByClassName(this.fixedTop));
+    const fixedRowHeaders = [].concat.apply([], document.getElementsByClassName(this.fixedRowHeader));
+
+    const topLeft = document.getElementById('blank-cell');
+    const computed = window.getComputedStyle(topHeaders[0]);
+    table.appendChild(topLeft);
+
+    this.zone.runOutsideAngular(() => {
+      table.addEventListener('scroll', (e) => {
+        const x = table.scrollLeft;
+        const y = table.scrollTop;
+
+        leftHeaders.forEach((leftHeader) => {
+          leftHeader.style.transform = this.translate(x, 0);
+          // leftHeader.style.transition = 'all 0.1s ease';
+        });
+        topHeaders.forEach((topHeader, i) => {
+          if (i === 0) {
+            topHeader.style.transform = this.translate(x, y);
+          } else {
+            topHeader.style.transform = this.translate(0, y);
+          }
+          // topHeader.style.transition = 'all 0.1s ease';
+        });
+        topLeft.style.transform = this.translate(x, y);
+
+        fixedRowHeaders.forEach((header, i) => {
+          header.style.transform = this.translate(x, y);
+        });
+      });
+    });
+  }
+
+  translate(x, y): string {
+    return 'translate(' + x + 'px, ' + y + 'px)';
+  }
+
+  fixRow(row: number) {
+    let id: string;
+    ([...this.gridData].pop()).forEach((element, col) => {
+      id = row + '-' + col;
+      const domElement = document.getElementById('row-' + row);
+      domElement.classList.remove(this.fixedLeft);
+      domElement.classList.add(this.fixedRowHeader);
+      document.getElementById(id).classList.add(this.fixedTop);
+    });
+  }
+
+  fixRows(from: number, to: number) {
+    let id: string;
+    for (; from <= to; from++) {
+      ([...this.gridData].pop()).forEach((element, col) => {
+
+        id = from + '-' + col;
+        const domElement = document.getElementById('row-' + from);
+        domElement.classList.remove(this.fixedLeft);
+        domElement.classList.add(this.fixedRowHeader);
+        document.getElementById(id).classList.add(this.fixedTop);
+      });
     }
   }
 }

@@ -47,10 +47,17 @@ td {
     min-height: 12px;
     border-right: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 td {
     cursor: cell;
+    background-color: white;
 }
 
 td span {
@@ -77,9 +84,8 @@ td span {
     color: rgba(160, 160, 160, 1) !important;
 }
 
-.newClass{
-    background-color:#BDBDBD;
-
+.newClass {
+    background-color: #BDBDBD;
 }
 
 .format-error {
@@ -95,4 +101,10 @@ td span {
     border-bottom: 1px solid #ccc;
     width: 25px;
     height: 12px;
+}
+
+.fixed-row-header {
+    z-index: 9999 !important;
+    display: block;
+    position: absolute;
 }

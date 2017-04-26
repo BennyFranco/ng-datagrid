@@ -53,7 +53,7 @@ export class DatagridComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.datagridService.selectElement(null, '0-0');
-    this.fixedHeaders();
+    this.datagridService.fixedElements();
   }
 
   private createRowAndColLimits() {
@@ -86,28 +86,33 @@ export class DatagridComponent implements OnInit, AfterViewInit {
   }
 
   onSelectionStart(rowId, cellId) { // 'row-column'  ex. '0-0' '0-1'
-    if (!this.pressed && this.area.length == 0) {
-      this.pressed = true;
-      let id = rowId + '-' + cellId;
-      this.from = id;
-    } else {
-      this.pressed = false;
-      console.log('Array lleno');
-    }
-
-  }
-  onSelection(rowId, cellId) {
-    const id = rowId + '-' + cellId;
-
-    if (this.pressed) {
-      this.to = id;
-      this.selectArea();
-      document.getElementById(id).className = 'newClass';
-      if (this.area.indexOf(id) === -1) {
-        this.area.push(id);
+    this.zone.runOutsideAngular(() => {
+      if (!this.pressed && this.area.length == 0) {
+        this.pressed = true;
+        let id = rowId + '-' + cellId;
+        this.from = id;
+      } else {
+        this.pressed = false;
+        console.log('Array lleno');
       }
-    }
+    });
   }
+
+  onSelection(rowId, cellId) {
+    this.zone.runOutsideAngular(() => {
+      const id = rowId + '-' + cellId;
+
+      if (this.pressed) {
+        this.to = id;
+        this.selectArea();
+        document.getElementById(id).classList.add('newClass');
+        if (this.area.indexOf(id) === -1) {
+          this.area.push(id);
+        }
+      }
+    });
+  }
+
   selectArea() {
     const fromArray = this.from.split('-');
     const toArray = this.to.split('-');
@@ -115,7 +120,7 @@ export class DatagridComponent implements OnInit, AfterViewInit {
     if (Number.parseInt(fromArray[0]) < Number.parseInt(toArray[0])) {
       for (let row = Number.parseInt(fromArray[0]); row <= Number.parseInt(toArray[0]); row++) {
         for (let col = Number.parseInt(fromArray[1]); col <= Number.parseInt(toArray[1]); col++) {
-          document.getElementById(row + '-' + col).className = 'newClass';
+          document.getElementById(row + '-' + col).classList.add('newClass');
           if (this.area.indexOf(row + '-' + col) === -1) {
             this.area.push(row + '-' + col);
           }
@@ -124,7 +129,7 @@ export class DatagridComponent implements OnInit, AfterViewInit {
     } else {
       for (let row = Number.parseInt(fromArray[0]); row >= Number.parseInt(toArray[0]); row--) {
         for (let col = Number.parseInt(fromArray[1]); col >= Number.parseInt(toArray[1]); col--) {
-          document.getElementById(row + '-' + col).className = 'newClass';
+          document.getElementById(row + '-' + col).classList.add('newClass');
           if (this.area.indexOf(row + '-' + col) === -1) {
             this.area.push(row + '-' + col);
           }
@@ -133,47 +138,13 @@ export class DatagridComponent implements OnInit, AfterViewInit {
     }
   }
   onSelectionEnd() {
-    this.pressed = false;
-    console.log(this.area.length);
+    this.zone.runOutsideAngular(() => {
+      this.pressed = false;
+      // console.log(this.area.length);
+    });
   }
 
   trackByFn(index, item) {
     return index;
-  }
-
-  fixedHeaders() {
-    const table = document.querySelector('table');
-    const leftHeaders = [].concat.apply([], document.querySelectorAll('tbody th'));
-    const topHeaders = [].concat.apply([], document.querySelectorAll('thead th'));
-
-    const topLeft = document.getElementById('blank-cell');
-    const computed = window.getComputedStyle(topHeaders[0]);
-    topLeft.classList.add('top-left');
-    table.appendChild(topLeft);
-
-    this.zone.runOutsideAngular(() => {
-      table.addEventListener('scroll', (e) => {
-        const x = table.scrollLeft;
-        const y = table.scrollTop;
-
-        leftHeaders.forEach((leftHeader) => {
-          leftHeader.style.transform = this.translate(x, 0);
-          // leftHeader.style.transition = 'all 0.1s ease';
-        });
-        topHeaders.forEach((topHeader, i) => {
-          if (i === 0) {
-            topHeader.style.transform = this.translate(x, y);
-          } else {
-            topHeader.style.transform = this.translate(0, y);
-          }
-          // topHeader.style.transition = 'all 0.1s ease';
-        });
-        topLeft.style.transform = this.translate(x, y);
-      });
-    });
-  }
-
-  translate(x, y): string {
-    return 'translate(' + x + 'px, ' + y + 'px)';
   }
 }
