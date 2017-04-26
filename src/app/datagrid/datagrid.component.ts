@@ -86,7 +86,6 @@ export class DatagridComponent implements OnInit, AfterViewInit {
   }
 
   onSelectionStart(rowId, cellId) { // 'row-column'  ex. '0-0' '0-1'
-    this.zone.runOutsideAngular(() => {
       if (!this.pressed && this.area.length == 0) {
         this.pressed = true;
         let id = rowId + '-' + cellId;
@@ -95,11 +94,9 @@ export class DatagridComponent implements OnInit, AfterViewInit {
         this.pressed = false;
         console.log('Array lleno');
       }
-    });
   }
 
   onSelection(rowId, cellId) {
-    this.zone.runOutsideAngular(() => {
       const id = rowId + '-' + cellId;
 
       if (this.pressed) {
@@ -110,7 +107,6 @@ export class DatagridComponent implements OnInit, AfterViewInit {
           this.area.push(id);
         }
       }
-    });
   }
 
   selectArea() {
@@ -138,10 +134,8 @@ export class DatagridComponent implements OnInit, AfterViewInit {
     }
   }
   onSelectionEnd() {
-    this.zone.runOutsideAngular(() => {
       this.pressed = false;
-      // console.log(this.area.length);
-    });
+      console.log(this.area.length);
   }
 
   trackByFn(index, item) {
