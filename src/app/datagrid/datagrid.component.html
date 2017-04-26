@@ -1,14 +1,15 @@
-<table ngKeyboardEvents [rowLimit]="rowLimit" [colLimit]="colLimit">
+<table ngEditable ngKeyboardEvents [rowLimit]="rowLimit" [colLimit]="colLimit">
   <thead>
     <tr class="_th">
+      <th id="blank-cell" class="_th _tr"></th>
       <th class="_th _tr"></th>
-      <th *ngFor="let header of headers; let headerColIndex = index" ngSortable [data]="gridData" id="{{headerColIndex}}">{{header}}</th>
+      <th *ngFor="let header of headers; let headerColIndex = index" id="{{headerColIndex}}">{{header}}</th>
     </tr>
   </thead>
-  <tbody>
-    <tr *ngFor="let row of gridData; let rowId = index">
+  <tbody ngPaste>
+    <tr *ngFor="let row of gridData; let rowId = index;trackBy: trackByFn">
       <th class="_th _tr">{{rowId+1}}</th>
-      <td *ngFor="let cell of row; let cellId = index" ngEditable id="{{rowId}}-{{cellId}}"  
+      <td *ngFor="let cell of row; let cellId = index"  id="{{rowId}}-{{cellId}}"  
         (mousedown) = "onSelectionStart(rowId, cellId)" 
         (mousemove)="onSelection(rowId, cellId)" 
         (mouseup)="onSelectionEnd(rowId, cellId)">

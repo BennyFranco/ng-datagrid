@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, Input } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, NgZone } from '@angular/core';
 import { DatagridService } from '../datagrid.service';
 
 @Directive({
@@ -8,18 +8,45 @@ export class EditableDirective {
 
   constructor(
     private _elementRef: ElementRef,
-    private datagridService: DatagridService) { }
-
-  @HostListener('click') onClick() {
-    this.datagridService.removeSelection(this.datagridService.selectedElementId);
-    this.datagridService.selectElement(this._elementRef.nativeElement);
+    private datagridService: DatagridService,
+    private zone: NgZone) {
+    this.subscribeEvents();
   }
 
-  @HostListener('dblclick') onDoubleClick() {
-    this.datagridService.addInput(this._elementRef.nativeElement);
+  subscribeEvents() {
+    this.onClick();
+    this.onDoubleClick();
   }
 
-  @HostListener('paste', ['$event']) onPaste(event: ClipboardEvent) {
-    this.datagridService.selectedElement.textContent = event.clipboardData.getData('text');
+  onClick() {
+    this.zone.runOutsideAngular(() => {
+      document.addEventListener('click', (event: MouseEvent) => {
+        if ((<HTMLElement>event.target).tagName === 'TH') {
+          return;
+        }
+        let element;
+        this.datagridService.removeSelection(this.datagridService.selectedElementId);
+        if ((<HTMLElement>event.target).tagName === 'SPAN') {
+          element = (<HTMLElement>event.target).parentElement;
+        } else {
+          element = (<HTMLElement>event.target);
+        }
+        this.datagridService.selectElement(null, element.id);
+      });
+    });
+  }
+
+  onDoubleClick() {
+    this.zone.runOutsideAngular(() => {
+      document.addEventListener('dblclick', (event) => {
+        let element;
+        if ((<HTMLElement>event.target).tagName === 'SPAN') {
+          element = (<HTMLElement>event.target).parentElement;
+        } else {
+          element = (<HTMLElement>event.target);
+        }
+        this.datagridService.addInput(element);
+      });
+    });
   }
 }

@@ -26,12 +26,13 @@
     ]
   },
   "exclude": [
-    "node_modules"
+    "**/*.spec.ts",
+    "./vendor.ts",
+    "./polyfills.ts"
   ],
   "angularCompilerOptions": {
-    "genDir": "../temp/factories",
-    "strictMetadataEmit": true,
     "skipTemplateCodegen": true,
+    "debug": true,
     "entryModule": "app/datagrid/datagrid.module#DatagridModule"
   }
 }
