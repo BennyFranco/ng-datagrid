@@ -60,14 +60,13 @@ export class DatagridComponent implements OnInit, AfterViewInit {
   }
 
   onSelectionStart(rowId, cellId) { // 'row-column'  ex. '0-0' '0-1'
-    if (!this.pressed) {
+    if (!this.pressed && this.area.length == 0) {
+      this.pressed = true;
       let id = rowId + '-' + cellId;
       this.from = id;
-      this.pressed = true;
-      this.area.push(id);
-
     } else {
       this.pressed = false;
+      console.log('Array lleno');
     }
 
   }
@@ -77,6 +76,10 @@ export class DatagridComponent implements OnInit, AfterViewInit {
     if (this.pressed) {
       this.to = id;
       this.selectArea();
+      document.getElementById(id).className = 'newClass';
+      if (this.area.indexOf(id) === -1) {
+        this.area.push(id);
+      }
     }
   }
   selectArea() {
@@ -87,18 +90,25 @@ export class DatagridComponent implements OnInit, AfterViewInit {
       for (let row = Number.parseInt(fromArray[0]); row <= Number.parseInt(toArray[0]); row++) {
         for (let col = Number.parseInt(fromArray[1]); col <= Number.parseInt(toArray[1]); col++) {
           document.getElementById(row + '-' + col).className = 'newClass';
+          if (this.area.indexOf(row + '-' + col) === -1) {
+            this.area.push(row + '-' + col);
+          }
         }
       }
     } else {
       for (let row = Number.parseInt(fromArray[0]); row >= Number.parseInt(toArray[0]); row--) {
         for (let col = Number.parseInt(fromArray[1]); col >= Number.parseInt(toArray[1]); col--) {
           document.getElementById(row + '-' + col).className = 'newClass';
+          if (this.area.indexOf(row + '-' + col) === -1) {
+            this.area.push(row + '-' + col);
+          }
         }
       }
     }
   }
   onSelectionEnd() {
     this.pressed = false;
+    console.log(this.area.length);
   }
 
 }
