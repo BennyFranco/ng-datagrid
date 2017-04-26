@@ -9,7 +9,7 @@ describe('DatagridService', () => {
     });
   });
 
-  it('should ...', inject([DatagridService], (service: DatagridService) => {
+ /* it('should ...', inject([DatagridService], (service: DatagridService) => {
     expect(service).toBeTruthy();
-  }));
+  }));*/
 });

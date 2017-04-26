@@ -1,20 +1,34 @@
-import { Injectable, Output, EventEmitter } from '@angular/core';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 import { isFirefox } from './shared/navigator-utils';
 import { UndoManagerService } from './services/undo-manager/undo-manager.service';
+import { FormatterService } from './services/formatter/formatter.service';
 import { BufferedObject } from './services/undo-manager/buffered-object';
 import { ChangedCell } from './dao/changed-cell';
 
 @Injectable()
 export class DatagridService {
 
+  _gridData: Array<any>;
+
   selectedElement: any;
   selectedElementId: string;
-  gridData: any;
+
+  set gridData(gridData: any) {
+    this._gridData = gridData;
+  }
+
+  get gridData(): any {
+    return this._gridData;
+  }
 
   @Output() onCellChange = new EventEmitter();
   @Output() gridDataChange = new EventEmitter();
 
-  constructor(private undoManegerService: UndoManagerService) { }
+  constructor(
+    private undoManegerService: UndoManagerService,
+    private formatter: FormatterService) {
+    this.formatter.undoManager = this.undoManegerService;
+  }
 
   selectElement(nativeElement: any, id?: string) {
     if (id) {
@@ -33,22 +47,34 @@ export class DatagridService {
     if (id) {
       const element = document.getElementById(id);
       element.classList.remove('selected');
-      this.cancelCellEdition(element, true);
+      if (element.children.length > 1) {
+        this.cancelCellEdition(element, true);
+      }
     }
   }
 
   changeCellValue(row: number, col: number, value: any) {
     const id = row + '-' + col;
     const element = document.getElementById(id);
-    element.firstElementChild.textContent = value;
 
     const waitingForDomUpdate = new Promise(resolve => {
-      resolve((n) => {
-        this.gridData[row][col] = value;
-        return true;
-      }
-      );
+      resolve(this.gridData[row][col] = value);
     });
+
+    element.firstElementChild.textContent = value;
+
+    waitingForDomUpdate.then(() => document.getElementById(id).className = element.className);
+  }
+
+  changeCellValueById(id: string, value: any) {
+    const element = document.getElementById(id);
+    const row = Number.parseInt(id.split('-')[0]);
+    const col = Number.parseInt(id.split('-')[1]);
+    const waitingForDomUpdate = new Promise(resolve => {
+      resolve(this.gridData[row][col] = value);
+    });
+
+    element.firstElementChild.textContent = value;
 
     waitingForDomUpdate.then(() => document.getElementById(id).className = element.className);
   }
@@ -101,11 +127,11 @@ export class DatagridService {
       if (saveElement) {
         this.undoManegerService.addToBuffer(new BufferedObject(element.id, element.children[0].textContent, element.children[1].value));
         const cell = new ChangedCell(element.id, element.children[0].textContent, element.children[1].value);
+        element.firstElementChild.textContent = cell.newValue;
         this.emitChanges(cell);
-        element.children[0].textContent = element.children[1].value;
       }
       element.removeChild(element.children[1]);
-      element.children[0].style.display = 'inherit';
+      element.children[0].style.display = 'block';
     } else if (editable) {
       this.addInput(element);
     }
@@ -124,14 +150,17 @@ export class DatagridService {
       input.value = element.children[0] ? element.children[0].textContent : '';
     }
     element.children[0].style.display = 'none';
+
     input.style.border = 'none';
     input.style.outline = 'none';
-    input.style.backgroundColor = element.style.backgroundColor;
+    input.style.background = element.style.background;
     input.style.color = element.style.color;
     input.style.width = 'calc(60px - 0.25em)';
     input.style.height = 'calc(12px - 0.25em)';
     input.style.font = '12px sans-serif';
     input.style.margin = '0';
+
+    input.classList.add('editing-input');
     element.appendChild(input);
     input.focus();
 
@@ -145,8 +174,8 @@ export class DatagridService {
   }
 
   emitChanges(cell: ChangedCell) {
-    this.onCellChange.emit(cell);
     this.gridData[cell.row][cell.column] = cell.newValue;
+    this.onCellChange.emit(cell);
     this.gridDataChange.emit(this.gridData);
   }
 
@@ -167,6 +196,20 @@ export class DatagridService {
     return matrix;
   }
 
+  generateEmptySheetWithNumberOfRowsAndColumns(rows: number, columns: number): Array<any> {
+    const matrix = [];
+    let array = [];
+
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < columns; j++) {
+        array.push(null);
+      }
+      matrix.push(array);
+      array = [];
+    }
+    return matrix;
+  }
+
   generateZeroSheet(): Array<any> {
     return [
       [0, 0, 0, 0, 0, 0, 0, 0],
@@ -183,4 +226,78 @@ export class DatagridService {
     }
     return matrix;
   }
+
+  /*************FORMATTERS*****************/
+
+  readProperties(properties: any) {
+    if (properties) {
+      for (const key in properties) {
+        if (properties.hasOwnProperty(key)) {
+          const value = properties[key];
+
+          switch (key) {
+            case 'digits':
+              this.formatter.digits = value;
+              break;
+            case 'currencyCode':
+              this.formatter.currencyCode = value;
+              break;
+            case 'symbolDisplay':
+              this.formatter.symbolDisplay = value;
+              break;
+            case 'digitInfo':
+              this.formatter.digitInfo = value;
+              break;
+          }
+        }
+      }
+    }
+  }
+
+  formatCellById(id: string, formatter: FormatterType, errorClass?: string, properties?: any) {
+    setTimeout(() => {
+      this.readProperties(properties);
+
+      switch (formatter) {
+        case FormatterType.Number:
+          this.formatter.decimalFormat(id, errorClass);
+          break;
+        case FormatterType.Currency:
+          this.formatter.currencyFormat(id, errorClass);
+          break;
+      }
+    });
+  }
+
+  formatColumn(column: number, formatter: FormatterType, errorClass?: string, properties?: any) {
+    setTimeout(() => {
+      this.readProperties(properties);
+
+      switch (formatter) {
+        case FormatterType.Number:
+          for (let row = 0; row < this.gridData.length; row++) {
+            const id = row + '-' + column;
+            this.formatter.decimalFormat(id, errorClass);
+          }
+          break;
+      }
+    });
+  }
+
+  formatRangeOfCells(from: string, to: string, formatter: FormatterType, errorClass?: string, properties?: any) {
+    const fromArray = from.split('-');
+    const toArray = to.split('-');
+
+    for (let i = Number.parseInt(fromArray[0]); i <= Number.parseInt(toArray[0]); i++) {
+      for (let j = Number.parseInt(fromArray[1]); j <= Number.parseInt(toArray[1]); j++) {
+        this.formatCellById((i + '-' + j), formatter, errorClass, properties);
+      }
+    }
+  }
+}
+
+export enum FormatterType {
+  Number,
+  Currency,
+  Text
 }

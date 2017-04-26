@@ -1,5 +1,5 @@
 {
-  "name": "ng2-template",
+  "name": "ng-datagrid",
   "version": "0.0.0",
   "license": "MIT",
   "angular-cli": {},
@@ -10,7 +10,8 @@
     "test": "ng test",
     "pree2e": "webdriver-manager update --standalone false --gecko false",
     "e2e": "protractor",
-    "build": "copy package.json \"src\\app\" && ngm build -p src/app"
+    "build": "copy package.json \"src\\app\" && ngm build -p src/app",
+    "ngc": "rimraf dist && ngc -p src/app/tsconfig.json && gulp && copy package.json \"dist\""
   },
   "private": false,
   "dependencies": {
@@ -36,6 +37,8 @@
     "codelyzer": "~2.0.0-beta.1",
     "coffee-script": "^1.12.4",
     "copy": "^0.3.0",
+    "gulp": "^3.9.1",
+    "gulp-sass": "^3.1.0",
     "jasmine-core": "2.5.2",
     "jasmine-spec-reporter": "2.5.0",
     "karma": "^1.2.0",

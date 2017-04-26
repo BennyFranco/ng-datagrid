@@ -7,7 +7,11 @@ import { KeyboardEventsDirective } from './directives/keyboard-events.directive'
 import { SortableDirective } from './directives/sortable.directive';
 
 import { UndoManagerService } from './services/undo-manager/undo-manager.service';
+import { FormatterService } from './services/formatter/formatter.service';
 import { DatagridService } from './datagrid.service';
+import { PasteDirective } from './directives/paste.directive';
+
+import { DecimalPipe, CurrencyPipe } from '@angular/common';
 
 @NgModule({
   imports: [
@@ -17,11 +21,15 @@ import { DatagridService } from './datagrid.service';
     DatagridComponent,
     EditableDirective,
     KeyboardEventsDirective,
-    SortableDirective
+    SortableDirective,
+    PasteDirective
   ],
   providers: [
     DatagridService,
-    UndoManagerService
+    UndoManagerService,
+    FormatterService,
+    DecimalPipe,
+    CurrencyPipe
   ],
   exports: [
     DatagridComponent

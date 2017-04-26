@@ -17,7 +17,7 @@ export class SortableDirective {
   }
 
   @HostListener('click') onClick() {
-    this.removeSelection(this.datagridService.selectedElementId);
+    this.datagridService.removeSelection(this.datagridService.selectedElementId);
     this.column = this._elementRef.nativeElement.id;
     this.data.sort((a, b) => this.sortData(a, b));
     this.isAsc = this.isAsc ? false : true;
@@ -30,24 +30,6 @@ export class SortableDirective {
       return (data1[this.column] < data2[this.column]) ? -1 : 1;
     } else {
       return (data1[this.column] > data2[this.column]) ? -1 : 1;
-    }
-  }
-
-  private removeSelection(id?: string) {
-    if (id) {
-      const element = document.getElementById(id);
-      element.classList.remove('selected');
-      this.cancelCellEdition(element, false);
-    }
-  }
-
-  private cancelCellEdition(element, saveElement: boolean) {
-    if (element.children.length > 1) {
-      if (saveElement) {
-        element.children[0].textContent = element.children[1].value;
-      }
-      element.removeChild(element.children[1]);
-      element.children[0].style.display = 'inherit';
     }
   }
 }

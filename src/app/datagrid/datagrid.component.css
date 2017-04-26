@@ -1,41 +1,32 @@
 table {
-    border-collapse: collapse;
+    border-collapse: separate;
     table-layout: fixed !important;
     word-break: break-all;
     border-spacing: 0;
     font: 12px sans-serif;
     color: #333;
-}
-
-table tbody,
-table thead {
+    width: 100%;
+    height: 100%;
     display: block;
+    overflow: auto;
+    -webkit-overflow-scrolling: scroll;
+    position: relative;
+    border: 0.5px solid #ccc;
+    box-sizing: initial;
 }
 
 thead {
     background-color: #ddd;
 }
 
-tbody {
-    overflow: auto;
-    height: 250px;
-    -webkit-overflow-scrolling: scroll;
-}
-
-table,
-th,
-td {
-    border: 1px solid #ccc;
-}
-
 ._th {
     font-weight: bold;
-    background-color: #ddd;
+    background: #ddd;
 }
 
 ._tr {
     width: auto;
-    min-width: 20px;
+    min-width: 25px;
 }
 
 ._space {
@@ -44,7 +35,7 @@ td {
 
 th {
     font-weight: bold;
-    background-color: #ddd;
+    background: #ddd;
 }
 
 th,
@@ -54,6 +45,20 @@ td {
     width: 60px;
     line-height: 12px;
     min-height: 12px;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+td {
+    cursor: cell;
+}
+
+td span {
+    display: block;
+    width: 60px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .selected {
@@ -70,4 +75,19 @@ td {
 
 .disable {
     color: rgba(160, 160, 160, 1) !important;
+}
+
+.format-error {
+    background: red !important;
+    color: white !important;
+}
+
+.top-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    width: 25px;
+    height: 12px;
 }
