@@ -306,17 +306,19 @@ export class DatagridService {
     let leftHeaders = [].concat.apply([], document.getElementsByClassName(this.fixedLeft));
     let topHeaders = [].concat.apply([], document.getElementsByClassName(this.fixedTop));
 
+    const doubleFixed = leftHeaders.find(header => (header.classList.contains(this.fixedTop)));
     leftHeaders = leftHeaders.filter(header => !(header.classList.contains(this.fixedTop)));
     topHeaders = topHeaders.filter(header => !(header.classList.contains(this.fixedLeft)));
 
     const topLeft = document.getElementById('blank-cell');
     const computed = window.getComputedStyle(topHeaders[0]);
+
     table.appendChild(topLeft);
 
     table.removeEventListener('scroll');
 
     this.zone.runOutsideAngular(() => {
-      table.addEventListener('scroll', (e) => {
+      table.addEventListener('scroll', () => {
         const x = table.scrollLeft;
         const y = table.scrollTop;
 
@@ -324,6 +326,7 @@ export class DatagridService {
           leftHeader.style.transform = this.translate(x, 0);
           // leftHeader.style.transition = 'all 0.1s ease';
         });
+
         topHeaders.forEach((topHeader, i) => {
           if (i === 0) {
             topHeader.style.transform = this.translate(x, y);
@@ -332,7 +335,9 @@ export class DatagridService {
           }
           // topHeader.style.transition = 'all 0.1s ease';
         });
+
         topLeft.style.transform = this.translate(x, y);
+        doubleFixed.style.transform = this.translate(x, y);
       });
     });
   }

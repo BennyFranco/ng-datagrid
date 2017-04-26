@@ -111,7 +111,5 @@ td span {
 
 .fixed-left.fixed-top {
     z-index: 9999 !important;
-    display: block;
-    position: fixed;
-    margin-left: 38px;
+    position: relative;
 }
