@@ -8,7 +8,7 @@ import { ChangedCell } from './dao/changed-cell';
 @Injectable()
 export class DatagridService {
 
-  _gridData: Array<any>;
+  private _gridData: Array<any>;
 
   selectedElement: any;
   selectedElementId: string;
@@ -53,7 +53,7 @@ export class DatagridService {
       const element = document.getElementById(id);
       element.classList.remove('selected');
       if (element.children.length > 1) {
-        this.cancelCellEdition(element, true);
+        this.cancelCellEdition(element, true, false);
       }
     }
   }

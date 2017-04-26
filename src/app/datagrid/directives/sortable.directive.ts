@@ -1,4 +1,4 @@
-import { Directive, Input, HostListener, ElementRef } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 import { DatagridService } from '../datagrid.service';
 
 @Directive({
@@ -13,13 +13,13 @@ export class SortableDirective {
   constructor(
     private _elementRef: ElementRef,
     private datagridService: DatagridService) {
-    this._elementRef.nativeElement.className = 'sortable-header ';
+    this._elementRef.nativeElement.classList.add('sortable-header');
   }
 
   @HostListener('click') onClick() {
     this.datagridService.removeSelection(this.datagridService.selectedElementId);
-    this.column = this._elementRef.nativeElement.id;
-    this.data.sort((a, b) => this.sortData(a, b));
+    this.column = this._elementRef.nativeElement.id.split('-')[1];
+    this.datagridService.gridData.sort((a, b) => this.sortData(a, b));
     this.isAsc = this.isAsc ? false : true;
   }
 

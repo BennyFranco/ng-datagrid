@@ -20,7 +20,7 @@ export class EditableDirective {
 
   onClick() {
     this.zone.runOutsideAngular(() => {
-      document.addEventListener('click', (event: MouseEvent) => {
+      this._elementRef.nativeElement.addEventListener('click', (event: MouseEvent) => {
         if ((<HTMLElement>event.target).tagName === 'TH') {
           return;
         }
@@ -38,7 +38,7 @@ export class EditableDirective {
 
   onDoubleClick() {
     this.zone.runOutsideAngular(() => {
-      document.addEventListener('dblclick', (event) => {
+      this._elementRef.nativeElement.addEventListener('dblclick', (event) => {
         let element;
         if ((<HTMLElement>event.target).tagName === 'SPAN') {
           element = (<HTMLElement>event.target).parentElement;
