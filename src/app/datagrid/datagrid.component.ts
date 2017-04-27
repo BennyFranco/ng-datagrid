@@ -112,7 +112,8 @@ export class DatagridComponent implements OnInit, AfterViewInit {
     const fromArray = this.from.split('-');
     const toArray = this.to.split('-');
 
-    if (Number.parseInt(fromArray[0]) < Number.parseInt(toArray[0])) {
+  if (Number.parseInt(fromArray[0]) < Number.parseInt(toArray[0]) && 
+     Number.parseInt(fromArray[1]) < Number.parseInt(toArray[1])) {
       for (let row = Number.parseInt(fromArray[0]); row <= Number.parseInt(toArray[0]); row++) {
         for (let col = Number.parseInt(fromArray[1]); col <= Number.parseInt(toArray[1]); col++) {
           document.getElementById(row + '-' + col).className = 'newClass';
@@ -121,7 +122,9 @@ export class DatagridComponent implements OnInit, AfterViewInit {
           }
         }
       }
-    } else {
+    } if (Number.parseInt(fromArray[0]) > Number.parseInt(toArray[0]) && 
+     Number.parseInt(fromArray[1]) > Number.parseInt(toArray[1])) {
+       
       for (let row = Number.parseInt(fromArray[0]); row >= Number.parseInt(toArray[0]); row--) {
         for (let col = Number.parseInt(fromArray[1]); col >= Number.parseInt(toArray[1]); col--) {
           document.getElementById(row + '-' + col).className = 'newClass';
@@ -131,7 +134,29 @@ export class DatagridComponent implements OnInit, AfterViewInit {
         }
       }
     }
+    if (Number.parseInt(fromArray[0]) < Number.parseInt(toArray[0]) && 
+     Number.parseInt(fromArray[1]) > Number.parseInt(toArray[1])) {
+        for (let col = Number.parseInt(fromArray[1]); col <= Number.parseInt(toArray[1]); col--) {
+          for (let row = Number.parseInt(fromArray[0]); row <= Number.parseInt(toArray[0]); row++) {
+          document.getElementById(row + '-' + col).className = 'newClass';
+          if (this.area.indexOf(row + '-' + col) === -1) {
+            this.area.push(row + '-' + col);
+          }
+        }
+      }
+    } if (Number.parseInt(fromArray[0]) > Number.parseInt(toArray[0]) && 
+     Number.parseInt(fromArray[1]) < Number.parseInt(toArray[1])) {
+        for (let col = Number.parseInt(fromArray[1]); col <= Number.parseInt(toArray[1]); col++) {
+          for (let row = Number.parseInt(fromArray[0]); row <= Number.parseInt(toArray[0]); row--) {
+          document.getElementById(row + '-' + col).className = 'newClass';
+          if (this.area.indexOf(row + '-' + col) === -1) {
+            this.area.push(row + '-' + col);
+          }
+        }
+      }
+    } 
   }
+
   onSelectionEnd() {
     this.pressed = false;
     console.log(this.area.length);
