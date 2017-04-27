@@ -48,7 +48,7 @@ export class DatagridComponent implements OnInit, AfterViewInit {
     }
 
     if (!this.headers) {
-      this.headers = this.generateHeaders();
+      this.headers = this.schema ? this.datagridService.keysOfSchema : this.generateHeaders();
     }
 
     this.createRowAndColLimits();
