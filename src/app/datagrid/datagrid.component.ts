@@ -19,7 +19,9 @@ import { DatagridService } from './datagrid.service';
 export class DatagridComponent implements OnInit, AfterViewInit {
 
   @Input() gridData: Array<any>;
+  @Input() schema: any;
   @Input() headers: Array<any>;
+
   @Output() gridDataChange = new EventEmitter();
   @Output() onCellChange: EventEmitter<any>;
 
@@ -39,8 +41,10 @@ export class DatagridComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    if (!this.gridData) {
+    if (!this.gridData && !this.schema) {
       this.gridData = this.datagridService.generateEmptySheetWithNumberOfRows(15);
+    } else if (this.schema && !this.gridData) {
+      this.loadSchema();
     }
 
     if (!this.headers) {
@@ -86,27 +90,27 @@ export class DatagridComponent implements OnInit, AfterViewInit {
   }
 
   onSelectionStart(rowId, cellId) { // 'row-column'  ex. '0-0' '0-1'
-      if (!this.pressed && this.area.length == 0) {
-        this.pressed = true;
-        let id = rowId + '-' + cellId;
-        this.from = id;
-      } else {
-        this.pressed = false;
-        console.log('Array lleno');
-      }
+    if (!this.pressed && this.area.length == 0) {
+      this.pressed = true;
+      let id = rowId + '-' + cellId;
+      this.from = id;
+    } else {
+      this.pressed = false;
+      console.log('Array lleno');
+    }
   }
 
   onSelection(rowId, cellId) {
-      const id = rowId + '-' + cellId;
+    const id = rowId + '-' + cellId;
 
-      if (this.pressed) {
-        this.to = id;
-        this.selectArea();
-        document.getElementById(id).classList.add('newClass');
-        if (this.area.indexOf(id) === -1) {
-          this.area.push(id);
-        }
+    if (this.pressed) {
+      this.to = id;
+      this.selectArea();
+      document.getElementById(id).classList.add('newClass');
+      if (this.area.indexOf(id) === -1) {
+        this.area.push(id);
       }
+    }
   }
 
   selectArea() {
@@ -134,11 +138,36 @@ export class DatagridComponent implements OnInit, AfterViewInit {
     }
   }
   onSelectionEnd() {
-      this.pressed = false;
-      console.log(this.area.length);
+    this.pressed = false;
+    console.log(this.area.length);
   }
 
   trackByFn(index, item) {
     return index;
+  }
+
+  loadSchema() {
+    this.gridData = [];
+
+    const keys = [];
+
+    this.schema.forEach(schema => {
+      const row = [];
+      for (const key in schema) {
+        if (schema.hasOwnProperty(key)) {
+          row.push(schema[key]);
+        }
+      }
+      this.gridData.push(row);
+    });
+
+    const schema = ([...this.schema].pop());
+    for (const key in schema) {
+      if (schema.hasOwnProperty(key)) {
+        keys.push(key);
+      }
+    }
+
+    this.datagridService.keysOfSchema = keys;
   }
 }

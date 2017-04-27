@@ -12,6 +12,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   // content = this.datagridService.generateEmptySheetWithNumberOfRowsAndColumns(1000, 10);
 
   content = this.generateSheetWithRows(20);
+  schema = [{ name: 1, lastName: 2 }, { name: 3, lastName: 4 }];
   constructor(private datagridService: DatagridService) {
     // this.datagridService.gridData = this.content;
   }
@@ -26,6 +27,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     // this.datagridService.formatColumn(1, FormatterType.Number);
     this.datagridService.formatRangeOfCells('0-1', '1-1', FormatterType.Number);
     this.datagridService.formatCellById('2-1', FormatterType.Currency, null, { 'symbolDisplay': true });*/
+    console.log(this.datagridService.getArrayOfSchemas());
   }
 
   generateSheetWithRows(rows: number): Array<any> {
@@ -76,5 +78,6 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   gridData(event) {
     console.log(event);
+    console.log(this.datagridService.getArrayOfSchemas());
   }
 }

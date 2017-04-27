@@ -9,6 +9,7 @@ import { ChangedCell } from './dao/changed-cell';
 export class DatagridService {
 
   private _gridData: Array<any>;
+  private _keysOfSchema: Array<any>;
 
   selectedElement: any;
   selectedElementId: string;
@@ -16,6 +17,9 @@ export class DatagridService {
   private fixedTop = 'fixed-top';
   private fixedLeft = 'fixed-left';
   private fixedRowHeader = 'fixed-row-header';
+
+  @Output() onCellChange = new EventEmitter();
+  @Output() gridDataChange = new EventEmitter();
 
   set gridData(gridData: any) {
     this._gridData = gridData;
@@ -25,8 +29,13 @@ export class DatagridService {
     return this._gridData;
   }
 
-  @Output() onCellChange = new EventEmitter();
-  @Output() gridDataChange = new EventEmitter();
+  set keysOfSchema(keys: any) {
+    this._keysOfSchema = keys;
+  }
+
+  get keysOfSchema(): any {
+    return this._keysOfSchema;
+  }
 
   constructor(
     private undoManegerService: UndoManagerService,
@@ -407,6 +416,21 @@ export class DatagridService {
       document.getElementById(id).classList.add(this.fixedLeft);
     }
     this.fixElements();
+  }
+
+  getArrayOfSchemas(): any {
+    const schema = [];
+    for (let row = 0; row < this.gridData.length; row++) {
+      let stringObject = '';
+      for (let col = 0; col < this.gridData[row].length; col++) {
+        stringObject += '"' + this.keysOfSchema[col] + '":"' + this.gridData[row][col] + '",';
+      }
+      stringObject = stringObject.slice(0, -1);
+      stringObject = '{' + stringObject + '}';
+      const object = JSON.parse(stringObject);
+      schema.push(object);
+    }
+    return schema;
   }
 }
 
