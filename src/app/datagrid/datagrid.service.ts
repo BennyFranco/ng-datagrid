@@ -13,6 +13,7 @@ export class DatagridService {
 
   selectedElement: any;
   selectedElementId: string;
+  cellWidth: number;
 
   private fixedTop = 'fixed-top';
   private fixedLeft = 'fixed-left';
@@ -169,7 +170,7 @@ export class DatagridService {
     input.style.outline = 'none';
     input.style.background = element.style.background;
     input.style.color = element.style.color;
-    input.style.width = 'calc(60px - 0.25em)';
+    input.style.width = 'calc(' + this.cellWidth + 'px - 0.25em)';
     input.style.height = 'calc(12px - 0.25em)';
     input.style.font = '12px sans-serif';
     input.style.margin = '0';

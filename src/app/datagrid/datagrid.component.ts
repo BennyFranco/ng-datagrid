@@ -21,6 +21,7 @@ export class DatagridComponent implements OnInit, AfterViewInit {
   @Input() gridData: Array<any>;
   @Input() schema: any;
   @Input() headers: Array<any>;
+  @Input() cellWidth: number;
 
   @Output() gridDataChange = new EventEmitter();
   @Output() onCellChange: EventEmitter<any>;
@@ -58,6 +59,20 @@ export class DatagridComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.datagridService.selectElement(null, '0-0');
     this.datagridService.fixElements();
+
+    if (this.cellWidth) {
+      const topHeaders = [].concat.apply([], document.querySelectorAll('th span'));
+      const cells = [].concat.apply([], document.querySelectorAll('td span'));
+      for (const cell of cells) {
+        cell.style.width = this.cellWidth + 'px';
+      }
+
+      for (const header of topHeaders) {
+        header.style.width = this.cellWidth + 'px';
+      }
+
+      this.datagridService.cellWidth = this.cellWidth;
+    }
   }
 
   private createRowAndColLimits() {

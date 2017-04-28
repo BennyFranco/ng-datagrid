@@ -42,7 +42,6 @@ th,
 td {
     padding: 0.5em;
     height: 12px;
-    width: 60px;
     line-height: 12px;
     min-height: 12px;
     border-right: 1px solid #ccc;
@@ -60,9 +59,10 @@ td {
     background-color: white;
 }
 
+th span,
 td span {
     display: block;
-    width: 60px !important;
+    width: 60px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

@@ -3,7 +3,7 @@
     <tr class="_th">
       <th id="blank-cell" class="_th _tr top-left"></th>
       <th class="_th _tr fixed-top"></th>
-      <th id="col-{{headerColIndex}}" *ngFor="let header of headers; let headerColIndex = index" class="fixed-top">{{header}}</th>
+      <th id="col-{{headerColIndex}}" *ngFor="let header of headers; let headerColIndex = index" class="fixed-top"><span>{{header}}</span></th>
     </tr>
   </thead>
   <tbody ngPaste>
