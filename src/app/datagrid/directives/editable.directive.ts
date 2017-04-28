@@ -21,12 +21,12 @@ export class EditableDirective {
   onClick() {
     this.zone.runOutsideAngular(() => {
       this._elementRef.nativeElement.addEventListener('click', (event: MouseEvent) => {
-        if ((<HTMLElement>event.target).tagName === 'TH') {
+        if ((<HTMLElement>event.target).parentElement.tagName == 'TH') {
           return;
         }
         let element;
         this.datagridService.removeSelection(this.datagridService.selectedElementId);
-        if ((<HTMLElement>event.target).tagName === 'SPAN') {
+        if ((<HTMLElement>event.target).tagName == 'SPAN') {
           element = (<HTMLElement>event.target).parentElement;
         } else {
           element = (<HTMLElement>event.target);
@@ -39,6 +39,9 @@ export class EditableDirective {
   onDoubleClick() {
     this.zone.runOutsideAngular(() => {
       this._elementRef.nativeElement.addEventListener('dblclick', (event) => {
+        if ((<HTMLElement>event.target).parentElement.tagName === 'TH') {
+          return;
+        }
         let element;
         if ((<HTMLElement>event.target).tagName === 'SPAN') {
           element = (<HTMLElement>event.target).parentElement;
