@@ -159,21 +159,26 @@ export class DatagridService {
     if (element.children[1]) {
       return;
     }
+
     const input = document.createElement('input');
     input.type = 'text';
+
     if (!replaceContent) {
       input.value = element.children[0] ? element.children[0].textContent : '';
     }
+
+    input.style.width = 'calc(' + element.children[0].offsetWidth + 'px - 0.25em)';
+    input.style.height = 'calc(' + element.children[0].offsetHeight + 'px - 0.25em)';
+
     element.children[0].style.display = 'none';
 
     input.style.border = 'none';
     input.style.outline = 'none';
     input.style.background = element.style.background;
     input.style.color = element.style.color;
-    input.style.width = 'calc(' + this.cellWidth + 'px - 0.25em)';
-    input.style.height = 'calc(12px - 0.25em)';
     input.style.font = '12px sans-serif';
     input.style.margin = '0';
+    input.style.padding = '0';
 
     input.classList.add('editing-input');
     element.appendChild(input);
