@@ -12,7 +12,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   // content = this.datagridService.generateEmptySheetWithNumberOfRowsAndColumns(1000, 10);
 
   content = this.generateSheetWithRows(20);
-  schema = [{ LargeText: 1, LoremIpsumDolorSitAmet: 2 }, { LargeText: 3, LoremIpsumDolorSitAMet: 4 }];
+  // schema = [{ LargeText: 1, LoremIpsumDolorSitAmet: 2 }, { LargeText: 3, LoremIpsumDolorSitAMet: 4 }];
   constructor(private datagridService: DatagridService) {
     // this.datagridService.gridData = this.content;
   }
@@ -21,13 +21,14 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.datagridService.fixFirstColumn();
-    this.datagridService.fixFirstRow();
+   this.datagridService.fixFirstColumn();
+    // this.datagridService.fixFirstRow();
     /*this.datagridService.disableRow(2);
     // this.datagridService.formatColumn(1, FormatterType.Number);
     this.datagridService.formatRangeOfCells('0-1', '1-1', FormatterType.Number);
     this.datagridService.formatCellById('2-1', FormatterType.Currency, null, { 'symbolDisplay': true });*/
-    console.log(this.datagridService.getArrayOfSchemas());
+    // console.log(this.datagridService.getArrayOfSchemas());
+    // this.datagridService.fixColumns(0, 2);
   }
 
   generateSheetWithRows(rows: number): Array<any> {
