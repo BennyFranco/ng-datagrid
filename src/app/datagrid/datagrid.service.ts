@@ -380,8 +380,8 @@ export class DatagridService {
     for (let row = 0; row < this._gridData.length; row++) {
       id = row + '-' + 0;
       const domElement = document.getElementById('col-' + 0);
-      domElement.classList.remove(this.fixedTop);
-      domElement.classList.add(this.fixedRowHeader);
+      // domElement.classList.remove(this.fixedTop);
+      domElement.classList.add(this.fixedLeft);
       document.getElementById(id).classList.add(this.fixedLeft);
       domElement.style.width = document.getElementById(id).offsetWidth - 13 + 'px';
     }
