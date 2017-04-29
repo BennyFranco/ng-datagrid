@@ -318,12 +318,15 @@ export class DatagridService {
   fixElements() {
     const table = document.querySelector('table');
     const fixedRowHeaders = [].concat.apply([], document.getElementsByClassName(this.fixedRowHeader));
+
     let leftHeaders = [].concat.apply([], document.getElementsByClassName(this.fixedLeft));
     let topHeaders = [].concat.apply([], document.getElementsByClassName(this.fixedTop));
 
-    const doubleFixed = leftHeaders.find(header => (header.classList.contains(this.fixedTop)));
+    const doubleFixed = leftHeaders.filter(header => (header.classList.contains(this.fixedTop)));
+
     leftHeaders = leftHeaders.filter(header => !(header.classList.contains(this.fixedTop)));
     topHeaders = topHeaders.filter(header => !(header.classList.contains(this.fixedLeft)));
+    console.log(topHeaders);
 
     const topLeft = document.getElementById('blank-cell');
     const computed = window.getComputedStyle(topHeaders[0]);
@@ -339,7 +342,6 @@ export class DatagridService {
 
         leftHeaders.forEach((leftHeader) => {
           leftHeader.style.transform = this.translate(x, 0);
-          // leftHeader.style.transition = 'all 0.1s ease';
         });
 
         topHeaders.forEach((topHeader, i) => {
@@ -348,12 +350,14 @@ export class DatagridService {
           } else {
             topHeader.style.transform = this.translate(0, y);
           }
-          // topHeader.style.transition = 'all 0.1s ease';
         });
 
         topLeft.style.transform = this.translate(x, y);
+
         if (doubleFixed) {
-          doubleFixed.style.transform = this.translate(x, y);
+          doubleFixed.forEach((cell, i) => {
+              cell.style.transform = this.translate(x, y);
+          });
         }
       });
     });
@@ -380,7 +384,6 @@ export class DatagridService {
     for (let row = 0; row < this._gridData.length; row++) {
       id = row + '-' + 0;
       const domElement = document.getElementById('col-' + 0);
-      // domElement.classList.remove(this.fixedTop);
       domElement.classList.add(this.fixedLeft);
       document.getElementById(id).classList.add(this.fixedLeft);
       domElement.style.width = document.getElementById(id).offsetWidth - 13 + 'px';
@@ -429,17 +432,14 @@ export class DatagridService {
 
   fixColumns(from: number, to: number) {
     let id: string;
-    let left = 47;
     for (; from <= to; from++) {
+      const domElement = document.getElementById('col-' + from);
+      domElement.classList.add(this.fixedLeft);
       for (let row = 0; row < this._gridData.length; row++) {
         id = row + '-' + from;
-        const domElement = document.getElementById('col-' + from);
-        domElement.classList.remove(this.fixedTop);
-        domElement.classList.add(this.fixedRowHeader);
-        domElement.style.left += left + 'px';
         document.getElementById(id).classList.add(this.fixedLeft);
       }
-      left += 73;
+      domElement.style.width = document.getElementById(id).offsetWidth - 13 + 'px';
     }
     this.fixElements();
   }

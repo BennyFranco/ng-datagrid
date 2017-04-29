@@ -21,14 +21,14 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-   this.datagridService.fixFirstColumn();
+    // this.datagridService.fixFirstColumn();
     // this.datagridService.fixFirstRow();
     /*this.datagridService.disableRow(2);
     // this.datagridService.formatColumn(1, FormatterType.Number);
     this.datagridService.formatRangeOfCells('0-1', '1-1', FormatterType.Number);
     this.datagridService.formatCellById('2-1', FormatterType.Currency, null, { 'symbolDisplay': true });*/
     // console.log(this.datagridService.getArrayOfSchemas());
-    // this.datagridService.fixColumns(0, 2);
+    this.datagridService.fixColumns(0, 2);
   }
 
   generateSheetWithRows(rows: number): Array<any> {
