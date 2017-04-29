@@ -317,7 +317,6 @@ export class DatagridService {
 
   fixElements() {
     const table = document.querySelector('table');
-    const fixedRowHeaders = [].concat.apply([], document.getElementsByClassName(this.fixedRowHeader));
 
     let leftHeaders = [].concat.apply([], document.getElementsByClassName(this.fixedLeft));
     let topHeaders = [].concat.apply([], document.getElementsByClassName(this.fixedTop));
@@ -372,8 +371,7 @@ export class DatagridService {
     ([...this.gridData].pop()).forEach((element, col) => {
       id = 0 + '-' + col;
       const domElement = document.getElementById('row-' + 0);
-      domElement.classList.remove(this.fixedLeft);
-      domElement.classList.add(this.fixedRowHeader);
+      domElement.classList.add(this.fixedTop);
       document.getElementById(id).classList.add(this.fixedTop);
     });
     this.fixElements();
@@ -391,18 +389,6 @@ export class DatagridService {
     this.fixElements();
   }
 
-  private fixRow(row: number) {
-    let id: string;
-    ([...this.gridData].pop()).forEach((element, col) => {
-      id = row + '-' + col;
-      const domElement = document.getElementById('row-' + row);
-      domElement.classList.remove(this.fixedLeft);
-      domElement.classList.add(this.fixedRowHeader);
-      document.getElementById(id).classList.add(this.fixedTop);
-    });
-    this.fixElements();
-  }
-
   fixRows(from: number, to: number) {
     let id: string;
     for (; from <= to; from++) {
@@ -414,18 +400,6 @@ export class DatagridService {
         domElement.classList.add(this.fixedRowHeader);
         document.getElementById(id).classList.add(this.fixedTop);
       });
-    }
-    this.fixElements();
-  }
-
-  private fixColumn(col: number) {
-    let id: string;
-    for (let row = 0; row < this._gridData.length; row++) {
-      id = row + '-' + col;
-      const domElement = document.getElementById('col-' + col);
-      domElement.classList.remove(this.fixedTop);
-      domElement.classList.add(this.fixedRowHeader);
-      document.getElementById(id).classList.add(this.fixedLeft);
     }
     this.fixElements();
   }

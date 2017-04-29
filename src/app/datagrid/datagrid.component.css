@@ -103,12 +103,6 @@ td span {
     height: 12px;
 }
 
-.fixed-row-header {
-    z-index: 9999 !important;
-    display: block;
-    position: fixed;
-}
-
 .fixed-left.fixed-top {
     z-index: 9999 !important;
     position: relative;
