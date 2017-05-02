@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, HostListener, Input, NgZone } from '@angular/core';
+import { AfterViewInit, Directive, HostListener, Input, NgZone, OnDestroy } from '@angular/core';
 import { DatagridService } from '../datagrid.service';
 import { UndoManagerService } from '../services/undo-manager/undo-manager.service';
 import { isFirefox } from '../shared/navigator-utils';
@@ -7,7 +7,7 @@ import { ChangedCell } from '../dao/changed-cell';
 @Directive({
   selector: '[ngKeyboardEvents]'
 })
-export class KeyboardEventsDirective implements AfterViewInit {
+export class KeyboardEventsDirective implements AfterViewInit, OnDestroy {
 
   @Input() rowLimit: number;
   @Input() colLimit: number;
@@ -27,6 +27,10 @@ export class KeyboardEventsDirective implements AfterViewInit {
     this.zone.runOutsideAngular(() => {
       this.subscribeKeyboardEvents();
     });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribeEvents();
   }
 
   subscribeKeyPressEvent() {
@@ -106,6 +110,10 @@ export class KeyboardEventsDirective implements AfterViewInit {
 
   unsubscribeEvent(event: string) {
     document.removeEventListener(event.toString());
+  }
+
+  unsubscribeEvents() {
+    ['keydown', 'keypress', 'keyup'].forEach(event => this.unsubscribeEvent(event));
   }
 
   subscribeKeyboardEvents() {

@@ -9,10 +9,7 @@
   <tbody ngPaste>
     <tr *ngFor="let row of gridData; let rowId = index;trackBy: trackByFn">
       <th id="row-{{rowId}}" class="_th _tr fixed-left">{{rowId+1}}</th>
-      <td *ngFor="let cell of row; let cellId = index"  id="{{rowId}}-{{cellId}}"  
-        (mousedown) = "onSelectionStart(rowId, cellId)" 
-        (mousemove)="onSelection(rowId, cellId)" 
-        (mouseup)="onSelectionEnd(rowId, cellId)">
+      <td *ngFor="let cell of row; let cellId = index"  id="{{rowId}}-{{cellId}}">
         <span>{{cell}}</span>
       </td>
     </tr>
