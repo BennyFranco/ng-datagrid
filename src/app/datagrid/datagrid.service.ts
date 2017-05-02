@@ -300,7 +300,7 @@ export class DatagridService {
         case FormatterType.Number:
           for (let row = 0; row < this.gridData.length; row++) {
             const id = row + '-' + column;
-            this.formatCellById(id, formatter, errorClass, properties);
+            this.formatter.decimalFormat(id, errorClass);
           }
           break;
       }

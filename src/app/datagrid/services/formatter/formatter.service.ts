@@ -13,7 +13,7 @@ export class FormatterService {
   symbolDisplay: boolean;
   digitInfo: string;
 
-  esMXDateFormat = 'ddMMyyyy';
+  esMXDateFormat = 'dd/MM/yyyy';
 
   constructor(
     private decimalPipe: DecimalPipe,
