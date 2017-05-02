@@ -79,6 +79,6 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   gridData(event) {
     console.log(event);
-    console.log(this.datagridService.getArrayOfSchemas());
+    // console.log(this.datagridService.getArrayOfSchemas());
   }
 }
