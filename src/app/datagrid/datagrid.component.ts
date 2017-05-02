@@ -1,3 +1,4 @@
+import { throttleTime } from 'rxjs/operator/throttleTime';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -6,7 +7,8 @@ import {
   Input,
   NgZone,
   OnInit,
-  Output
+  Output,
+  ViewEncapsulation
 } from '@angular/core';
 import { DatagridService } from './datagrid.service';
 
@@ -14,7 +16,9 @@ import { DatagridService } from './datagrid.service';
   selector: 'ng-datagrid',
   templateUrl: './datagrid.component.html',
   styleUrls: ['./datagrid.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
+
 })
 export class DatagridComponent implements OnInit, AfterViewInit {
 
@@ -48,9 +52,8 @@ export class DatagridComponent implements OnInit, AfterViewInit {
       this.loadSchema();
     }
 
-    if (!this.headers) {
-      this.headers = this.schema ? this.datagridService.keysOfSchema : this.generateHeaders();
-    }
+    this.generateGrid();
+    this.generateHeaders();
 
     this.createRowAndColLimits();
     this.datagridService.gridData = this.gridData;
@@ -82,7 +85,55 @@ export class DatagridComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private generateHeaders(): Array<any> {
+  private generateGrid() {
+    let rows = '';
+    for (let i = 0; i < this.gridData.length; i++) {
+      let cells = '';
+      for (let j = 0; j < this.gridData[i].length; j++) {
+        cells += `
+                <td id="${i}-${j}">
+                    <span>${this.gridData[i][j]}</span>
+                </td>
+        `;
+      }
+      rows += `
+           <tr>
+                <th id="row-${i}" class="_th _tr fixed-left">${i + 1}</th>
+                ${cells}
+             </tr>
+      `;
+    }
+    document.getElementsByTagName('tbody').item(0).innerHTML = rows;
+  }
+
+  private generateHeaders() {
+    let ths = '';
+    if (this.headers) {
+      // this.headers = this.schema ? this.datagridService.keysOfSchema : this.generateLettersHeaders();
+      for (let i = 0; i < this.headers.length; i++) {
+        ths += `
+             <th id="col-${i}" class="fixed-top"><span>${this.headers[i]}</span></th>
+        `;
+      }
+    } else {
+      this.headers = this.schema ? this.datagridService.keysOfSchema : this.generateLettersHeaders();
+      for (let i = 0; i < this.headers.length; i++) {
+        ths += `
+             <th id="col-${i}" class="fixed-top"><span>${this.headers[i]}</span></th>
+        `;
+      }
+    }
+    const trow = `
+      <tr class="_th">
+        <th id="blank-cell" class="_th _tr top-left"></th>
+        <th class="_th _tr fixed-top"></th>
+        ${ths}
+      </tr>
+    `;
+    document.getElementsByTagName('thead').item(0).innerHTML = trow;
+  }
+
+  private generateLettersHeaders(): Array<any> {
     const letters = 'a b c d e f g h i j k l m n o p q r s t u v w x y z'.toUpperCase().split(' ');
     const headers = [];
     let secondIdx = 0;
@@ -155,10 +206,6 @@ export class DatagridComponent implements OnInit, AfterViewInit {
   onSelectionEnd() {
     this.pressed = false;
     console.log(this.area.length);
-  }
-
-  trackByFn(index, item) {
-    return index;
   }
 
   loadSchema() {

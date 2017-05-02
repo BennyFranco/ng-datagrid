@@ -1,17 +1,4 @@
 <table ngEditable ngKeyboardEvents [rowLimit]="rowLimit" [colLimit]="colLimit">
-  <thead>
-    <tr class="_th">
-      <th id="blank-cell" class="_th _tr top-left"></th>
-      <th class="_th _tr fixed-top"></th>
-      <th id="col-{{headerColIndex}}" *ngFor="let header of headers; let headerColIndex = index" class="fixed-top"><span>{{header}}</span></th>
-    </tr>
-  </thead>
-  <tbody ngPaste>
-    <tr *ngFor="let row of gridData; let rowId = index;trackBy: trackByFn">
-      <th id="row-{{rowId}}" class="_th _tr fixed-left">{{rowId+1}}</th>
-      <td *ngFor="let cell of row; let cellId = index"  id="{{rowId}}-{{cellId}}">
-        <span>{{cell}}</span>
-      </td>
-    </tr>
-  </tbody>
+  <thead></thead>
+  <tbody ngPaste></tbody>
 </table>
