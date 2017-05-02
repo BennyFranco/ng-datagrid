@@ -21,7 +21,7 @@ export class EditableDirective {
   onClick() {
     this.zone.runOutsideAngular(() => {
       this._elementRef.nativeElement.addEventListener('click', (event: MouseEvent) => {
-        if ((<HTMLElement>event.target).parentElement.tagName == 'TH') {
+        if ((<HTMLElement>event.target).parentElement.tagName == 'TH' || (<HTMLElement>event.target).tagName == 'TH') {
           return;
         }
         let element;
@@ -39,7 +39,7 @@ export class EditableDirective {
   onDoubleClick() {
     this.zone.runOutsideAngular(() => {
       this._elementRef.nativeElement.addEventListener('dblclick', (event) => {
-        if ((<HTMLElement>event.target).parentElement.tagName === 'TH') {
+        if ((<HTMLElement>event.target).parentElement.tagName == 'TH' || (<HTMLElement>event.target).tagName == 'TH') {
           return;
         }
         let element;

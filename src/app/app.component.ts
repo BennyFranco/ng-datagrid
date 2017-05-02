@@ -11,7 +11,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   // content = this.datagridService.generateEmptySheetWithNumberOfRowsAndColumns(635, 40);
   // content = this.datagridService.generateEmptySheetWithNumberOfRowsAndColumns(1000, 10);
 
-  content = this.generateSheetWithRows(20);
+  content = this.generateSheetWithRows(1000);
   // schema = [{ LargeText: 1, LoremIpsumDolorSitAmet: 2 }, { LargeText: 3, LoremIpsumDolorSitAMet: 4 }];
   constructor(private datagridService: DatagridService) {
     // this.datagridService.gridData = this.content;
