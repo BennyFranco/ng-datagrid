@@ -285,6 +285,9 @@ export class DatagridService {
         case FormatterType.Currency:
           this.formatter.currencyFormat(id, errorClass);
           break;
+        case FormatterType.Date:
+          this.formatter.dateFormat(id, errorClass);
+          break;
       }
     });
   }
@@ -297,7 +300,7 @@ export class DatagridService {
         case FormatterType.Number:
           for (let row = 0; row < this.gridData.length; row++) {
             const id = row + '-' + column;
-            this.formatter.decimalFormat(id, errorClass);
+            this.formatCellById(id, formatter, errorClass, properties);
           }
           break;
       }
@@ -355,7 +358,7 @@ export class DatagridService {
 
         if (doubleFixed) {
           doubleFixed.forEach((cell, i) => {
-              cell.style.transform = this.translate(x, y);
+            cell.style.transform = this.translate(x, y);
           });
         }
       });
