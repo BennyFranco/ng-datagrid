@@ -437,5 +437,6 @@ export class DatagridService {
 export enum FormatterType {
   Number,
   Currency,
-  Text
+  Text,
+  Date
 }
