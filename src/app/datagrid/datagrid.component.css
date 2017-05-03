@@ -13,22 +13,22 @@ table {
     position: relative;
     border: 0.5px solid #ccc;
     box-sizing: initial;
-    will-change: transform;
+    /* will-change: transform; */
 }
 
 thead {
     background-color: #ddd;
-    position: fixed;
+    /* position: fixed; */
 }
 
-tbody {
+/* tbody {
     margin-top: 25px;
     display: block;
-}
+}*/
 
-#blank-cell {
+/* #blank-cell {
     position: fixed;
-}
+}*/
 
 ._th {
     font-weight: bold;
@@ -37,7 +37,7 @@ tbody {
 
 ._tr {
     width: auto;
-    min-width: 25px;
+    min-width: 28px;
 }
 
 ._space {

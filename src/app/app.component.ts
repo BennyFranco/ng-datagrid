@@ -11,7 +11,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   // content = this.datagridService.generateEmptySheetWithNumberOfRowsAndColumns(635, 40);
   // content = this.datagridService.generateEmptySheetWithNumberOfRowsAndColumns(1000, 10);
 
-  content = this.generateSheetWithRows(1000);
+  content = this.generateSheetWithRows(20);
+  headers = this.generateWorkForceHeaders();
   // schema = [{ LargeText: 1, LoremIpsumDolorSitAmet: 2 }, { LargeText: 3, LoremIpsumDolorSitAMet: 4 }];
   constructor(private datagridService: DatagridService) {
     // this.datagridService.gridData = this.content;
@@ -28,7 +29,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.datagridService.formatRangeOfCells('0-1', '1-1', FormatterType.Number);
     this.datagridService.formatCellById('2-1', FormatterType.Currency, null, { 'symbolDisplay': true });*/
     // console.log(this.datagridService.getArrayOfSchemas());
-    this.datagridService.fixColumns(0, 2);
+    // this.datagridService.fixColumns(0, 2);
   }
 
   generateSheetWithRows(rows: number): Array<any> {
@@ -80,5 +81,18 @@ export class AppComponent implements OnInit, AfterViewInit {
   gridData(event) {
     console.log(event);
     // console.log(this.datagridService.getArrayOfSchemas());
+  }
+
+  generateWorkForceHeaders(): Array<string> {
+    return [
+      'No', 'Nombre', 'Frecuencia Pago', 'Codigo Sindical', 'Unidad de Negocios', 'Años', 'Puesto', 'Nivel de Desempeño', 'Sueldo Mensual',
+      ' Sueldo',
+      ' Prevision', ' Ahorro', 'Prima Antigüedad', 'Sueldo Anual',
+      'Prima Antigüedad', 'Prima Vacacional', 'Ayuda Vacacional',
+      'Útiles Escolares', ' Aguinaldo', 'Bono Navideño',
+      'Ajuste de Calendario', 'Bono ITSON', 'Bono Médico', ' Vales',
+      'INFONAVIT', 'Fondo de Pensiones', ' ISSSTESON', 'ISSSTESON Comp.',
+      'ISPT Sueldo', 'ISPT Prestaciones CASP', 'Obsequio Navideño', 'Canastilla Navideña', 'Estímulo al desempeño',
+      'TOTAL'];
   }
 }
