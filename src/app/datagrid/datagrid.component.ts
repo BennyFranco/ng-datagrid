@@ -55,6 +55,7 @@ export class DatagridComponent implements OnInit, AfterViewInit {
     this.generateGrid();
     this.generateHeaders();
 
+
     this.createRowAndColLimits();
     this.datagridService.gridData = this.gridData;
   }
