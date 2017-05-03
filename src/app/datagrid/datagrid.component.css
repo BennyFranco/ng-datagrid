@@ -13,12 +13,21 @@ table {
     position: relative;
     border: 0.5px solid #ccc;
     box-sizing: initial;
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
+    will-change: transform;
 }
 
 thead {
     background-color: #ddd;
+    position: fixed;
+}
+
+tbody {
+    margin-top: 25px;
+    display: block;
+}
+
+#blank-cell {
+    position: fixed;
 }
 
 ._th {
