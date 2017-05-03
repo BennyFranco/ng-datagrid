@@ -320,7 +320,7 @@ export class DatagridService {
 
   fixElements() {
     const table = document.querySelector('table');
-
+    const componentContainer = table.parentElement;
     let leftHeaders = [].concat.apply([], document.getElementsByClassName(this.fixedLeft));
     let topHeaders = [].concat.apply([], document.getElementsByClassName(this.fixedTop));
 
