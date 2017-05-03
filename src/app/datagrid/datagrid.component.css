@@ -79,32 +79,32 @@
     text-overflow: ellipsis;
 }
 
-.selected {
+:host >>> .selected {
     box-shadow: inset 0 0 0 2px blue;
 }
 
-.sortable-header {
+:host >>> .sortable-header {
     cursor: pointer;
 }
 
-.sortable-header:hover {
+:host >>> .sortable-header:hover {
     text-decoration: underline;
 }
 
-.disable {
+:host >>> .disable {
     color: rgba(160, 160, 160, 1) !important;
 }
 
-.newClass {
+:host >>> .newClass {
     background-color: #BDBDBD;
 }
 
-.format-error {
+:host >>> .format-error {
     background: red !important;
     color: white !important;
 }
 
-.top-left {
+:host >>> .top-left {
     position: absolute;
     top: 0;
     left: 0;
@@ -114,7 +114,7 @@
     height: 12px;
 }
 
-.fixed-left.fixed-top {
+:host >>> .fixed-left.fixed-top {
     z-index: 9999 !important;
     position: relative;
 }
