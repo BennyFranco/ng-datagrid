@@ -1,4 +1,3 @@
-import { throttleTime } from 'rxjs/operator/throttleTime';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -10,6 +9,7 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
+
 import { DatagridService } from './datagrid.service';
 
 @Component({
@@ -17,8 +17,7 @@ import { DatagridService } from './datagrid.service';
   templateUrl: './datagrid.component.html',
   styleUrls: ['./datagrid.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
-
+  encapsulation: ViewEncapsulation.Emulated
 })
 export class DatagridComponent implements OnInit, AfterViewInit {
 
@@ -55,7 +54,6 @@ export class DatagridComponent implements OnInit, AfterViewInit {
     this.generateGrid();
     this.generateHeaders();
 
-
     this.createRowAndColLimits();
     this.datagridService.gridData = this.gridData;
   }
@@ -87,6 +85,7 @@ export class DatagridComponent implements OnInit, AfterViewInit {
   }
 
   private generateGrid() {
+
     let rows = '';
     for (let i = 0; i < this.gridData.length; i++) {
       let cells = '';
@@ -131,6 +130,8 @@ export class DatagridComponent implements OnInit, AfterViewInit {
         ${ths}
       </tr>
     `;
+
+
     document.getElementsByTagName('thead').item(0).innerHTML = trow;
   }
 

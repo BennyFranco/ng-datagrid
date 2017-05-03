@@ -11,8 +11,7 @@ import { AppComponent } from './app.component';
     imports: [
         BrowserModule,
         CommonModule,
-        DatagridModule,
-        
+        DatagridModule
     ],
     declarations: [
         AppComponent

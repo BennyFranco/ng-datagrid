@@ -1,4 +1,4 @@
-table {
+:host >>> table {
     border-collapse: separate;
     table-layout: fixed !important;
     word-break: break-all;
@@ -16,7 +16,7 @@ table {
     /* will-change: transform; */
 }
 
-thead {
+:host >>> thead {
     background-color: #ddd;
     /* position: fixed; */
 }
@@ -30,27 +30,27 @@ thead {
     position: fixed;
 }*/
 
-._th {
+:host >>> ._th {
     font-weight: bold;
     background: #ddd;
 }
 
-._tr {
+:host >>> ._tr {
     width: auto;
     min-width: 28px;
 }
 
-._space {
+:host >>> ._space {
     width: 100%
 }
 
-th {
+:host >>> th {
     font-weight: bold;
     background: #ddd;
 }
 
-th,
-td {
+:host >>> th,
+:host >>> td {
     padding: 0.5em;
     height: 12px;
     line-height: 12px;
@@ -65,13 +65,13 @@ td {
     user-select: none;
 }
 
-td {
+:host >>> td {
     cursor: cell;
     background-color: white;
 }
 
-th span,
-td span {
+:host >>> th span,
+:host >>> td span {
     display: block;
     width: 60px;
     white-space: nowrap;
